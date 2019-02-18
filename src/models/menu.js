@@ -22,6 +22,7 @@ function formatter(data, parentAuthority, parentName) {
 
       const result = {
         ...item,
+        // title: locale,
         name: formatMessage({ id: locale, defaultMessage: item.name }),
         locale,
         authority: item.authority || parentAuthority,

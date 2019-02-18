@@ -23,15 +23,6 @@ class Analysis extends Component {
     salesType: 'all',
     currentTabKey: '',
     rangePickerValue: getTimeDistance('year'),
-    bananaCount: 0,
-    orangeCount: 0,
-    friutInfo: [{
-      name: 'banana',
-      count: 0
-    },{
-      name: 'orange',
-      count: 0
-    }]
   };
 
   componentDidMount() {
@@ -101,23 +92,7 @@ class Analysis extends Component {
     return '';
   };
 
-  handleChange = (record) => {
-    console.log('record ======>', record)
-    let { friutInfo } = this.state;
-    friutInfo.map(item => {
-      if(item.name == record.name){
-        item.count = record.val
-      }
-    })
-    this.setState({
-      friutInfo,
-    },() => {
-      console.log(`当前${record.name}的信息: ${friutInfo}`)
-    })
-  }
-
   render() {
-    console.log('触发render')
     const { rangePickerValue, salesType, currentTabKey } = this.state;
     const { chart, loading } = this.props;
     const {
@@ -156,16 +131,6 @@ class Analysis extends Component {
 
     return (
       <GridContent>
-        <span>Banana: </span>
-        <select onChange={(e) => this.handleChange({'name': 'bananan', 'count': e.target.value})}>
-          <option value ="1">1</option>
-          <option value ="2">2</option>
-        </select><br />
-        <span>Orange: </span>
-        <select onChange={(e) => this.handleChange({'name': 'orange', 'count': e.target.value})}>
-          <option value ="1">1</option>
-          <option value ="2">2</option>
-        </select>
         <Suspense fallback={<PageLoading />}>
           <IntroduceRow loading={loading} visitData={visitData} />
         </Suspense>

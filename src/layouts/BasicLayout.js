@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react'; // { Suspense }
 import { Layout } from 'antd';
 import DocumentTitle from 'react-document-title';
 import isEqual from 'lodash/isEqual';
@@ -10,13 +10,12 @@ import pathToRegexp from 'path-to-regexp';
 import Media from 'react-media';
 import { formatMessage } from 'umi/locale';
 import Authorized from '@/utils/Authorized';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.png';
 import Footer from './Footer';
 import Header from './Header';
 import Context from './MenuContext';
 import Exception403 from '../pages/Exception/403';
-import PageLoading from '@/components/PageLoading';
-import SiderMenu from '@/components/SiderMenu';
+// import PageLoading from '@/components/PageLoading';
 
 // lazy load SettingDrawer
 const SettingDrawer = React.lazy(() => import('@/components/SettingDrawer'));
@@ -123,13 +122,13 @@ class BasicLayout extends React.PureComponent {
     const currRouterData = this.matchParamsPath(pathname);
 
     if (!currRouterData) {
-      return 'Ant Design Pro';
+      return '603 Plantform';
     }
     const pageName = formatMessage({
       id: currRouterData.locale || currRouterData.name,
       defaultMessage: currRouterData.name,
     });
-    return `${pageName} - Ant Design Pro`;
+    return `${pageName} - 603 Plantform`;
   };
 
   getLayoutStyle = () => {
@@ -169,27 +168,17 @@ class BasicLayout extends React.PureComponent {
 
   render() {
     const {
-      navTheme,
-      layout: PropsLayout,
+      // navTheme,
+      // layout: PropsLayout,
       children,
       location: { pathname },
       isMobile,
       menuData,
     } = this.props;
-    const isTop = PropsLayout === 'topmenu';
+    // const isTop = PropsLayout === 'topmenu';
     const routerConfig = this.matchParamsPath(pathname);
     const layout = (
       <Layout>
-        {isTop && !isMobile ? null : (
-          <SiderMenu
-            logo={logo}
-            theme={navTheme}
-            onCollapse={this.handleMenuCollapse}
-            menuData={menuData}
-            isMobile={isMobile}
-            {...this.props}
-          />
-        )}
         <Layout
           style={{
             ...this.getLayoutStyle(),
@@ -226,7 +215,8 @@ class BasicLayout extends React.PureComponent {
             )}
           </ContainerQuery>
         </DocumentTitle>
-        <Suspense fallback={<PageLoading />}>{this.renderSettingDrawer()}</Suspense>
+        {/* 弹出设置抽屉, 注释掉这个功能块 */}
+        {/* <Suspense fallback={<PageLoading />}>{this.renderSettingDrawer()}</Suspense> */}
       </React.Fragment>
     );
   }
