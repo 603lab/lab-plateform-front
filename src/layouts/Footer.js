@@ -8,8 +8,8 @@ const FooterView = () => (
     <GlobalFooter
       links={[
         {
-          key: 'Pro 首页',
-          title: 'Pro 首页',
+          key: '群号',
+          title: '群号:xxxxxx',
           href: 'https://pro.ant.design',
           blankTarget: true,
         },
@@ -20,15 +20,15 @@ const FooterView = () => (
           blankTarget: true,
         },
         {
-          key: 'Ant Design',
-          title: 'Ant Design',
+          key: '603 platform',
+          title: '603 platform',
           href: 'https://ant.design',
           blankTarget: true,
         },
       ]}
       copyright={
         <Fragment>
-          Copyright <Icon type="copyright" /> 2018 蚂蚁金服体验技术部出品
+          Copyright <Icon type="copyright" /> 2019
         </Fragment>
       }
     />

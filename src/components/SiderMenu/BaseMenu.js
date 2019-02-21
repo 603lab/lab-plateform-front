@@ -47,7 +47,10 @@ export default class BaseMenu extends PureComponent {
   // Get the currently selected menu
   getSelectedMenuKeys = pathname => {
     const { flatMenuKeys } = this.props;
-    return urlToList(pathname).map(itemPath => getMenuMatches(flatMenuKeys, itemPath).pop());
+    const currentMenu = urlToList(pathname).map(
+      itemPath => getMenuMatches(flatMenuKeys, itemPath).pop() || pathname
+    );
+    return currentMenu;
   };
 
   /**
@@ -88,7 +91,6 @@ export default class BaseMenu extends PureComponent {
     const itemPath = this.conversionPath(item.path);
     const icon = getIcon(item.icon);
     const { target } = item;
-    // Is it a http link
     if (/^https?:\/\//.test(itemPath)) {
       return (
         <a href={itemPath} target={target}>
