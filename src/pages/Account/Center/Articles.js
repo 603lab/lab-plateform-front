@@ -25,6 +25,9 @@ class Center extends PureComponent {
         rowKey="id"
         itemLayout="vertical"
         dataSource={list}
+        pagination={{
+          pageSize: 5,
+        }}
         renderItem={item => (
           <List.Item
             key={item.id}

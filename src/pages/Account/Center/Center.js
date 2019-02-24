@@ -1,10 +1,14 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import Link from 'umi/link';
+// import Link from 'umi/link';
 import router from 'umi/router';
-import { Card, Row, Col, Icon, Avatar, Tag, Divider, Spin, Input } from 'antd';
+import { Card, Row, Col, Icon, Tag, Divider, Spin, Input, Tooltip, Button } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
+import CenterPieChart from '@/components/CenterPieChart';
+// import { Pie } from '@/components/Charts';
 import styles from './Center.less';
+// import { relative } from 'path';
+import baseColor from '../../../utils/colors';
 
 @connect(({ loading, user, project }) => ({
   listLoading: loading.effects['list/fetch'],
@@ -36,14 +40,26 @@ class Center extends PureComponent {
     });
   }
 
+  getBaseColor = (items, index) => {
+    let color = [];
+    if (items.length < 5) {
+      color = baseColor.category5[index];
+    } else if (items.length < 12) {
+      color = baseColor.category12[index];
+    } else {
+      color = baseColor.category20[index];
+    }
+    return color;
+  };
+
   onTabChange = key => {
     const { match } = this.props;
     switch (key) {
       case 'articles':
         router.push(`${match.url}/articles`);
         break;
-      case 'applications':
-        router.push(`${match.url}/applications`);
+      case 'doc':
+        router.push(`${match.url}/doc`);
         break;
       case 'projects':
         router.push(`${match.url}/projects`);
@@ -85,7 +101,7 @@ class Center extends PureComponent {
       listLoading,
       currentUser,
       currentUserLoading,
-      project: { notice },
+      // project: { notice },
       projectLoading,
       match,
       location,
@@ -97,15 +113,15 @@ class Center extends PureComponent {
         key: 'articles',
         tab: (
           <span>
-            文章 <span style={{ fontSize: 14 }}>(8)</span>
+            我的文章 <span style={{ fontSize: 14 }}>(8)</span>
           </span>
         ),
       },
       {
-        key: 'applications',
+        key: 'doc',
         tab: (
           <span>
-            应用 <span style={{ fontSize: 14 }}>(8)</span>
+            文档动态 <span style={{ fontSize: 14 }}>(8)</span>
           </span>
         ),
       },
@@ -113,44 +129,119 @@ class Center extends PureComponent {
         key: 'projects',
         tab: (
           <span>
-            项目 <span style={{ fontSize: 14 }}>(8)</span>
+            项目动态 <span style={{ fontSize: 14 }}>(8)</span>
+          </span>
+        ),
+      },
+      {
+        key: 'follow',
+        tab: (
+          <span>
+            关注动态 <span style={{ fontSize: 14 }}>(8)</span>
           </span>
         ),
       },
     ];
-
     return (
       <GridContent className={styles.userCenter}>
         <Row gutter={24}>
-          <Col lg={7} md={24}>
+          <Col lg={6} md={24}>
             <Card bordered={false} style={{ marginBottom: 24 }} loading={currentUserLoading}>
               {currentUser && Object.keys(currentUser).length ? (
                 <div>
                   <div className={styles.avatarHolder}>
-                    <img alt="" src={currentUser.avatar} />
-                    <div className={styles.name}>{currentUser.name}</div>
-                    <div>{currentUser.signature}</div>
+                    <Tooltip
+                      title={
+                        <span>
+                          你在实验室的第<a className={styles.stayDay}>70</a>天！加油哟！&nbsp;
+                          <Icon type="smile" />
+                        </span>
+                      }
+                      mouseEnterDelay={4}
+                    >
+                      <img alt="" src={currentUser.avatar} />
+                    </Tooltip>
+                    <div className={styles.name}>{currentUser.username}</div>
+                    <div>
+                      {/* 方向 */}
+                      {currentUser.techDirection}
+                      <Button className={styles.scores}>{currentUser.scores}&nbsp;积分</Button>
+                    </div>
                   </div>
+                  <Divider dashed />
                   <div className={styles.detail}>
-                    <p>
-                      <i className={styles.title} />
-                      {currentUser.title}
-                    </p>
-                    <p>
-                      <i className={styles.group} />
-                      {currentUser.group}
-                    </p>
-                    <p>
+                    <div className={styles.infoTitle}>
+                      个人信息&nbsp;
+                      <Icon type="edit" />
+                    </div>
+                    <ul className={styles.personInfoUl}>
+                      <li>
+                        <Icon type="rocket" />
+                        &nbsp;姓名：{currentUser.realName}
+                      </li>
+                      <li>
+                        <Icon type="bulb" />
+                        &nbsp;学号：{currentUser.uCode}
+                      </li>
+                    </ul>
+                    <ul className={styles.personInfoUl}>
+                      <li>
+                        <Icon type="team" />
+                        &nbsp;年级：{currentUser.entranceYear}
+                      </li>
+                      <li>
+                        <Icon type="experiment" />
+                        &nbsp;专业：{currentUser.uMajor}
+                      </li>
+                    </ul>
+                    <ul className={styles.personInfoUl}>
+                      <li>
+                        <Icon type="desktop" />
+                        &nbsp;方向：{currentUser.techDirection}
+                      </li>
+                      <li>
+                        <Icon type="flag" />
+                        &nbsp;团队：{currentUser.teamName}
+                      </li>
+                    </ul>
+                    <ul className={styles.personInfoUl}>
+                      <li>
+                        <Icon type="qq" />
+                        &nbsp;QQ：{currentUser.qq}
+                      </li>
+                      <li>
+                        <Icon type="wechat" />
+                        &nbsp;微信：{currentUser.wechat}
+                      </li>
+                    </ul>
+                    <ul className={styles.personInfoUl}>
+                      <li>
+                        <Icon type="mobile" />
+                        &nbsp;手机：{currentUser.phoneNum}
+                      </li>
+                    </ul>
+                    <ul className={styles.personInfoUl}>
+                      <li style={{ width: '100%' }}>
+                        <Icon type="idcard" />
+                        &nbsp;身份证：{currentUser.idCard}
+                      </li>
+                    </ul>
+                    {/* <p>
                       <i className={styles.address} />
                       {currentUser.geographic.province.label}
                       {currentUser.geographic.city.label}
-                    </p>
+                    </p> */}
                   </div>
                   <Divider dashed />
                   <div className={styles.tags}>
-                    <div className={styles.tagsTitle}>标签</div>
-                    {currentUser.tags.concat(newTags).map(item => (
-                      <Tag key={item.key}>{item.label}</Tag>
+                    <div className={styles.tagsTitle}>个人标签</div>
+                    {currentUser.tags.concat(newTags).map((item, index) => (
+                      <Tag
+                        key={item.key}
+                        color={this.getBaseColor(currentUser.tags.concat(newTags), index)}
+                      >
+                        {item.label}
+                      </Tag>
                     ))}
                     {inputVisible && (
                       <Input
@@ -175,9 +266,14 @@ class Center extends PureComponent {
                   </div>
                   <Divider style={{ marginTop: 16 }} dashed />
                   <div className={styles.team}>
-                    <div className={styles.teamTitle}>团队</div>
+                    <div className={styles.teamTitle}>
+                      掌握技能&nbsp;
+                      <Icon type="edit" />
+                    </div>
+
                     <Spin spinning={projectLoading}>
-                      <Row gutter={36}>
+                      <CenterPieChart />
+                      {/* <Row gutter={36}>
                         {notice.map(item => (
                           <Col key={item.id} lg={24} xl={12}>
                             <Link to={item.href}>
@@ -186,7 +282,7 @@ class Center extends PureComponent {
                             </Link>
                           </Col>
                         ))}
-                      </Row>
+                      </Row> */}
                     </Spin>
                   </div>
                 </div>
@@ -195,7 +291,7 @@ class Center extends PureComponent {
               )}
             </Card>
           </Col>
-          <Col lg={17} md={24}>
+          <Col lg={18} md={24}>
             <Card
               className={styles.tabsCard}
               bordered={false}

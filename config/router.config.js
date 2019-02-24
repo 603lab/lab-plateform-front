@@ -25,6 +25,7 @@ export default [
         name: 'home',
         icon: 'home',
         component: './Home/index',
+        // component: './Dashboard/Monitor',
         // routes: [
         //   {
         //     path: '/dashboard/analysis',
@@ -231,8 +232,8 @@ export default [
             component: './Account/Center/Articles',
           },
           {
-            path: '/account/center/applications',
-            component: './Account/Center/Applications',
+            path: '/account/center/doc',
+            component: './Account/Center/Encyclopedia',
           },
           {
             path: '/account/center/projects',

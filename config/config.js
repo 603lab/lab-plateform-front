@@ -35,7 +35,7 @@ const plugins = [
               include: ['dva', 'dva/router', 'dva/saga', 'dva/fetch'],
               exclude: ['@babel/runtime'],
             },
-            hardSource: false, // 省略webpack打包中间缓存步骤
+            // hardSource: true, // 省略webpack打包中间缓存步骤
           }
         : {}),
     },
