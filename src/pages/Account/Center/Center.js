@@ -5,9 +5,8 @@ import router from 'umi/router';
 import { Card, Row, Col, Icon, Tag, Divider, Spin, Input, Tooltip, Button } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import CenterPieChart from '@/components/CenterPieChart';
-// import { Pie } from '@/components/Charts';
+import CenterModal from '@/components/CenterModal';
 import styles from './Center.less';
-// import { relative } from 'path';
 import baseColor from '../../../utils/colors';
 
 @connect(({ loading, user, project }) => ({
@@ -22,6 +21,7 @@ class Center extends PureComponent {
     newTags: [],
     inputVisible: false,
     inputValue: '',
+    modalState: false,
   };
 
   componentDidMount() {
@@ -95,8 +95,20 @@ class Center extends PureComponent {
     });
   };
 
+  handleOpenModal = () => {
+    this.setState({
+      modalState: true,
+    });
+  };
+
+  handleCloseModal = () => {
+    this.setState({
+      modalState: false,
+    });
+  };
+
   render() {
-    const { newTags, inputVisible, inputValue } = this.state;
+    const { newTags, inputVisible, inputValue, modalState } = this.state;
     const {
       listLoading,
       currentUser,
@@ -172,60 +184,55 @@ class Center extends PureComponent {
                   <div className={styles.detail}>
                     <div className={styles.infoTitle}>
                       个人信息&nbsp;
-                      <Icon type="edit" />
+                      <Icon type="edit" onClick={this.handleOpenModal} />
+                      <CenterModal modalState={modalState} onCloseModal={this.handleCloseModal} />
                     </div>
                     <ul className={styles.personInfoUl}>
                       <li>
                         <Icon type="rocket" />
-                        &nbsp;姓名：{currentUser.realName}
+                        &nbsp;&nbsp;姓名：{currentUser.realName}
+                      </li>
+                      <li>
+                        <Icon type="team" />
+                        &nbsp;&nbsp;年级：{currentUser.entranceYear}
                       </li>
                       <li>
                         <Icon type="bulb" />
-                        &nbsp;学号：{currentUser.uCode}
-                      </li>
-                    </ul>
-                    <ul className={styles.personInfoUl}>
-                      <li>
-                        <Icon type="team" />
-                        &nbsp;年级：{currentUser.entranceYear}
+                        &nbsp;&nbsp;学号：{currentUser.uCode}
                       </li>
                       <li>
                         <Icon type="experiment" />
-                        &nbsp;专业：{currentUser.uMajor}
+                        &nbsp;&nbsp;专业：{currentUser.uMajor}
                       </li>
-                    </ul>
-                    <ul className={styles.personInfoUl}>
                       <li>
                         <Icon type="desktop" />
-                        &nbsp;方向：{currentUser.techDirection}
+                        &nbsp;&nbsp;方向：{currentUser.techDirection}
                       </li>
                       <li>
                         <Icon type="flag" />
-                        &nbsp;团队：{currentUser.teamName}
+                        &nbsp;&nbsp;团队：{currentUser.teamName}
                       </li>
-                    </ul>
-                    <ul className={styles.personInfoUl}>
+                      <li>
+                        <Icon type="mobile" />
+                        &nbsp;&nbsp;手机：{currentUser.phoneNum}
+                      </li>
                       <li>
                         <Icon type="qq" />
-                        &nbsp;QQ：{currentUser.qq}
+                        &nbsp;&nbsp;QQ：{currentUser.qq}
                       </li>
                       <li>
                         <Icon type="wechat" />
-                        &nbsp;微信：{currentUser.wechat}
+                        &nbsp;&nbsp;微信：{currentUser.wechat}
                       </li>
-                    </ul>
-                    <ul className={styles.personInfoUl}>
                       <li>
-                        <Icon type="mobile" />
-                        &nbsp;手机：{currentUser.phoneNum}
-                      </li>
-                    </ul>
-                    <ul className={styles.personInfoUl}>
-                      <li style={{ width: '100%' }}>
                         <Icon type="idcard" />
-                        &nbsp;身份证：{currentUser.idCard}
+                        &nbsp;&nbsp;身份证：{currentUser.idCard}
                       </li>
+                      {/* <li style={{ textAlign: 'center', opacity: .6 }}>
+                        <Icon type={infoExtendIcon} />
+                      </li> */}
                     </ul>
+
                     {/* <p>
                       <i className={styles.address} />
                       {currentUser.geographic.province.label}
