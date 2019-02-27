@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { Modal, Form, Icon, Input, message } from 'antd';
+import { Modal, Form, Input, message, Select } from 'antd';
+import modalLabel from './modalData';
 
 class CenterModal extends PureComponent {
   constructor(args) {
@@ -8,7 +9,7 @@ class CenterModal extends PureComponent {
     this.state = {
       visible: false,
       confirmLoading: false,
-      modalData: {},
+      // modalData: {},
     };
   }
 
@@ -31,7 +32,7 @@ class CenterModal extends PureComponent {
 
   handleOk = () => {
     const { form, onCloseModal } = this.props;
-    form.validateFields((err, values) => {
+    form.validateFields(err => {
       if (!err) {
         this.setState({
           confirmLoading: true,
@@ -40,7 +41,7 @@ class CenterModal extends PureComponent {
           this.setState({
             visible: false,
             confirmLoading: false,
-            modalData: values,
+            // modalData: values,
           });
           onCloseModal();
         }, 2000);
@@ -58,45 +59,74 @@ class CenterModal extends PureComponent {
     onCloseModal();
   };
 
+  getModalTitle = type => {
+    let modalTitle = '弹窗';
+    switch (type) {
+      case 'personInfo':
+        modalTitle = '个人信息';
+        break;
+      default:
+        break;
+    }
+    return modalTitle;
+  };
+
+  FormContent = basicInfo => {
+    let result;
+    switch (basicInfo.type) {
+      case 'input':
+        result = <Input placeholder={`请输入你的${basicInfo.title}`} />;
+        break;
+      case 'select':
+        result = (
+          <Select>
+            {basicInfo.values.map(item => (
+              <Select.Option key={item}>{item}</Select.Option>
+            ))}
+          </Select>
+        );
+        break;
+      default:
+        break;
+    }
+    return result;
+  };
+
   render() {
-    const { visible, confirmLoading, modalData } = this.state;
-    const { form } = this.props;
+    const { visible, confirmLoading } = this.state;
+    const { form, modalType, modalInitData } = this.props;
     const { getFieldDecorator } = form;
+
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 4 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 20 },
+      },
+    };
     return (
-      <div>
-        <Modal
-          title="Title"
-          visible={visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-          confirmLoading={confirmLoading}
-        >
-          <Form>
-            <Form.Item>
-              {getFieldDecorator('userName', {
-                rules: [{ required: true, message: 'Please input your username!' }],
-              })(
-                <Input
-                  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Username"
-                />
-              )}
+      <Modal
+        title={this.getModalTitle(modalType)}
+        visible={visible}
+        onOk={this.handleOk}
+        destroyOnClose="true"
+        onCancel={this.handleCancel}
+        confirmLoading={confirmLoading}
+      >
+        <Form>
+          {modalLabel[modalType].map(item => (
+            <Form.Item key={item.field} label={item.title} {...formItemLayout}>
+              {getFieldDecorator(item.field, {
+                initialValue: modalInitData[item.field],
+                rules: [{ required: item.required, message: `请输入你的${item.title}!` }],
+              })(this.FormContent(item))}
             </Form.Item>
-            <Form.Item>
-              {getFieldDecorator('password', {
-                rules: [{ required: true, message: 'Please input your Password!' }],
-              })(
-                <Input
-                  prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  type="password"
-                  placeholder="Password"
-                />
-              )}
-            </Form.Item>
-          </Form>
-        </Modal>
-        <span>{modalData}</span>
-      </div>
+          ))}
+        </Form>
+      </Modal>
     );
   }
 }

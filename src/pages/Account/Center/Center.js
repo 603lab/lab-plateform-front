@@ -185,7 +185,14 @@ class Center extends PureComponent {
                     <div className={styles.infoTitle}>
                       个人信息&nbsp;
                       <Icon type="edit" onClick={this.handleOpenModal} />
-                      <CenterModal modalState={modalState} onCloseModal={this.handleCloseModal} />
+                      {modalState && (
+                        <CenterModal
+                          modalType="personInfo"
+                          modalState={modalState}
+                          modalInitData={currentUser}
+                          onCloseModal={this.handleCloseModal}
+                        />
+                      )}
                     </div>
                     <ul className={styles.personInfoUl}>
                       <li>
@@ -228,16 +235,7 @@ class Center extends PureComponent {
                         <Icon type="idcard" />
                         &nbsp;&nbsp;身份证：{currentUser.idCard}
                       </li>
-                      {/* <li style={{ textAlign: 'center', opacity: .6 }}>
-                        <Icon type={infoExtendIcon} />
-                      </li> */}
                     </ul>
-
-                    {/* <p>
-                      <i className={styles.address} />
-                      {currentUser.geographic.province.label}
-                      {currentUser.geographic.city.label}
-                    </p> */}
                   </div>
                   <Divider dashed />
                   <div className={styles.tags}>
