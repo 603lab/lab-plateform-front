@@ -65,6 +65,9 @@ class CenterModal extends PureComponent {
       case 'personInfo':
         modalTitle = '个人信息';
         break;
+      case 'skills':
+        modalTitle = '掌握技能';
+        break;
       default:
         break;
     }
@@ -85,6 +88,8 @@ class CenterModal extends PureComponent {
             ))}
           </Select>
         );
+        break;
+      case 'progress':
         break;
       default:
         break;

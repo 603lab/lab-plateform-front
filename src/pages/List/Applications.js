@@ -150,7 +150,7 @@ class FilterCardList extends PureComponent {
                 hoverable
                 bodyStyle={{ paddingBottom: 20 }}
                 actions={[
-                  <Tooltip title="下载">
+                  <Tooltip title="">
                     <Icon type="download" />
                   </Tooltip>,
                   <Tooltip title="编辑">
