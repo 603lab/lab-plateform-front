@@ -109,12 +109,12 @@ class CenterModal extends PureComponent {
     };
     return (
       <Modal
-        title={this.getModalTitle(modalType)}
         visible={visible}
         onOk={this.handleOk}
         destroyOnClose="true"
         onCancel={this.handleCancel}
         confirmLoading={confirmLoading}
+        title={this.getModalTitle(modalType)}
       >
         <Form>
           {modalLabel[modalType].map(item => (

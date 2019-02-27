@@ -31,7 +31,7 @@ export default {
       type: 'select',
       required: true,
       field: 'techDirection',
-      values: ['前端攻城狮', 'UI射击狮'],
+      values: ['前端攻城狮', 'UI射击狮', 'android', 'ios', '3D建模', '产品经理', 'PMer'],
     },
     {
       title: '手机',

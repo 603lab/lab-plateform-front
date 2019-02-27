@@ -173,7 +173,7 @@ class Center extends PureComponent {
                     >
                       <img alt="" src={currentUser.avatar} />
                     </Tooltip>
-                    <div className={styles.name}>{currentUser.username}</div>
+                    <div className={styles.name}>{currentUser.nickName}</div>
                     <div>
                       {/* 方向 */}
                       {currentUser.techDirection}
