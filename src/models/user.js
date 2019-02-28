@@ -1,4 +1,5 @@
-import { query as queryUsers, queryCurrent } from '@/services/user';
+import { query as queryUsers, queryCurrent, querySkills } from '@/services/user';
+import { message } from 'antd';
 
 export default {
   namespace: 'user',
@@ -18,8 +19,23 @@ export default {
     },
     *fetchCurrent(_, { call, put }) {
       const response = yield call(queryCurrent);
+      const { statusCode, data } = response;
+      if (statusCode === 200) {
+        yield put({
+          type: 'saveCurrentUser',
+          payload: data,
+        });
+        // 获取饼图技能
+        yield put({ type: 'getSkills', payload: { createUserCode: data.uCode } });
+      } else {
+        message.error(`获取当前用户信息失败 ${response.message}`);
+      }
+    },
+    // 饼图技能
+    *getSkills({ payload }, { call, put }) {
+      const response = yield call(querySkills, payload);
       yield put({
-        type: 'saveCurrentUser',
+        type: 'saveSkills',
         payload: response,
       });
     },
@@ -46,6 +62,12 @@ export default {
           notifyCount: action.payload.totalCount,
           unreadCount: action.payload.unreadCount,
         },
+      };
+    },
+    saveSkills(state, action) {
+      return {
+        ...state,
+        skills: action.payload || {},
       };
     },
   },

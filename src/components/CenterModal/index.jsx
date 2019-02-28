@@ -101,7 +101,7 @@ class CenterModal extends PureComponent {
     const { visible, confirmLoading } = this.state;
     const { form, modalType, modalInitData } = this.props;
     const { getFieldDecorator } = form;
-
+    // console.log('modalInitData ====>', modalInitData);
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },

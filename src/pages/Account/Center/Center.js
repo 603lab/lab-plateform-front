@@ -19,9 +19,10 @@ import baseColor from '../../../utils/colors';
 class Center extends PureComponent {
   state = {
     newTags: [],
-    inputVisible: false,
+    modalType: '',
     inputValue: '',
     modalState: false,
+    inputVisible: false,
   };
 
   componentDidMount() {
@@ -95,8 +96,9 @@ class Center extends PureComponent {
     });
   };
 
-  handleOpenModal = () => {
+  handleOpenModal = modalType => {
     this.setState({
+      modalType,
       modalState: true,
     });
   };
@@ -108,7 +110,7 @@ class Center extends PureComponent {
   };
 
   render() {
-    const { newTags, inputVisible, inputValue, modalState } = this.state;
+    const { newTags, inputVisible, inputValue, modalState, modalType } = this.state;
     const {
       listLoading,
       currentUser,
@@ -184,15 +186,7 @@ class Center extends PureComponent {
                   <div className={styles.detail}>
                     <div className={styles.infoTitle}>
                       个人信息&nbsp;
-                      <Icon type="edit" onClick={this.handleOpenModal} />
-                      {modalState && (
-                        <CenterModal
-                          modalType="personInfo"
-                          modalState={modalState}
-                          modalInitData={currentUser}
-                          onCloseModal={this.handleCloseModal}
-                        />
-                      )}
+                      <Icon type="edit" onClick={() => this.handleOpenModal('personInfo')} />
                     </div>
                     <ul className={styles.personInfoUl}>
                       <li>
@@ -273,7 +267,7 @@ class Center extends PureComponent {
                   <div className={styles.team}>
                     <div className={styles.teamTitle}>
                       掌握技能&nbsp;
-                      <Icon type="edit" />
+                      <Icon type="edit" onClick={() => this.handleOpenModal('skills')} />
                     </div>
 
                     <Spin spinning={projectLoading}>
@@ -290,6 +284,14 @@ class Center extends PureComponent {
                       </Row> */}
                     </Spin>
                   </div>
+                  {modalState && (
+                    <CenterModal
+                      modalType={modalType}
+                      modalState={modalState}
+                      modalInitData={currentUser}
+                      onCloseModal={this.handleCloseModal}
+                    />
+                  )}
                 </div>
               ) : (
                 'loading...'
