@@ -25,34 +25,13 @@ export default class CenterPieChart extends React.Component {
 
   render() {
     const { DataView } = DataSet;
-    const data = [
-      {
-        item: 'React',
-        count: 40,
-      },
-      {
-        item: 'Vue',
-        count: 21,
-      },
-      {
-        item: 'ES6',
-        count: 17,
-      },
-      {
-        item: 'Node',
-        count: 13,
-      },
-      {
-        item: 'ESlint',
-        count: 9,
-      },
-    ];
+    const { skills = [] } = this.props;
     const dv = new DataView();
-    dv.source(data).transform({
-      type: 'percent',
-      field: 'count',
-      dimension: 'item',
+    dv.source(skills).transform({
       as: 'percent',
+      type: 'percent',
+      field: 'percent',
+      dimension: 'item',
     });
     const cols = {
       percent: {
@@ -61,13 +40,7 @@ export default class CenterPieChart extends React.Component {
     };
     return (
       <div>
-        <Chart
-          forceFit
-          height={240}
-          data={dv}
-          scale={cols}
-          // padding={[80, 100, 80, 80]}
-        >
+        <Chart forceFit height={240} data={dv} scale={cols}>
           <Coord type="theta" scale={[1.3, 1.3]} />
           <Axis name="percent" />
           <Legend position="left" offsetY={-10} offsetX={-20} />

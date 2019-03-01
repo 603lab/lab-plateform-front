@@ -89,8 +89,6 @@ class CenterModal extends PureComponent {
           </Select>
         );
         break;
-      case 'progress':
-        break;
       default:
         break;
     }
@@ -101,7 +99,6 @@ class CenterModal extends PureComponent {
     const { visible, confirmLoading } = this.state;
     const { form, modalType, modalInitData } = this.props;
     const { getFieldDecorator } = form;
-    // console.log('modalInitData ====>', modalInitData);
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -121,16 +118,25 @@ class CenterModal extends PureComponent {
         confirmLoading={confirmLoading}
         title={this.getModalTitle(modalType)}
       >
-        <Form>
-          {modalLabel[modalType].map(item => (
-            <Form.Item key={item.field} label={item.title} {...formItemLayout}>
-              {getFieldDecorator(item.field, {
-                initialValue: modalInitData[item.field],
-                rules: [{ required: item.required, message: `请输入你的${item.title}!` }],
-              })(this.FormContent(item))}
+        {modalType === 'personInfo' ? (
+          <Form>
+            {modalLabel[modalType].map(item => (
+              <Form.Item key={item.field} label={item.title} {...formItemLayout}>
+                {getFieldDecorator(item.field, {
+                  initialValue: modalInitData[item.field],
+                  rules: [{ required: item.required, message: `请输入你的${item.title}!` }],
+                })(this.FormContent(item))}
+              </Form.Item>
+            ))}
+          </Form>
+        ) : (
+          <Form>
+            <Form.Item label="test" {...formItemLayout}>
+              {getFieldDecorator('input', { initialValue: '123' })(<Input />)}
             </Form.Item>
-          ))}
-        </Form>
+            )
+          </Form>
+        )}
       </Modal>
     );
   }
@@ -138,3 +144,10 @@ class CenterModal extends PureComponent {
 
 const CenterModalForm = Form.create({ name: 'CenterModalForm' })(CenterModal);
 export default CenterModalForm;
+
+/* // modalInitData[modalType].map(skillsItem => (
+            //   <Form.Item key={skillsItem.id} label={skillsItem.item} {...formItemLayout}>
+            //     {getFieldDecorator('progress', {})(
+            //       <Progress percent={skillsItem.percent} />
+            //     )}
+            //   </Form.Item> */

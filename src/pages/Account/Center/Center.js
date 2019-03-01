@@ -121,7 +121,6 @@ class Center extends PureComponent {
       location,
       children,
     } = this.props;
-
     const operationTabList = [
       {
         key: 'articles',
@@ -269,9 +268,8 @@ class Center extends PureComponent {
                       掌握技能&nbsp;
                       <Icon type="edit" onClick={() => this.handleOpenModal('skills')} />
                     </div>
-
                     <Spin spinning={projectLoading}>
-                      <CenterPieChart />
+                      <CenterPieChart skills={currentUser.skills} />
                       {/* <Row gutter={36}>
                         {notice.map(item => (
                           <Col key={item.id} lg={24} xl={12}>
@@ -284,20 +282,21 @@ class Center extends PureComponent {
                       </Row> */}
                     </Spin>
                   </div>
-                  {modalState && (
-                    <CenterModal
-                      modalType={modalType}
-                      modalState={modalState}
-                      modalInitData={currentUser}
-                      onCloseModal={this.handleCloseModal}
-                    />
-                  )}
                 </div>
               ) : (
                 'loading...'
               )}
             </Card>
           </Col>
+
+          {modalState && (
+            <CenterModal
+              modalType={modalType}
+              modalState={modalState}
+              modalInitData={currentUser}
+              onCloseModal={this.handleCloseModal}
+            />
+          )}
           <Col lg={18} md={24}>
             <Card
               className={styles.tabsCard}

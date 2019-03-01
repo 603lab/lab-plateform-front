@@ -67,7 +67,10 @@ export default {
     saveSkills(state, action) {
       return {
         ...state,
-        skills: action.payload || {},
+        currentUser: {
+          ...state.currentUser,
+          skills: action.payload || {},
+        },
       };
     },
   },
