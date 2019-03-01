@@ -243,10 +243,9 @@ export default [
       },
       // 个人设置
       {
-        name: 'account',
-        icon: 'setting',
-        path: '/account/settings',
         hideInMenu: true,
+        path: '/account/settings',
+        name: 'account.settings',
         component: './Account/Settings/Info',
         routes: [
           {
@@ -271,6 +270,7 @@ export default [
           },
         ],
       },
+
       {
         component: '404',
       },
