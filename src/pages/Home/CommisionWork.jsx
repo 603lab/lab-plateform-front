@@ -32,7 +32,7 @@ class CommisionWork extends React.Component {
       <Card title="待办工作" className={styles.wordWriedCard}>
         <Row>
           {commisionWork.map(item => (
-            <Col span={8}>
+            <Col span={8} id={item.id}>
               {item.taskTitle}
               {item.taskDescription}
             </Col>
