@@ -19,7 +19,7 @@ const utMost = cardWidth * (cardLength - 1);
 // 定义单次点击以后移动的距离
 const moveWidth = 274;
 
-export default class CommisionWork extends React.Component {
+class CommisionWork extends React.Component {
   constructor(args) {
     super(args);
 
@@ -182,3 +182,5 @@ export default class CommisionWork extends React.Component {
     );
   }
 }
+
+export default CommisionWork;
