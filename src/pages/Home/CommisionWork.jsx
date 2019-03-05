@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Icon, Alert, Button } from 'antd';
+import { Card, Icon, Alert, Button, Form, Input, Modal, DatePicker } from 'antd';
 import moment from 'moment';
 import styles from './CommisionWork.less';
 import {
@@ -19,6 +19,8 @@ const utMost = cardWidth * (cardLength - 1);
 // 定义单次点击以后移动的距离
 const moveWidth = 274;
 
+const { TextArea } = Input;
+
 class CommisionWork extends React.Component {
   constructor(args) {
     super(args);
@@ -27,11 +29,30 @@ class CommisionWork extends React.Component {
       currentId: '',
       position: 0,
       visible: false,
+      boardVisible: false,
     };
   }
 
   handleClose = () => {
     this.setState({ visible: false });
+  };
+
+  showModal = () => {
+    this.setState({
+      boardVisible: true,
+    });
+  };
+
+  handleOk = () => {
+    this.setState({
+      boardVisible: false,
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      boardVisible: false,
+    });
   };
 
   taskCardMove = distance => {
@@ -101,14 +122,29 @@ class CommisionWork extends React.Component {
   };
 
   render() {
-    const { currentId, isShowTopIcon, visible } = this.state;
+    const { currentId, isShowTopIcon, visible, boardVisible } = this.state;
+
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 5 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 12 },
+      },
+    };
     return (
       <>
         <Card
           title="待办工作"
           style={{ marginTop: 6 }}
           bodyStyle={{ height: 218, overflow: 'hidden' }}
-          extra={<a href="#">添加工作</a>}
+          extra={
+            <a href="#" onClick={this.showModal}>
+              添加工作
+            </a>
+          }
         >
           {/*     动态设置width ↓    */}
           <div style={{ width: cardWidth * (cardLength + 1) }}>
@@ -178,6 +214,43 @@ class CommisionWork extends React.Component {
             afterClose={this.handleClose}
           />
         ) : null}
+        <div>
+          <Modal
+            title="添加工作"
+            visible={boardVisible}
+            onOk={this.handleOk}
+            onCancel={this.handleCancel}
+            style={{ padding: 40 }}
+          >
+            <Form {...formItemLayout} layout="inline">
+              <Form.Item
+                label="标题"
+                hasFeedback
+                validateStatus="success"
+                style={{ marginLeft: 28, marginBottom: 20 }}
+              >
+                <Input placeholder="任务标题" id="success" style={{ width: 300 }} />
+              </Form.Item>
+
+              <Form.Item
+                label="截止时间"
+                hasFeedback
+                validateStatus="success"
+                style={{ marginBottom: 20 }}
+              >
+                <DatePicker style={{ width: 300 }} />
+              </Form.Item>
+
+              <Form.Item label="工作描述">
+                <TextArea
+                  placeholder="工作描述"
+                  autosize={{ minRows: 2, maxRows: 6 }}
+                  style={{ width: 300 }}
+                />
+              </Form.Item>
+            </Form>
+          </Modal>
+        </div>
       </>
     );
   }

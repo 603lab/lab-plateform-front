@@ -63,7 +63,13 @@ export default class CommisionWork extends React.Component {
                             <Button
                               type="primary"
                               size="small"
-                              style={{ marginTop: 5, width: 58, marginLeft: -1 }}
+                              style={{
+                                marginTop: 5,
+                                width: 48,
+                                padding: 2,
+                                paddingTop: 0,
+                                marginLeft: -1,
+                              }}
                             >
                               {item.isFollowed === true ? '已关注' : '关注'}
                             </Button>
