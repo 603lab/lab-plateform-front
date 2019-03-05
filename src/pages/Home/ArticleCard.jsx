@@ -49,35 +49,30 @@ export default class CommisionWork extends React.Component {
           <Tabs style={{ height: 310 }}>
             {techDirectionsType.map(tech => (
               // 这里在做一个只有位置为当前页面才开始渲染
-              <TabPane tab={tech.value} key={`childTabPhone${tech.key}`} style={{ padding: 10 }}>
-                <Card
-                  key={`tabCard${tech.key}`}
-                  style={{ width: '100%', marginTop: -20, height: 228 }}
-                >
+              <TabPane tab={tech.value} key={tech.key} style={{ padding: 10 }}>
+                <Card style={{ width: '100%', marginTop: -20, height: 228 }}>
                   {developerData.map((item, i) => (
-                    <div key={`mainDiv${item.id}`}>
+                    <div key={item.id}>
                       {this.isMap(i) ? (
-                        <Card.Grid style={gridStyle} key={`cardGrid${tech.key}${item.id}`}>
+                        <Card.Grid style={gridStyle}>
                           <div className={styles.avatarInfo}>
                             <Avatar
                               style={{ height: 50, width: 50 }}
                               src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                              key={`avatar${item.id}`}
                             />
                             <Button
                               type="primary"
                               size="small"
                               style={{ marginTop: 5, width: 58, marginLeft: -1 }}
-                              key={`follow${item.id}`}
                             >
                               {item.isFollowed === true ? '已关注' : '关注'}
                             </Button>
                           </div>
-                          <div>
-                            <div className={styles.nameItem}>{item.realName}</div>
-                            <div className={styles.cardItem}>{item.followedNum}个关注</div>
-                            <div className={styles.cardItem}>{item.className}</div>
-                            <div className={styles.cardItem}>{item.tag}</div>
+                          <div className={styles.cardBody}>
+                            <span>{item.realName}</span>
+                            <p>{item.followedNum}个关注</p>
+                            <p>{item.className}</p>
+                            <p>{item.tag}</p>
                           </div>
                         </Card.Grid>
                       ) : null}
