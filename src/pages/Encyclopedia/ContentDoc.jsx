@@ -5,8 +5,8 @@ import PageHeader from '@/components/PageHeader';
 import DocTabsContent from '@/components/DocTabs';
 
 class ContentDoc extends PureComponent {
-  constructor(args) {
-    super(args);
+  constructor(props) {
+    super(props);
 
     this.state = {};
   }
@@ -14,7 +14,7 @@ class ContentDoc extends PureComponent {
   render() {
     const breadcrumbList = [
       {
-        title: '一级菜单',
+        title: '百科',
         href: '/',
       },
       {
@@ -32,7 +32,7 @@ class ContentDoc extends PureComponent {
         <Alert
           type="info"
           style={{ margin: '10px 0', width: '50%' }}
-          message="欢迎你！大前端的扩展离不开你的分享"
+          message="欢迎你！百科的扩展离不开你的分享"
         />
         <DocTabsContent />
       </div>

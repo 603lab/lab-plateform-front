@@ -8,8 +8,8 @@ const SubMenu = Menu.SubMenu;
   doc,
 }))
 class Encyclopedia extends PureComponent {
-  constructor(args) {
-    super(args);
+  constructor(propas) {
+    super(propas);
     this.state = {
       menuData: [],
     };
@@ -36,7 +36,7 @@ class Encyclopedia extends PureComponent {
     const menuLevelDeep = menuData.filter(item => item.level > 1);
     // console.log('menuLevelDeep', menuLevelDeep);
     return (
-      <Menu mode="inline" style={{ width: '100%' }}>
+      <Menu mode="inline" style={{ width: '100%', minHeight: 500 }}>
         {menuLevelOne.map(item => (
           <SubMenu key={item.id} title={item.fileName}>
             {menuLevelDeep

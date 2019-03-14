@@ -1,5 +1,14 @@
+/*
+ * @Author: chenxiaobin
+ * @Date: 2019-03-14 16:14:46
+ * @Last Modified by:   chenxiaobin
+ * @Last Modified time: 2019-03-14 16:14:46
+ */
 import React, { PureComponent } from 'react';
-import { Tabs } from 'antd';
+import { Tabs, Icon } from 'antd';
+import styles from './index.less';
+import OtherTabs from './OtherTabs';
+import ArticleTabs from './ArticleTabs';
 
 const TabPane = Tabs.TabPane;
 export default class DocTabsContent extends PureComponent {
@@ -7,8 +16,19 @@ export default class DocTabsContent extends PureComponent {
     super(props);
     this.newTabIndex = 0;
     const panes = [
-      { title: 'Tab 1', content: 'Content of Tab Pane 1', key: '1' },
-      { title: 'Tab 2', content: 'Content of Tab Pane 2', key: '2' },
+      {
+        key: '1',
+        title: '最新文章',
+      },
+      {
+        title: (
+          <span>
+            最热文章
+            <Icon type="close" style={{ fontSize: 12, marginLeft: 15 }} />
+          </span>
+        ),
+        key: '2',
+      },
     ];
     this.state = {
       activeKey: panes[0].key,
@@ -55,18 +75,22 @@ export default class DocTabsContent extends PureComponent {
   render() {
     const { panes, activeKey } = this.state;
     return (
-      <Tabs
-        onChange={this.onChange}
-        activeKey={activeKey}
-        type="editable-card"
-        onEdit={this.onEdit}
-      >
-        {panes.map(pane => (
-          <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>
-            {pane.content}
-          </TabPane>
-        ))}
-      </Tabs>
+      <div className={styles.docTabs}>
+        <Tabs
+          activeKey={activeKey}
+          // type="editable-card"
+          // onEdit={this.onEdit}
+          onChange={this.onChange}
+        >
+          {panes.map(pane => (
+            <TabPane tab={pane.title} key={pane.key}>
+              <div className={styles.docTabsPaneContent}>
+                {pane.key === '1' ? <ArticleTabs /> : <OtherTabs />}
+              </div>
+            </TabPane>
+          ))}
+        </Tabs>
+      </div>
     );
   }
 }

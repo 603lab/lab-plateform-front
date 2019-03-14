@@ -7,8 +7,8 @@ import styles from './CommisionWork.less';
   home,
 }))
 class CommisionWork extends React.Component {
-  constructor(args) {
-    super(args);
+  constructor(props) {
+    super(props);
 
     this.state = {};
   }
@@ -32,7 +32,7 @@ class CommisionWork extends React.Component {
       <Card title="待办工作" className={styles.wordWriedCard}>
         <Row>
           {commisionWork.map(item => (
-            <Col span={8} id={item.id}>
+            <Col span={8} key={item.id}>
               {item.taskTitle}
               {item.taskDescription}
             </Col>

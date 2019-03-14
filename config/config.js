@@ -72,9 +72,10 @@ export default {
   externals: {
     '@antv/data-set': 'DataSet',
   },
+  // 接口地址
   // proxy: {
-  //   '/server/api/': {
-  //     target: 'https://preview.pro.ant.design/',
+  //   '/api/*': {
+  //     target: 'https://129.204.109.115:8011/',
   //     changeOrigin: true,
   //     pathRewrite: { '^/server': '' },
   //   },

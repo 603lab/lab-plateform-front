@@ -3,8 +3,8 @@ import { Modal, Form, Input, message, Select } from 'antd';
 import modalLabel from './modalData';
 
 class CenterModal extends PureComponent {
-  constructor(args) {
-    super(args);
+  constructor(props) {
+    super(props);
 
     this.state = {
       visible: false,

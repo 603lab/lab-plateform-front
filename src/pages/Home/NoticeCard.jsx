@@ -2,8 +2,8 @@ import React from 'react';
 import { Card } from 'antd';
 
 export default class CommisionWork extends React.Component {
-  constructor(args) {
-    super(args);
+  constructor(props) {
+    super(props);
 
     this.state = {};
   }

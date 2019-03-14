@@ -4,8 +4,8 @@ import MenuDoc from '@/components/DocMenu';
 import ContentDoc from './ContentDoc';
 
 export default class Encyclopedia extends PureComponent {
-  constructor(args) {
-    super(args);
+  constructor(props) {
+    super(props);
     this.state = {};
   }
 
