@@ -1,14 +1,15 @@
 /*
  * @Author: chenxiaobin
  * @Date: 2019-03-14 16:14:46
- * @Last Modified by:   chenxiaobin
- * @Last Modified time: 2019-03-14 16:14:46
+ * @Last Modified by: chenxiaobin
+ * @Last Modified time: 2019-03-15 10:38:48
+ * 最新文章无法删除、其他文章可删除
  */
 import React, { PureComponent } from 'react';
 import { Tabs, Icon } from 'antd';
 import styles from './index.less';
 import OtherTabs from './OtherTabs';
-import ArticleTabs from './ArticleTabs';
+import NewArticleTabs from './NewArticleTabs';
 
 const TabPane = Tabs.TabPane;
 export default class DocTabsContent extends PureComponent {
@@ -18,20 +19,24 @@ export default class DocTabsContent extends PureComponent {
     const panes = [
       {
         key: '1',
+        canDelete: false,
         title: '最新文章',
       },
       {
-        title: (
-          <span>
-            最热文章
-            <Icon type="close" style={{ fontSize: 12, marginLeft: 15 }} />
-          </span>
-        ),
         key: '2',
+        canDelete: true,
+        title: '新建文章',
+        type: 'create',
+      },
+      {
+        key: '3',
+        canDelete: true,
+        title: 'React',
+        type: 'detail',
       },
     ];
     this.state = {
-      activeKey: panes[0].key,
+      activeKey: panes[1].key,
       panes,
     };
   }
@@ -41,21 +46,23 @@ export default class DocTabsContent extends PureComponent {
   };
 
   onEdit = (targetKey, action) => {
+    console.log('targetKey', targetKey);
+    console.log('action', action);
     this[action](targetKey);
   };
 
-  add = () => {
-    const { panes } = this.state;
-    const tempPanes = [...panes];
-    const activeKey = `newTab${(this.newTabIndex += 1)}`;
-    tempPanes.push({ title: 'New Tab', content: 'New Tab Pane', key: activeKey });
-    this.setState({ panes: tempPanes, activeKey });
-  };
+  // add = () => {
+  //   const { panes } = this.state;
+  //   const tempPanes = [...panes];
+  //   const activeKey = `newTab${(this.newTabIndex += 1)}`;
+  //   tempPanes.push({ title: 'New Tab', content: 'New Tab Pane', key: activeKey });
+  //   this.setState({ panes: tempPanes, activeKey });
+  // };
 
   remove = targetKey => {
     const { panes, activeKey } = this.state;
     let lastIndex;
-    let tempActiveKey = [...activeKey];
+    let tempActiveKey = activeKey;
     panes.forEach((pane, i) => {
       if (pane.key === targetKey) {
         lastIndex = i - 1;
@@ -83,9 +90,21 @@ export default class DocTabsContent extends PureComponent {
           onChange={this.onChange}
         >
           {panes.map(pane => (
-            <TabPane tab={pane.title} key={pane.key}>
+            <TabPane
+              tab={
+                <span className={styles.tabsTitle}>
+                  {pane.title}
+                  {pane.canDelete ? (
+                    <Icon type="close" onClick={() => this.onEdit(pane.key, 'remove')} />
+                  ) : (
+                    ''
+                  )}
+                </span>
+              }
+              key={pane.key}
+            >
               <div className={styles.docTabsPaneContent}>
-                {pane.key === '1' ? <ArticleTabs /> : <OtherTabs />}
+                {pane.key === '1' ? <NewArticleTabs /> : <OtherTabs tabType={pane.type} />}
               </div>
             </TabPane>
           ))}

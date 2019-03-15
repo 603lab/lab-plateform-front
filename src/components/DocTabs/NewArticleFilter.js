@@ -1,12 +1,12 @@
 /*
  * @Author: chenxiaobin
  * @Date: 2019-03-14 16:14:27
- * @Last Modified by:   chenxiaobin
- * @Last Modified time: 2019-03-14 16:14:27
+ * @Last Modified by: chenxiaobin
+ * @Last Modified time: 2019-03-14 21:22:46
  */
 import React, { PureComponent } from 'react';
 import { Row, Col, Tag, Input } from 'antd';
-import styles from './ArticleFilter.less';
+import styles from './NewArticleFilter.less';
 
 const CheckableTag = Tag.CheckableTag;
 const Search = Input.Search;
