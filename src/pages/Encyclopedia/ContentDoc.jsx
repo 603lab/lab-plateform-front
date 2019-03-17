@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Alert } from 'antd';
 import styles from './ContentDoc.less';
 import PageHeader from '@/components/PageHeader';
-import DocTabsContent from '@/components/DocTabs';
+import DocTabsContent from './DocTabs/index';
 
 class ContentDoc extends PureComponent {
   constructor(props) {
@@ -30,7 +30,9 @@ class ContentDoc extends PureComponent {
       <div className={styles.contentWried}>
         <PageHeader breadcrumbList={breadcrumbList} />
         <Alert
+          closable
           type="info"
+          closeText="知道了"
           style={{ margin: '10px 0', width: '50%' }}
           message="欢迎你！百科的扩展离不开你的分享"
         />

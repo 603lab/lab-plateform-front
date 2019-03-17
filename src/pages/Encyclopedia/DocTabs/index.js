@@ -2,11 +2,11 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-14 16:14:46
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-03-15 10:38:48
+ * @Last Modified time: 2019-03-17 12:25:46
  * 最新文章无法删除、其他文章可删除
  */
 import React, { PureComponent } from 'react';
-import { Tabs, Icon } from 'antd';
+import { Tabs, Icon, Button } from 'antd';
 import styles from './index.less';
 import OtherTabs from './OtherTabs';
 import NewArticleTabs from './NewArticleTabs';
@@ -41,23 +41,32 @@ export default class DocTabsContent extends PureComponent {
     };
   }
 
+  // handleNewArticleModal = () => {};
+
+  handleCreateInfo = data => {
+    console.log('handleCreateInfo', data);
+  };
+
   onChange = activeKey => {
     this.setState({ activeKey });
   };
 
   onEdit = (targetKey, action) => {
-    console.log('targetKey', targetKey);
-    console.log('action', action);
     this[action](targetKey);
   };
 
-  // add = () => {
-  //   const { panes } = this.state;
-  //   const tempPanes = [...panes];
-  //   const activeKey = `newTab${(this.newTabIndex += 1)}`;
-  //   tempPanes.push({ title: 'New Tab', content: 'New Tab Pane', key: activeKey });
-  //   this.setState({ panes: tempPanes, activeKey });
-  // };
+  add = () => {
+    const { panes } = this.state;
+    const tempPanes = [...panes];
+    const activeKey = `${tempPanes.length + 1}`;
+    tempPanes.push({
+      key: activeKey,
+      title: '新建文章',
+      canDelete: true,
+      type: 'create',
+    });
+    this.setState({ panes: tempPanes, activeKey });
+  };
 
   remove = targetKey => {
     const { panes, activeKey } = this.state;
@@ -88,6 +97,11 @@ export default class DocTabsContent extends PureComponent {
           // type="editable-card"
           // onEdit={this.onEdit}
           onChange={this.onChange}
+          tabBarExtraContent={
+            <Button type="primary" size="small" style={{ fontSize: 12 }} onClick={this.add}>
+              新增文章
+            </Button>
+          }
         >
           {panes.map(pane => (
             <TabPane
