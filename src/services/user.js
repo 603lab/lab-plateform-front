@@ -5,8 +5,8 @@ export async function query() {
   return request('/api/users');
 }
 
-export async function queryCurrent() {
-  return request('/api/currentUser');
+export async function queryCurrent(params) {
+  return request(`/api/Base-Module/Users/GetUsersInfo?${stringify(params)}`);
 }
 
 export async function querySkills(params) {

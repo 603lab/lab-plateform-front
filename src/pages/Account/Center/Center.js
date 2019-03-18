@@ -29,6 +29,9 @@ class Center extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'user/fetchCurrent',
+      payload: {
+        uCode: '150701204',
+      },
     });
     dispatch({
       type: 'list/fetch',

@@ -1,7 +1,7 @@
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 export default {
   // 支持值为 Object 和 Array
-  'GET /api/currentUser': {
+  'GET /api/Base-Module/Users/GetUsersInfo': {
     isSuccess: true,
     count: 3,
     message: '返回成功',
