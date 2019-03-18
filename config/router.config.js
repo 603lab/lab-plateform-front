@@ -25,24 +25,6 @@ export default [
         name: 'home',
         icon: 'home',
         component: './Home/index',
-        // component: './Dashboard/Monitor',
-        // routes: [
-        //   {
-        //     path: '/dashboard/analysis',
-        //     name: 'analysis',
-        //     component: './Dashboard/Analysis',
-        //   },
-        //   {
-        //     path: '/dashboard/monitor',
-        //     name: 'monitor',
-        //     component: './Dashboard/Monitor',
-        //   },
-        //   {
-        //     path: '/dashboard/workplace',
-        //     name: 'workplace',
-        //     component: './Dashboard/Workplace',
-        //   },
-        // ],
       },
       // 百科
       {

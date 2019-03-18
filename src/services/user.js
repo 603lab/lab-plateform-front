@@ -10,5 +10,5 @@ export async function queryCurrent(params) {
 }
 
 export async function querySkills(params) {
-  return request(`/api/userSkills?${stringify(params)}`);
+  return request(`/api/Base-Module/Users/GetSkills?${stringify(params)}`);
 }

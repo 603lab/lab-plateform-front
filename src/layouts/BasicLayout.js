@@ -63,6 +63,9 @@ class BasicLayout extends React.PureComponent {
     } = this.props;
     dispatch({
       type: 'user/fetchCurrent',
+      payload: {
+        uCode: '150701206',
+      },
     });
     dispatch({
       type: 'setting/getSetting',

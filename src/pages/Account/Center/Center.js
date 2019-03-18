@@ -2,19 +2,18 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 // import Link from 'umi/link';
 import router from 'umi/router';
-import { Card, Row, Col, Icon, Tag, Divider, Spin, Input, Tooltip, Button } from 'antd';
+import { Card, Row, Col, Icon, Divider, Spin, Tooltip, Button } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import CenterPieChart from '@/components/CenterPieChart';
 import CenterModal from '@/components/CenterModal';
 import styles from './Center.less';
 import baseColor from '../../../utils/colors';
 
-@connect(({ loading, user, project }) => ({
-  listLoading: loading.effects['list/fetch'],
+@connect(({ loading, user }) => ({
+  skills: user.skills,
+  skillsLoading: loading.effects['user/fetchSkills'],
   currentUser: user.currentUser,
   currentUserLoading: loading.effects['user/fetchCurrent'],
-  project,
-  projectLoading: loading.effects['project/fetchNotice'],
 }))
 class Center extends PureComponent {
   state = {
@@ -22,7 +21,7 @@ class Center extends PureComponent {
     modalType: '',
     inputValue: '',
     modalState: false,
-    inputVisible: false,
+    // inputVisible: false,
   };
 
   componentDidMount() {
@@ -30,18 +29,18 @@ class Center extends PureComponent {
     dispatch({
       type: 'user/fetchCurrent',
       payload: {
-        uCode: '150701204',
+        uCode: '150701206',
       },
     });
     dispatch({
-      type: 'list/fetch',
+      type: 'user/fetchSkills',
       payload: {
-        count: 8,
+        createUserCode: '150701206',
       },
     });
-    dispatch({
-      type: 'project/fetchNotice',
-    });
+    // dispatch({
+    //   type: 'project/fetchNotice',
+    // });
   }
 
   getBaseColor = (items, index) => {
@@ -74,7 +73,12 @@ class Center extends PureComponent {
   };
 
   showInput = () => {
-    this.setState({ inputVisible: true }, () => this.input.focus());
+    this.setState(
+      {
+        // inputVisible: true
+      },
+      () => this.input.focus()
+    );
   };
 
   saveInputRef = input => {
@@ -94,7 +98,7 @@ class Center extends PureComponent {
     }
     this.setState({
       newTags,
-      inputVisible: false,
+      // inputVisible: false,
       inputValue: '',
     });
   };
@@ -113,17 +117,43 @@ class Center extends PureComponent {
   };
 
   render() {
-    const { newTags, inputVisible, inputValue, modalState, modalType } = this.state;
     const {
-      listLoading,
+      // newTags,
+      // inputVisible,
+      // inputValue,
+      modalState,
+      modalType,
+    } = this.state;
+    const {
+      skills,
+      skillsLoading,
       currentUser,
       currentUserLoading,
-      // project: { notice },
-      projectLoading,
       match,
       location,
       children,
     } = this.props;
+    const transformUserInfo = {};
+    // 把个人信息null的值转换成-
+    currentUser &&
+      Object.keys(currentUser).forEach(item => {
+        transformUserInfo[item] = currentUser[item] === null ? '-' : currentUser[item];
+      });
+    const {
+      avatar,
+      entranceYear,
+      idCard,
+      nickName,
+      phoneNum,
+      realName,
+      qq,
+      scores,
+      teamName, // 团队
+      techDirection, // 方向
+      uCode, // 学号
+      uMajor, // 专业
+      wechat, // 微信
+    } = transformUserInfo;
     const operationTabList = [
       {
         key: 'articles',
@@ -175,13 +205,13 @@ class Center extends PureComponent {
                       }
                       mouseEnterDelay={4}
                     >
-                      <img alt="" src={currentUser.avatar} />
+                      <img alt="" src={avatar} />
                     </Tooltip>
-                    <div className={styles.name}>{currentUser.nickName}</div>
+                    <div className={styles.name}>{nickName}</div>
                     <div>
                       {/* 方向 */}
-                      {currentUser.techDirection}
-                      <Button className={styles.scores}>{currentUser.scores}&nbsp;积分</Button>
+                      {techDirection}
+                      <Button className={styles.scores}>{scores}&nbsp;积分</Button>
                     </div>
                   </div>
                   <Divider dashed />
@@ -193,53 +223,53 @@ class Center extends PureComponent {
                     <ul className={styles.personInfoUl}>
                       <li>
                         <Icon type="rocket" />
-                        &nbsp;&nbsp;姓名：{currentUser.realName}
+                        &nbsp;&nbsp;姓名：{realName}
                       </li>
                       <li>
                         <Icon type="team" />
-                        &nbsp;&nbsp;年级：{currentUser.entranceYear}
+                        &nbsp;&nbsp;年级：{entranceYear}
                       </li>
                       <li>
                         <Icon type="bulb" />
-                        &nbsp;&nbsp;学号：{currentUser.uCode}
+                        &nbsp;&nbsp;学号：{uCode}
                       </li>
                       <li>
                         <Icon type="experiment" />
-                        &nbsp;&nbsp;专业：{currentUser.uMajor}
+                        &nbsp;&nbsp;专业：{uMajor}
                       </li>
                       <li>
                         <Icon type="desktop" />
-                        &nbsp;&nbsp;方向：{currentUser.techDirection}
+                        &nbsp;&nbsp;方向：{techDirection}
                       </li>
                       <li>
                         <Icon type="flag" />
-                        &nbsp;&nbsp;团队：{currentUser.teamName}
+                        &nbsp;&nbsp;团队：{teamName}
                       </li>
                       <li>
                         <Icon type="mobile" />
-                        &nbsp;&nbsp;手机：{currentUser.phoneNum}
+                        &nbsp;&nbsp;手机：{phoneNum}
                       </li>
                       <li>
                         <Icon type="qq" />
-                        &nbsp;&nbsp;QQ：{currentUser.qq}
+                        &nbsp;&nbsp;QQ：{qq}
                       </li>
                       <li>
                         <Icon type="wechat" />
-                        &nbsp;&nbsp;微信：{currentUser.wechat}
+                        &nbsp;&nbsp;微信：{wechat}
                       </li>
                       <li>
                         <Icon type="idcard" />
-                        &nbsp;&nbsp;身份证：{currentUser.idCard}
+                        &nbsp;&nbsp;身份证：{idCard}
                       </li>
                     </ul>
                   </div>
                   <Divider dashed />
-                  <div className={styles.tags}>
+                  {/* <div className={styles.tags}>
                     <div className={styles.tagsTitle}>个人标签</div>
-                    {currentUser.tags.concat(newTags).map((item, index) => (
+                    {tags.concat(newTags).map((item, index) => (
                       <Tag
                         key={item.key}
-                        color={this.getBaseColor(currentUser.tags.concat(newTags), index)}
+                        color={this.getBaseColor(tags.concat(newTags), index)}
                       >
                         {item.label}
                       </Tag>
@@ -264,25 +294,15 @@ class Center extends PureComponent {
                         <Icon type="plus" />
                       </Tag>
                     )}
-                  </div>
-                  <Divider style={{ marginTop: 16 }} dashed />
+                  </div> */}
+                  {/* <Divider style={{ marginTop: 16 }} dashed /> */}
                   <div className={styles.team}>
                     <div className={styles.teamTitle}>
                       掌握技能&nbsp;
                       <Icon type="edit" onClick={() => this.handleOpenModal('skills')} />
                     </div>
-                    <Spin spinning={projectLoading}>
-                      <CenterPieChart skills={currentUser.skills} />
-                      {/* <Row gutter={36}>
-                        {notice.map(item => (
-                          <Col key={item.id} lg={24} xl={12}>
-                            <Link to={item.href}>
-                              <Avatar size="small" src={item.logo} />
-                              {item.member}
-                            </Link>
-                          </Col>
-                        ))}
-                      </Row> */}
+                    <Spin spinning={skillsLoading}>
+                      <CenterPieChart skills={skills} />
                     </Spin>
                   </div>
                 </div>
@@ -307,7 +327,7 @@ class Center extends PureComponent {
               tabList={operationTabList}
               activeTabKey={location.pathname.replace(`${match.path}/`, '')}
               onTabChange={this.onTabChange}
-              loading={listLoading}
+              // loading={listLoading}
             >
               {children}
             </Card>
