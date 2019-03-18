@@ -14,7 +14,9 @@ export default class Create extends PureComponent {
   render() {
     return (
       <div className={styles.createWried}>
-        <ArticleTree />
+        <div className={styles.top}>
+          <ArticleTree />
+        </div>
         <Input allowClear className={styles.createTitle} placeholder="请输入文章标题..." />
         <RichEdit />
       </div>

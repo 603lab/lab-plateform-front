@@ -19,29 +19,27 @@ class CreateInfo extends PureComponent {
     });
   };
 
-  handleConfirmOk = e => {
-    console.log('ok e', e);
+  handleConfirmOk = () => {
     this.setState({
       modalState: false,
     });
   };
 
-  handleConfirmCancel = e => {
-    console.log('cancel e', e);
+  handleConfirmCancel = () => {
     this.setState({
       modalState: false,
     });
   };
 
-  handleTreeChange = (param1, param2, param3) => {
-    console.log('param1', param1);
-    console.log('param2', param2);
-    console.log('param3', param3);
+  handleTreeChange = () => {
+    // console.log('param1', param1);
+    // console.log('param2', param2);
+    // console.log('param3', param3);
   };
 
-  handleTreeSearch = (param1, param2) => {
-    console.log('param1', param1);
-    console.log('param2', param2);
+  handleTreeSearch = () => {
+    // console.log('param1', param1);
+    // console.log('param2', param2);
   };
 
   render() {

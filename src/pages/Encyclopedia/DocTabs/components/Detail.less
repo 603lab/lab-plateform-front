@@ -1,5 +1,48 @@
 .detailWrapper {
   .top {
+    // font-size: 12px;
+    padding: 20px 10px 0;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &Action {
+      &List {
+        display: inline-block;
+        margin-right: 15px;
+      }
+    }
+  }
+  .content {
+    padding-left: 15px;
+    padding-top: 10px;
+    h1 {
+      margin-bottom: 5px;
+    }
+    .titleTag {
+      font-size: 12px;
+      display: inline-block;
+      margin-left: 15px;
+    }
+    .autor {
+      &Info {
+        color: #858585;
+        &__name {
+          color: #2a82e4;
+          margin: 0 5px;
+        }
+      }
+    }
+    .article {
+      &Info {
+        padding-top: 10px;
+        &__readNum,
+        &__collectNum {
+          margin-right: 10px;
+        }
+      }
+      &Content {
+        padding-top: 15px;
+      }
+    }
   }
 }

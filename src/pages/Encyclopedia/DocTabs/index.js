@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-14 16:14:46
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-03-17 12:25:46
+ * @Last Modified time: 2019-03-18 14:25:53
  * 最新文章无法删除、其他文章可删除
  */
 import React, { PureComponent } from 'react';
@@ -36,15 +36,15 @@ export default class DocTabsContent extends PureComponent {
       },
     ];
     this.state = {
-      activeKey: panes[1].key,
+      activeKey: panes[2].key,
       panes,
     };
   }
 
   // handleNewArticleModal = () => {};
 
-  handleCreateInfo = data => {
-    console.log('handleCreateInfo', data);
+  handleCreateInfo = () => {
+    // console.log('handleCreateInfo', data);
   };
 
   onChange = activeKey => {
