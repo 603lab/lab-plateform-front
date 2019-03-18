@@ -73,13 +73,13 @@ export default {
     '@antv/data-set': 'DataSet',
   },
   // 接口地址
-  // proxy: {
-  //   '/api/*': {
-  //     target: 'https://129.204.109.115:8011/',
-  //     changeOrigin: true,
-  //     pathRewrite: { '^/server': '' },
-  //   },
-  // },
+  proxy: {
+    '/api': {
+      target: 'http://129.204.109.115:8011',
+      changeOrigin: true,
+      pathRewrite: { '^/api': '' },
+    },
+  },
   ignoreMomentLocale: true,
   lessLoaderOptions: {
     javascriptEnabled: true,

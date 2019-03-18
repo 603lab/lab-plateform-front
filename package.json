@@ -6,8 +6,7 @@
   "scripts": {
     "presite": "node ./scripts/generateMock.js && cd functions && npm install",
     "start": "cross-env APP_TYPE=site umi dev",
-    "start:no-proxy": "cross-env NO_PROXY=true roadhog server",
-    "start:no-mock": "cross-env MOCK=none umi dev",
+    "start:no-proxy": "cross-env NO_PROXY=true umi dev",
     "build": "umi build",
     "site": "npm run presite && cross-env APP_TYPE=site npm run build && firebase deploy && npm run docker:push",
     "analyze": "cross-env ANALYZE=1 umi build",
