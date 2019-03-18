@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 // import Link from 'umi/link';
 import router from 'umi/router';
-import { Card, Row, Col, Icon, Divider, Spin, Tooltip, Button } from 'antd';
+import { Card, Row, Col, Icon, Divider, Spin, Tooltip, Button, Tag, Input } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import CenterPieChart from '@/components/CenterPieChart';
 import CenterModal from '@/components/CenterModal';
@@ -12,6 +12,8 @@ import baseColor from '../../../utils/colors';
 @connect(({ loading, user }) => ({
   skills: user.skills,
   skillsLoading: loading.effects['user/fetchSkills'],
+  tags: user.tags,
+  tagsLoading: loading.effects['user/fetchtags'],
   currentUser: user.currentUser,
   currentUserLoading: loading.effects['user/fetchCurrent'],
 }))
@@ -38,9 +40,12 @@ class Center extends PureComponent {
         createUserCode: '150701206',
       },
     });
-    // dispatch({
-    //   type: 'project/fetchNotice',
-    // });
+    dispatch({
+      type: 'user/fetchTags',
+      payload: {
+        createUserCode: '150701206',
+      },
+    });
   }
 
   getBaseColor = (items, index) => {
@@ -75,7 +80,7 @@ class Center extends PureComponent {
   showInput = () => {
     this.setState(
       {
-        // inputVisible: true
+        inputVisible: true,
       },
       () => this.input.focus()
     );
@@ -117,14 +122,10 @@ class Center extends PureComponent {
   };
 
   render() {
+    const { newTags, inputVisible, inputValue, modalState, modalType } = this.state;
     const {
-      // newTags,
-      // inputVisible,
-      // inputValue,
-      modalState,
-      modalType,
-    } = this.state;
-    const {
+      tags,
+      // tagsLoading,
       skills,
       skillsLoading,
       currentUser,
@@ -264,13 +265,10 @@ class Center extends PureComponent {
                     </ul>
                   </div>
                   <Divider dashed />
-                  {/* <div className={styles.tags}>
+                  <div className={styles.tags}>
                     <div className={styles.tagsTitle}>个人标签</div>
                     {tags.concat(newTags).map((item, index) => (
-                      <Tag
-                        key={item.key}
-                        color={this.getBaseColor(tags.concat(newTags), index)}
-                      >
+                      <Tag key={item.id} color={this.getBaseColor(tags.concat(newTags), index)}>
                         {item.label}
                       </Tag>
                     ))}
@@ -294,8 +292,8 @@ class Center extends PureComponent {
                         <Icon type="plus" />
                       </Tag>
                     )}
-                  </div> */}
-                  {/* <Divider style={{ marginTop: 16 }} dashed /> */}
+                  </div>
+                  <Divider style={{ marginTop: 16 }} dashed />
                   <div className={styles.team}>
                     <div className={styles.teamTitle}>
                       掌握技能&nbsp;
