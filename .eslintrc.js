@@ -27,6 +27,8 @@ module.exports = {
     'jsx-a11y/anchor-is-valid': 0,
     'no-unused-expressions': 0,
     'linebreak-style': 0,
+    'import/prefer-default-export': 0, // 取消export default限制
+    'prefer-destructuring': 0,
   },
   settings: {
     polyfills: ['fetch', 'promises', 'url'],

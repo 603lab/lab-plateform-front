@@ -51,6 +51,9 @@ class Workplace extends PureComponent {
     const { dispatch } = this.props;
     dispatch({
       type: 'user/fetchCurrent',
+      payload: {
+        uCode: '150701203',
+      },
     });
     dispatch({
       type: 'project/fetchNotice',

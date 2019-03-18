@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 
 export default class ProjectPage extends PureComponent {
-  constructor(args) {
-    super(args);
+  constructor(props) {
+    super(props);
 
     this.state = {};
   }

@@ -17,8 +17,8 @@ import {
 import DataSet from '@antv/data-set';
 
 export default class CenterPieChart extends React.Component {
-  constructor(args) {
-    super(args);
+  constructor(props) {
+    super(props);
 
     this.state = {};
   }

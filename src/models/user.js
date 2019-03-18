@@ -17,8 +17,8 @@ export default {
         payload: response,
       });
     },
-    *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
+    *fetchCurrent({ payload }, { call, put }) {
+      const response = yield call(queryCurrent, payload);
       const { statusCode, data } = response;
       if (statusCode === 200) {
         yield put({
