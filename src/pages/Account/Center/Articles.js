@@ -4,27 +4,28 @@ import { connect } from 'dva';
 import ArticleListContent from '@/components/ArticleListContent';
 import styles from './Articles.less';
 
-@connect(({ list }) => ({
+@connect(({ loading, list, user }) => ({
   list,
+  lists: user.lists,
+  listsLoading: loading.effects['user/fetchList'],
 }))
 class Center extends PureComponent {
   render() {
-    const {
-      list: { list },
-    } = this.props;
+    const { lists } = this.props;
     const IconText = ({ type, text }) => (
       <span>
         <Icon type={type} style={{ marginRight: 8 }} />
         {text}
       </span>
     );
+    // console.log('Article this.props', this.props);
     return (
       <List
         size="large"
         className={styles.articleList}
         rowKey="id"
         itemLayout="vertical"
-        dataSource={list}
+        dataSource={lists}
         pagination={{
           pageSize: 5,
         }}
@@ -32,15 +33,15 @@ class Center extends PureComponent {
           <List.Item
             key={item.id}
             actions={[
-              <IconText type="star-o" text={item.star} />,
-              <IconText type="like-o" text={item.like} />,
-              <IconText type="message" text={item.message} />,
+              <IconText type="eye" text={item.browseNum} />,
+              <IconText type="like-o" text={item.likeNum} />,
+              <IconText type="message" text={item.commentNum} />,
             ]}
           >
             <List.Item.Meta
               title={
-                <a className={styles.listItemMetaTitle} href={item.href}>
-                  {item.title}
+                <a className={styles.listItemMetaTitle} href={item.href || ''}>
+                  {item.fileName || '-'}
                 </a>
               }
               description={

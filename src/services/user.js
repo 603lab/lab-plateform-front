@@ -14,6 +14,16 @@ export async function queryTags(params) {
   return request(`/api/${baseUrl}/GetTags?${stringify(params)}`);
 }
 
+// 添加标签
+export async function addTags(params) {
+  return request(`/api/${baseUrl}/GetSkills`, {
+    method: 'POST',
+    body: {
+      ...params,
+    },
+  });
+}
+
 export async function querySkills(params) {
   return request(`/api/${baseUrl}/GetSkills?${stringify(params)}`);
 }

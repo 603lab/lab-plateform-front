@@ -1,7 +1,7 @@
 {
-  "name": "ant-design-pro",
-  "version": "2.1.1",
-  "description": "An out-of-box UI solution for enterprise applications",
+  "name": "603-platform",
+  "version": "0.0.1",
+  "description": "603实验室",
   "private": true,
   "scripts": {
     "presite": "node ./scripts/generateMock.js && cd functions && npm install",

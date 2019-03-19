@@ -10,8 +10,6 @@ import styles from './Center.less';
 import baseColor from '../../../utils/colors';
 
 @connect(({ loading, user }) => ({
-  lists: user.lists,
-  listsLoading: loading.effects['user/fetchList'],
   skills: user.skills,
   skillsLoading: loading.effects['user/fetchSkills'],
   tags: user.tags,
@@ -35,16 +33,6 @@ class Center extends PureComponent {
       type: 'user/fetchCurrent',
       payload: {
         uCode: '150701206',
-      },
-    });
-    // 获取用户文章
-    dispatch({
-      type: 'user/fetchList',
-      payload: {
-        uCode: '150701204',
-        currentPage: 1,
-        pageSize: 3,
-        content: '总结',
       },
     });
     // 获取用户技能
@@ -145,6 +133,7 @@ class Center extends PureComponent {
       skillsLoading,
       currentUser,
       currentUserLoading,
+      listsLoading,
       match,
       location,
       children,
@@ -335,12 +324,12 @@ class Center extends PureComponent {
           )}
           <Col lg={18} md={24}>
             <Card
-              className={styles.tabsCard}
               bordered={false}
+              loading={listsLoading}
               tabList={operationTabList}
+              className={styles.tabsCard}
               activeTabKey={location.pathname.replace(`${match.path}/`, '')}
               onTabChange={this.onTabChange}
-              // loading={listLoading}
             >
               {children}
             </Card>
