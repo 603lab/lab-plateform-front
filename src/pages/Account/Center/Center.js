@@ -23,7 +23,7 @@ class Center extends PureComponent {
     modalType: '',
     inputValue: '',
     modalState: false,
-    // inputVisible: false,
+    inputVisible: false,
   };
 
   componentDidMount() {
@@ -102,11 +102,11 @@ class Center extends PureComponent {
     const { inputValue } = state;
     let { newTags } = state;
     if (inputValue && newTags.filter(tag => tag.label === inputValue).length === 0) {
-      newTags = [...newTags, { key: `new-${newTags.length}`, label: inputValue }];
+      newTags = [...newTags, { id: `newTabs + ${newTags.length}`, label: inputValue }];
     }
     this.setState({
       newTags,
-      // inputVisible: false,
+      inputVisible: false,
       inputValue: '',
     });
   };
@@ -278,11 +278,11 @@ class Center extends PureComponent {
                     ))}
                     {inputVisible && (
                       <Input
-                        ref={this.saveInputRef}
                         type="text"
                         size="small"
-                        style={{ width: 78 }}
                         value={inputValue}
+                        style={{ width: 78 }}
+                        ref={this.saveInputRef}
                         onChange={this.handleInputChange}
                         onBlur={this.handleInputConfirm}
                         onPressEnter={this.handleInputConfirm}
