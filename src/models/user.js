@@ -1,17 +1,18 @@
-import { queryCurrent, queryTags, querySkills } from '@/services/user';
+import { queryCurrent, queryList, queryTags, querySkills } from '@/services/user';
 import { message } from 'antd';
 
 export default {
   namespace: 'user',
 
   state: {
-    list: [],
+    lists: [],
     tags: [],
     skills: [],
     currentUser: {},
   },
 
   effects: {
+    // 用户信息
     *fetchCurrent({ payload }, { call, put }) {
       const response = yield call(queryCurrent, payload);
       const { statusCode, data, msg } = response || {};
@@ -22,6 +23,19 @@ export default {
         });
       } else {
         message.error(`获取用户信息失败 ${msg}`);
+      }
+    },
+    // 用户文章
+    *fetchList({ payload }, { call, put }) {
+      const response = yield call(queryList, payload);
+      const { statusCode, data, msg } = response || {};
+      if (statusCode === 200) {
+        yield put({
+          type: 'saveList',
+          payload: data,
+        });
+      } else {
+        message.error(`获取用户文章失败 ${msg}`);
       }
     },
     // 个人标签
@@ -57,6 +71,12 @@ export default {
       return {
         ...state,
         currentUser: action.payload || {},
+      };
+    },
+    saveList(state, action) {
+      return {
+        ...state,
+        lists: action.payload || [],
       };
     },
     saveTags(state, action) {
