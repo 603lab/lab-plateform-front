@@ -1,4 +1,4 @@
-import { queryCurrent, queryList, queryTags, querySkills } from '@/services/user';
+import { queryCurrent, queryTags, querySkills } from '@/services/user';
 import { message } from 'antd';
 
 export default {
@@ -12,7 +12,7 @@ export default {
   },
 
   effects: {
-    // 用户信息
+    // 获取用户信息
     *fetchCurrent({ payload }, { call, put }) {
       const response = yield call(queryCurrent, payload);
       const { statusCode, data, msg } = response || {};
@@ -25,20 +25,7 @@ export default {
         message.error(`获取用户信息失败 ${msg}`);
       }
     },
-    // 用户文章
-    *fetchList({ payload }, { call, put }) {
-      const response = yield call(queryList, payload);
-      const { statusCode, data, msg } = response || {};
-      if (statusCode === 200) {
-        yield put({
-          type: 'saveList',
-          payload: data,
-        });
-      } else {
-        message.error(`获取用户文章失败 ${msg}`);
-      }
-    },
-    // 个人标签
+    // 获取个人标签
     *fetchTags({ payload }, { call, put }) {
       const response = yield call(queryTags, payload);
       const { statusCode, data, msg } = response || {};
@@ -51,7 +38,7 @@ export default {
         message.error(`获取用户标签失败 ${msg}`);
       }
     },
-    // 饼图技能
+    // 获取饼图技能
     *fetchSkills({ payload }, { call, put }) {
       const response = yield call(querySkills, payload);
       const { statusCode, data, msg } = response || {};
@@ -64,6 +51,10 @@ export default {
         message.error(`获取用户技能失败 ${msg}`);
       }
     },
+    // 新增个人标签
+    // *addTags({ payload }, { call, put }) {
+
+    // }
   },
 
   reducers: {
@@ -74,6 +65,7 @@ export default {
       };
     },
     saveList(state, action) {
+      console.log('action.payload', action.payload);
       return {
         ...state,
         lists: action.payload || [],

@@ -4,28 +4,27 @@ import { connect } from 'dva';
 import ArticleListContent from '@/components/ArticleListContent';
 import styles from './Articles.less';
 
-@connect(({ loading, list, user }) => ({
+@connect(({ list }) => ({
   list,
-  lists: user.lists,
-  listsLoading: loading.effects['user/fetchList'],
 }))
-class Center extends PureComponent {
+class CenterArticle extends PureComponent {
   render() {
-    const { lists } = this.props;
+    console.log('this.props', this.props);
+    const { list } = this.props;
+    const { article } = list;
     const IconText = ({ type, text }) => (
       <span>
         <Icon type={type} style={{ marginRight: 8 }} />
         {text}
       </span>
     );
-    // console.log('Article this.props', this.props);
     return (
       <List
-        size="large"
-        className={styles.articleList}
         rowKey="id"
+        size="large"
         itemLayout="vertical"
-        dataSource={lists}
+        className={styles.articleList}
+        dataSource={article}
         pagination={{
           pageSize: 5,
         }}
@@ -60,4 +59,4 @@ class Center extends PureComponent {
   }
 }
 
-export default Center;
+export default CenterArticle;

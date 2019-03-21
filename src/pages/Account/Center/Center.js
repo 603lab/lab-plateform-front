@@ -16,6 +16,7 @@ import baseColor from '../../../utils/colors';
   tagsLoading: loading.effects['user/fetchtags'],
   currentUser: user.currentUser,
   currentUserLoading: loading.effects['user/fetchCurrent'],
+  listLoading: loading.effects['list/fetch'],
 }))
 class Center extends PureComponent {
   state = {
@@ -47,6 +48,16 @@ class Center extends PureComponent {
       type: 'user/fetchTags',
       payload: {
         createUserCode: '150701206',
+      },
+    });
+
+    // 获取用户文章
+    dispatch({
+      type: 'list/fetch',
+      payload: {
+        uCode: '150701204',
+        currentPage: 1,
+        pageSize: 3,
       },
     });
   }
@@ -133,7 +144,7 @@ class Center extends PureComponent {
       skillsLoading,
       currentUser,
       currentUserLoading,
-      listsLoading,
+      listLoading,
       match,
       location,
       children,
@@ -309,7 +320,7 @@ class Center extends PureComponent {
                   </div>
                 </div>
               ) : (
-                'loading...'
+                <Icon type="loading" />
               )}
             </Card>
           </Col>
@@ -325,7 +336,7 @@ class Center extends PureComponent {
           <Col lg={18} md={24}>
             <Card
               bordered={false}
-              loading={listsLoading}
+              loading={listLoading}
               tabList={operationTabList}
               className={styles.tabsCard}
               activeTabKey={location.pathname.replace(`${match.path}/`, '')}

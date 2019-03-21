@@ -1,53 +1,34 @@
-import { queryFakeList, removeFakeList, addFakeList, updateFakeList } from '@/services/api';
+import { queryList } from '@/services/list';
+import { message } from 'antd';
 
 export default {
   namespace: 'list',
 
   state: {
-    list: [],
+    article: [],
   },
 
   effects: {
+    // 获取用户文章
     *fetch({ payload }, { call, put }) {
-      const response = yield call(queryFakeList, payload);
-      yield put({
-        type: 'queryList',
-        payload: Array.isArray(response) ? response : [],
-      });
-    },
-    *appendFetch({ payload }, { call, put }) {
-      const response = yield call(queryFakeList, payload);
-      yield put({
-        type: 'appendList',
-        payload: Array.isArray(response) ? response : [],
-      });
-    },
-    *submit({ payload }, { call, put }) {
-      let callback;
-      if (payload.id) {
-        callback = Object.keys(payload).length === 1 ? removeFakeList : updateFakeList;
+      const response = yield call(queryList, payload);
+      const { statusCode, data, msg } = response || {};
+      if (statusCode === 200) {
+        yield put({
+          type: 'setArticleList',
+          payload: data,
+        });
       } else {
-        callback = addFakeList;
+        message.error(`获取用户文章失败 ${msg}`);
       }
-      const response = yield call(callback, payload); // post
-      yield put({
-        type: 'queryList',
-        payload: response,
-      });
     },
   },
 
   reducers: {
-    queryList(state, action) {
+    setArticleList(state, action) {
       return {
         ...state,
-        list: action.payload,
-      };
-    },
-    appendList(state, action) {
-      return {
-        ...state,
-        list: state.list.concat(action.payload),
+        article: action.payload,
       };
     },
   },
