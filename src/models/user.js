@@ -1,4 +1,4 @@
-import { queryCurrent, queryTags, querySkills } from '@/services/user';
+import { queryCurrent, queryTags, querySkills, addTags } from '@/services/user';
 import { message } from 'antd';
 
 export default {
@@ -52,9 +52,16 @@ export default {
       }
     },
     // 新增个人标签
-    // *addTags({ payload }, { call, put }) {
-
-    // }
+    *addTags({ payload }, { call }) {
+      const response = yield call(addTags, payload);
+      const { statusCode, msg } = response || {};
+      if (statusCode === 200) {
+        message.success('添加成功！');
+        return true;
+      }
+      message.error(`添加个人标签失败 ${msg}`);
+      return false;
+    },
   },
 
   reducers: {
@@ -65,7 +72,6 @@ export default {
       };
     },
     saveList(state, action) {
-      console.log('action.payload', action.payload);
       return {
         ...state,
         lists: action.payload || [],

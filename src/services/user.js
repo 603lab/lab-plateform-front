@@ -16,7 +16,7 @@ export async function queryTags(params) {
 
 // 添加标签
 export async function addTags(params) {
-  return request(`/api/${baseUrl}/GetSkills`, {
+  return request(`/api/${baseUrl}/AddTag`, {
     method: 'POST',
     body: {
       ...params,

@@ -9,7 +9,6 @@ import styles from './Articles.less';
 }))
 class CenterArticle extends PureComponent {
   render() {
-    console.log('this.props', this.props);
     const { list } = this.props;
     const { article } = list;
     const IconText = ({ type, text }) => (

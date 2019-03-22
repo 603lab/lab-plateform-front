@@ -109,17 +109,42 @@ class Center extends PureComponent {
   };
 
   handleInputConfirm = () => {
-    const { state } = this;
+    const { state, props } = this;
     const { inputValue } = state;
+    const { dispatch } = props;
     let { newTags } = state;
-    if (inputValue && newTags.filter(tag => tag.label === inputValue).length === 0) {
-      newTags = [...newTags, { id: `newTabs + ${newTags.length}`, label: inputValue }];
+    // 未填写
+    if (!inputValue) {
+      this.setState({
+        inputVisible: false,
+      });
+      return;
     }
-    this.setState({
-      newTags,
-      inputVisible: false,
-      inputValue: '',
+    // 添加个人标签接口
+    dispatch({
+      type: 'user/addTags',
+      payload: {
+        createUserCode: '150701206',
+        createUserName: '陆仁杰',
+        label: inputValue,
+      },
+    }).then(result => {
+      if (result) {
+        if (inputValue && newTags.filter(tag => tag.label === inputValue).length === 0) {
+          newTags = [...newTags, { id: `newTabs + ${newTags.length}`, label: inputValue }];
+        }
+        this.setState({
+          newTags,
+          inputVisible: false,
+          inputValue: '',
+        });
+      }
     });
+  };
+
+  // 点击标签 -> 删除标签
+  handleDeleteTag = () => {
+    // console.log('item', item);
   };
 
   handleOpenModal = modalType => {
@@ -283,7 +308,11 @@ class Center extends PureComponent {
                   <div className={styles.tags}>
                     <div className={styles.tagsTitle}>个人标签</div>
                     {tags.concat(newTags).map((item, index) => (
-                      <Tag key={item.id} color={this.getBaseColor(tags.concat(newTags), index)}>
+                      <Tag
+                        key={item.id}
+                        color={this.getBaseColor(tags.concat(newTags), index)}
+                        onClick={() => this.handleDeleteTag(item)}
+                      >
                         {item.label}
                       </Tag>
                     ))}
