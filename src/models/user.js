@@ -1,4 +1,4 @@
-import { queryCurrent, queryTags, querySkills, addTags } from '@/services/user';
+import { queryCurrent, queryTags, querySkills, addTag, deleteTag } from '@/services/user';
 import { message } from 'antd';
 
 export default {
@@ -52,14 +52,25 @@ export default {
       }
     },
     // 新增个人标签
-    *addTags({ payload }, { call }) {
-      const response = yield call(addTags, payload);
+    *addTag({ payload }, { call }) {
+      const response = yield call(addTag, payload);
       const { statusCode, msg } = response || {};
       if (statusCode === 200) {
         message.success('添加成功！');
         return true;
       }
       message.error(`添加个人标签失败 ${msg}`);
+      return false;
+    },
+    // 删除个人标签
+    *deleteTag({ payload }, { call }) {
+      const response = yield call(deleteTag, payload);
+      const { statusCode, msg } = response || {};
+      if (statusCode === 200) {
+        message.success('删除成功！');
+        return true;
+      }
+      message.error(`删除个人标签失败 ${msg}`);
       return false;
     },
   },

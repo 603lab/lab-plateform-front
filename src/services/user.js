@@ -15,8 +15,18 @@ export async function queryTags(params) {
 }
 
 // 添加标签
-export async function addTags(params) {
+export async function addTag(params) {
   return request(`/api/${baseUrl}/AddTag`, {
+    method: 'POST',
+    body: {
+      ...params,
+    },
+  });
+}
+
+// 删除标签
+export async function deleteTag(params) {
+  return request(`/api/${baseUrl}/DeleteTag`, {
     method: 'POST',
     body: {
       ...params,

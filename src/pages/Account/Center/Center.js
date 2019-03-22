@@ -2,7 +2,20 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 // import Link from 'umi/link';
 import router from 'umi/router';
-import { Card, Row, Col, Icon, Divider, Spin, Tooltip, Button, Tag, Input } from 'antd';
+import {
+  Card,
+  Row,
+  Col,
+  Icon,
+  Divider,
+  Spin,
+  Tooltip,
+  Button,
+  Tag,
+  Input,
+  Popconfirm,
+  message,
+} from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import CenterPieChart from '@/components/CenterPieChart';
 import CenterModal from '@/components/CenterModal';
@@ -21,6 +34,7 @@ import baseColor from '../../../utils/colors';
 class Center extends PureComponent {
   state = {
     newTags: [],
+    deleteTagsId: [],
     modalType: '',
     inputValue: '',
     modalState: false,
@@ -111,7 +125,7 @@ class Center extends PureComponent {
   handleInputConfirm = () => {
     const { state, props } = this;
     const { inputValue } = state;
-    const { dispatch } = props;
+    const { dispatch, tags } = props;
     let { newTags } = state;
     // 未填写
     if (!inputValue) {
@@ -120,9 +134,20 @@ class Center extends PureComponent {
       });
       return;
     }
+    if (tags.length > 8) {
+      message.error('标签数量不能超过8个');
+      this.setState({
+        inputVisible: false,
+      });
+      return;
+    }
+    if (inputValue.length > 8) {
+      message.error('标签不能超过8个字符');
+      return;
+    }
     // 添加个人标签接口
     dispatch({
-      type: 'user/addTags',
+      type: 'user/addTag',
       payload: {
         createUserCode: '150701206',
         createUserName: '陆仁杰',
@@ -143,8 +168,23 @@ class Center extends PureComponent {
   };
 
   // 点击标签 -> 删除标签
-  handleDeleteTag = () => {
-    // console.log('item', item);
+  handleDeleteTag = item => {
+    const { dispatch } = this.props;
+    const { id, createUserCode } = item;
+    // 删除个人标签接口
+    dispatch({
+      type: 'user/deleteTag',
+      payload: {
+        id,
+        createUserCode,
+      },
+    }).then(result => {
+      if (result) {
+        this.setState({
+          deleteTagsId: [id],
+        });
+      }
+    });
   };
 
   handleOpenModal = modalType => {
@@ -161,7 +201,7 @@ class Center extends PureComponent {
   };
 
   render() {
-    const { newTags, inputVisible, inputValue, modalState, modalType } = this.state;
+    const { newTags, inputVisible, inputValue, modalState, modalType, deleteTagsId } = this.state;
     const {
       tags,
       // tagsLoading,
@@ -307,15 +347,23 @@ class Center extends PureComponent {
                   <Divider dashed />
                   <div className={styles.tags}>
                     <div className={styles.tagsTitle}>个人标签</div>
-                    {tags.concat(newTags).map((item, index) => (
-                      <Tag
-                        key={item.id}
-                        color={this.getBaseColor(tags.concat(newTags), index)}
-                        onClick={() => this.handleDeleteTag(item)}
-                      >
-                        {item.label}
-                      </Tag>
-                    ))}
+                    {tags
+                      .concat(newTags)
+                      .filter(tag => !deleteTagsId.includes(tag.id))
+                      .map((item, index) => (
+                        <Popconfirm
+                          key={item.id}
+                          title={`确定要删除"${item.label}"标签吗`}
+                          okText="删除"
+                          cancelText={`依旧${item.label}`}
+                          className={styles.tagsPop}
+                          onConfirm={() => this.handleDeleteTag(item)}
+                        >
+                          <Tag color={this.getBaseColor(tags.concat(newTags), index)}>
+                            {item.label}
+                          </Tag>
+                        </Popconfirm>
+                      ))}
                     {inputVisible && (
                       <Input
                         type="text"
