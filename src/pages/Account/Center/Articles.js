@@ -39,7 +39,7 @@ class CenterArticle extends PureComponent {
             <List.Item.Meta
               title={
                 <a className={styles.listItemMetaTitle} href={item.href || ''}>
-                  {item.fileName || '-'}
+                  {item.fileName || '暂无标题'}
                 </a>
               }
               description={

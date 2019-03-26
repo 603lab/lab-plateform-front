@@ -52,22 +52,34 @@ export default {
       }
     },
     // 新增个人标签
-    *addTag({ payload }, { call }) {
+    *addTag({ payload }, { call, put }) {
       const response = yield call(addTag, payload);
       const { statusCode, msg } = response || {};
       if (statusCode === 200) {
         message.success('添加成功！');
+        yield put({
+          type: 'fetchTags',
+          payload: {
+            createUserCode: '150701206',
+          },
+        });
         return true;
       }
       message.error(`添加个人标签失败 ${msg}`);
       return false;
     },
     // 删除个人标签
-    *deleteTag({ payload }, { call }) {
+    *deleteTag({ payload }, { call, put }) {
       const response = yield call(deleteTag, payload);
       const { statusCode, msg } = response || {};
       if (statusCode === 200) {
         message.success('删除成功！');
+        yield put({
+          type: 'fetchTags',
+          payload: {
+            createUserCode: '150701206',
+          },
+        });
         return true;
       }
       message.error(`删除个人标签失败 ${msg}`);

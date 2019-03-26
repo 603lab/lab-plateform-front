@@ -33,8 +33,6 @@ import baseColor from '../../../utils/colors';
 }))
 class Center extends PureComponent {
   state = {
-    newTags: [],
-    deleteTagsId: [],
     modalType: '',
     inputValue: '',
     modalState: false,
@@ -106,6 +104,11 @@ class Center extends PureComponent {
   };
 
   showInput = () => {
+    const { tags = [] } = this.props;
+    if (tags.length > 7) {
+      message.error('标签数量不能超过8个');
+      return;
+    }
     this.setState(
       {
         inputVisible: true,
@@ -125,8 +128,7 @@ class Center extends PureComponent {
   handleInputConfirm = () => {
     const { state, props } = this;
     const { inputValue } = state;
-    const { dispatch, tags } = props;
-    let { newTags } = state;
+    const { dispatch } = props;
     // 未填写
     if (!inputValue) {
       this.setState({
@@ -134,15 +136,8 @@ class Center extends PureComponent {
       });
       return;
     }
-    if (tags.length > 8) {
-      message.error('标签数量不能超过8个');
-      this.setState({
-        inputVisible: false,
-      });
-      return;
-    }
-    if (inputValue.length > 8) {
-      message.error('标签不能超过8个字符');
+    if (inputValue.length > 12) {
+      message.error('标签字符不能超过12个');
       return;
     }
     // 添加个人标签接口
@@ -155,11 +150,7 @@ class Center extends PureComponent {
       },
     }).then(result => {
       if (result) {
-        if (inputValue && newTags.filter(tag => tag.label === inputValue).length === 0) {
-          newTags = [...newTags, { id: `newTabs + ${newTags.length}`, label: inputValue }];
-        }
         this.setState({
-          newTags,
           inputVisible: false,
           inputValue: '',
         });
@@ -178,12 +169,6 @@ class Center extends PureComponent {
         id,
         createUserCode,
       },
-    }).then(result => {
-      if (result) {
-        this.setState({
-          deleteTagsId: [id],
-        });
-      }
     });
   };
 
@@ -201,10 +186,9 @@ class Center extends PureComponent {
   };
 
   render() {
-    const { newTags, inputVisible, inputValue, modalState, modalType, deleteTagsId } = this.state;
+    const { inputVisible, inputValue, modalState, modalType } = this.state;
     const {
       tags,
-      // tagsLoading,
       skills,
       skillsLoading,
       currentUser,
@@ -348,8 +332,8 @@ class Center extends PureComponent {
                   <div className={styles.tags}>
                     <div className={styles.tagsTitle}>个人标签</div>
                     {tags
-                      .concat(newTags)
-                      .filter(tag => !deleteTagsId.includes(tag.id))
+                      // .concat(newTags)
+                      // .filter(tag => !deleteTagsId.includes(tag.id))
                       .map((item, index) => (
                         <Popconfirm
                           key={item.id}
@@ -359,9 +343,7 @@ class Center extends PureComponent {
                           className={styles.tagsPop}
                           onConfirm={() => this.handleDeleteTag(item)}
                         >
-                          <Tag color={this.getBaseColor(tags.concat(newTags), index)}>
-                            {item.label}
-                          </Tag>
+                          <Tag color={this.getBaseColor(tags, index)}>{item.label}</Tag>
                         </Popconfirm>
                       ))}
                     {inputVisible && (
