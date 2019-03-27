@@ -19,6 +19,7 @@ import {
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import CenterPieChart from '@/components/CenterPieChart';
 import CenterModal from '@/components/CenterModal';
+import { basicInfo } from './personinfo';
 import styles from './Center.less';
 import baseColor from '../../../utils/colors';
 
@@ -204,21 +205,7 @@ class Center extends PureComponent {
       Object.keys(currentUser).forEach(item => {
         transformUserInfo[item] = currentUser[item] === null ? '-' : currentUser[item];
       });
-    const {
-      avatar,
-      entranceYear,
-      idCard,
-      nickName,
-      phoneNum,
-      realName,
-      qq,
-      scores,
-      teamName, // 团队
-      techDirection, // 方向
-      uCode, // 学号
-      uMajor, // 专业
-      wechat, // 微信
-    } = transformUserInfo;
+    const { avatar, scores, nickName, techDirection } = transformUserInfo;
     const operationTabList = [
       {
         key: 'articles',
@@ -275,6 +262,9 @@ class Center extends PureComponent {
                     <div className={styles.name}>{nickName}</div>
                     <div>
                       {/* 方向 */}
+                      {/*
+                       * egg: 快速点击2次，出现当前排名
+                       */}
                       {techDirection}
                       <Button className={styles.scores}>{scores}&nbsp;积分</Button>
                     </div>
@@ -286,66 +276,30 @@ class Center extends PureComponent {
                       <Icon type="edit" onClick={() => this.handleOpenModal('personInfo')} />
                     </div>
                     <ul className={styles.personInfoUl}>
-                      <li>
-                        <Icon type="rocket" />
-                        &nbsp;&nbsp;姓名：{realName}
-                      </li>
-                      <li>
-                        <Icon type="team" />
-                        &nbsp;&nbsp;年级：{entranceYear}
-                      </li>
-                      <li>
-                        <Icon type="bulb" />
-                        &nbsp;&nbsp;学号：{uCode}
-                      </li>
-                      <li>
-                        <Icon type="experiment" />
-                        &nbsp;&nbsp;专业：{uMajor}
-                      </li>
-                      <li>
-                        <Icon type="desktop" />
-                        &nbsp;&nbsp;方向：{techDirection}
-                      </li>
-                      <li>
-                        <Icon type="flag" />
-                        &nbsp;&nbsp;团队：{teamName}
-                      </li>
-                      <li>
-                        <Icon type="mobile" />
-                        &nbsp;&nbsp;手机：{phoneNum}
-                      </li>
-                      <li>
-                        <Icon type="qq" />
-                        &nbsp;&nbsp;QQ：{qq}
-                      </li>
-                      <li>
-                        <Icon type="wechat" />
-                        &nbsp;&nbsp;微信：{wechat}
-                      </li>
-                      <li>
-                        <Icon type="idcard" />
-                        &nbsp;&nbsp;身份证：{idCard}
-                      </li>
+                      {basicInfo.map(item => (
+                        <li key={item.field}>
+                          <Icon type={item.icon} />
+                          <span className={styles.basic}>{item.label}:</span>
+                          {transformUserInfo[item.field]}
+                        </li>
+                      ))}
                     </ul>
                   </div>
                   <Divider dashed />
                   <div className={styles.tags}>
                     <div className={styles.tagsTitle}>个人标签</div>
-                    {tags
-                      // .concat(newTags)
-                      // .filter(tag => !deleteTagsId.includes(tag.id))
-                      .map((item, index) => (
-                        <Popconfirm
-                          key={item.id}
-                          title={`确定要删除"${item.label}"标签吗`}
-                          okText="删除"
-                          cancelText={`依旧${item.label}`}
-                          className={styles.tagsPop}
-                          onConfirm={() => this.handleDeleteTag(item)}
-                        >
-                          <Tag color={this.getBaseColor(tags, index)}>{item.label}</Tag>
-                        </Popconfirm>
-                      ))}
+                    {tags.map((item, index) => (
+                      <Popconfirm
+                        key={item.id}
+                        title={`确定要删除"${item.label}"标签吗`}
+                        okText="删除"
+                        cancelText={`依旧${item.label}`}
+                        className={styles.tagsPop}
+                        onConfirm={() => this.handleDeleteTag(item)}
+                      >
+                        <Tag color={this.getBaseColor(tags, index)}>{item.label}</Tag>
+                      </Popconfirm>
+                    ))}
                     {inputVisible && (
                       <Input
                         type="text"

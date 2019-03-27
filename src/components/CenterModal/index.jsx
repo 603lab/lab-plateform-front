@@ -37,6 +37,7 @@ class CenterModal extends PureComponent {
         this.setState({
           confirmLoading: true,
         });
+        console.log('form getFieldsValue', form.getFieldsValue());
         setTimeout(() => {
           this.setState({
             visible: false,
