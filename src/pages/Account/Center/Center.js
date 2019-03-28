@@ -44,7 +44,7 @@ class Center extends PureComponent {
     const { dispatch } = this.props;
     // 获取用户信息
     dispatch({
-      type: 'user/fetchCurrent',
+      type: 'user/fetchInfo',
       payload: {
         uCode: '150701206',
       },
@@ -251,6 +251,9 @@ class Center extends PureComponent {
                     <Tooltip
                       title={
                         <span>
+                          {/*
+                           * egg: 鼠标悬浮4秒 显示在实验室的天数
+                           */}
                           你在实验室的第<a className={styles.stayDay}>70</a>天！加油哟！&nbsp;
                           <Icon type="smile" />
                         </span>

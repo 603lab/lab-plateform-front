@@ -1,4 +1,11 @@
-import { queryCurrent, queryTags, querySkills, addTag, deleteTag } from '@/services/user';
+import {
+  queryUserInfo,
+  updateUserInfo,
+  queryTags,
+  querySkills,
+  addTag,
+  deleteTag,
+} from '@/services/user';
 import { message } from 'antd';
 
 export default {
@@ -13,8 +20,8 @@ export default {
 
   effects: {
     // 获取用户信息
-    *fetchCurrent({ payload }, { call, put }) {
-      const response = yield call(queryCurrent, payload);
+    *fetchInfo({ payload }, { call, put }) {
+      const response = yield call(queryUserInfo, payload);
       const { statusCode, data, msg } = response || {};
       if (statusCode === 200) {
         yield put({
@@ -23,6 +30,22 @@ export default {
         });
       } else {
         message.error(`获取用户信息失败 ${msg}`);
+      }
+    },
+    // 更新用户信息
+    *updateInfo({ payload }, { call, put }) {
+      const response = yield call(updateUserInfo, payload);
+      const { statusCode, msg } = response || {};
+      if (statusCode === 200) {
+        yield put({
+          type: 'fetchInfo',
+          payload: {
+            createUserCode: '150701206',
+          },
+        });
+        message.success('更新用户信息成功');
+      } else {
+        message.error(`更新用户信息失败 ${msg}`);
       }
     },
     // 获取个人标签

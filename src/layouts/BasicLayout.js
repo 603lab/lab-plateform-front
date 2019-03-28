@@ -62,7 +62,7 @@ class BasicLayout extends React.PureComponent {
       route: { routes, authority },
     } = this.props;
     dispatch({
-      type: 'user/fetchCurrent',
+      type: 'user/fetchInfo',
       payload: {
         uCode: '150701206',
       },
