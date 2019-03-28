@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-27 16:32:35
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-03-27 16:45:14
+ * @Last Modified time: 2019-03-28 21:30:21
  * tips: 接口参数需罗列清楚
  */
 
@@ -10,9 +10,6 @@ import request from '@/utils/request';
 import { stringify } from 'qs';
 
 const baseUrl = 'Base-Module/Users';
-export async function queryList(params) {
-  return request(`/api/${baseUrl}/GetMyDocs?${stringify(params)}`);
-}
 
 /**
  * 获取个人信息
