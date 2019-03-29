@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-27 16:32:35
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-03-28 10:42:49
+ * @Last Modified time: 2019-03-29 15:30:43
  * tips: 接口参数需罗列清楚
  */
 
@@ -30,7 +30,6 @@ export async function queryUserInfo(params) {
  * @param {string} uCode	 	当前用户学号
  */
 export async function updateUserInfo(params) {
-  console.log('触发 service ', params);
   return request(`/api/${basePrefix}/Update`, {
     method: 'POST',
     body: {

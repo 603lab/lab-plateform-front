@@ -41,8 +41,6 @@ export default class DocTabsContent extends PureComponent {
     };
   }
 
-  // handleNewArticleModal = () => {};
-
   handleCreateInfo = () => {
     // console.log('handleCreateInfo', data);
   };
