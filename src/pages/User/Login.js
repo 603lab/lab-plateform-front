@@ -40,14 +40,12 @@ class LoginPage extends Component {
     });
 
   handleSubmit = (err, values) => {
-    const { type } = this.state;
     if (!err) {
       const { dispatch } = this.props;
       dispatch({
         type: 'account/login',
         payload: {
           ...values,
-          type,
         },
       });
     }
@@ -117,7 +115,7 @@ class LoginPage extends Component {
               !submitting &&
               this.renderMessage(formatMessage({ id: 'app.login.message-invalid-credentials' }))}
             <UserName
-              name="userName"
+              name="username"
               // placeholder="username: admin or user"
               placeholder="请输入学号"
             />
