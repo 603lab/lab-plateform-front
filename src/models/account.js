@@ -8,7 +8,7 @@ import { reloadAuthorized } from '@/utils/Authorized';
 import { message } from 'antd';
 
 export default {
-  namespace: 'login',
+  namespace: 'account',
 
   state: {
     status: undefined,

@@ -7,9 +7,9 @@ import styles from './Login.less';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
 @Form.create()
-@connect(({ login, loading }) => ({
-  login,
-  submitting: loading.effects['login/login'],
+@connect(({ account, loading }) => ({
+  account,
+  submitting: loading.effects['account/login'],
 }))
 class LoginPage extends Component {
   state = {
@@ -30,7 +30,7 @@ class LoginPage extends Component {
         } else {
           const { dispatch } = this.props;
           dispatch({
-            type: 'login/getCaptcha',
+            type: 'account/getCaptcha',
             payload: values.mobile,
           })
             .then(resolve)
@@ -44,7 +44,7 @@ class LoginPage extends Component {
     if (!err) {
       const { dispatch } = this.props;
       dispatch({
-        type: 'login/login',
+        type: 'account/login',
         payload: {
           ...values,
           type,
@@ -64,13 +64,23 @@ class LoginPage extends Component {
   );
 
   handleForgetModalOk = () => {
-    // 忘记密码
     const { form } = this.props;
-    console.log('form data', form.getFieldsValue());
+    // 忘记密码
+    form.validateFields(err => {
+      if (!err) {
+        // dispatch({
+        //   type: 'account/updatePassword',
+        //   payload: {
+        //     ...values,
+        //     type,
+        //   },
+        // });
+      }
+    });
   };
 
   render() {
-    const { form, login, submitting } = this.props;
+    const { form, account, submitting } = this.props;
     const { type, autoLogin, forgetModalState } = this.state;
     const { getFieldDecorator } = form;
     const itemLayout = {
@@ -102,8 +112,8 @@ class LoginPage extends Component {
           }}
         >
           <Tab key="account" tab={formatMessage({ id: 'app.login.tab-login-credentials' })}>
-            {login.status === 'error' &&
-              login.type === 'account' &&
+            {account.status === 'error' &&
+              account.type === 'account' &&
               !submitting &&
               this.renderMessage(formatMessage({ id: 'app.login.message-invalid-credentials' }))}
             <UserName
@@ -119,8 +129,8 @@ class LoginPage extends Component {
             />
           </Tab>
           <Tab key="mobile" tab={formatMessage({ id: 'app.login.tab-login-mobile' })}>
-            {login.status === 'error' &&
-              login.type === 'mobile' &&
+            {account.status === 'error' &&
+              account.type === 'mobile' &&
               !submitting &&
               this.renderMessage(
                 formatMessage({ id: 'app.login.message-invalid-verification-code' })
