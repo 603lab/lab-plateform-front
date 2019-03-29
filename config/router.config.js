@@ -16,7 +16,7 @@ export default [
     component: '../layouts/BasicLayout',
     // component: '../layouts/BlankLayout',
     // Routes: ['src/pages/Authorized'],
-    authority: ['admin', 'user'],
+    // authority: ['admin', 'user'],  // 是否有权限查看该组件
     routes: [
       // 首页
       { path: '/', redirect: '/home' },
