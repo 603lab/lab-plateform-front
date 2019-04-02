@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { formatMessage, FormattedMessage } from 'umi/locale';
-import Link from 'umi/link';
-import { Checkbox, Alert, Icon } from 'antd';
+import { Checkbox, Alert, Form, Input, Modal, Icon, Tooltip } from 'antd';
 import Login from '@/components/Login';
 import styles from './Login.less';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
-
-@connect(({ login, loading }) => ({
-  login,
-  submitting: loading.effects['login/login'],
+@Form.create()
+@connect(({ account, loading }) => ({
+  account,
+  submitting: loading.effects['account/login'],
 }))
 class LoginPage extends Component {
   state = {
     type: 'account',
-    autoLogin: true, 
+    autoLogin: true,
+    forgetModalState: false,
   };
 
   onTabChange = type => {
@@ -30,7 +30,7 @@ class LoginPage extends Component {
         } else {
           const { dispatch } = this.props;
           dispatch({
-            type: 'login/getCaptcha',
+            type: 'account/getCaptcha',
             payload: values.mobile,
           })
             .then(resolve)
@@ -40,14 +40,12 @@ class LoginPage extends Component {
     });
 
   handleSubmit = (err, values) => {
-    const { type } = this.state;
     if (!err) {
       const { dispatch } = this.props;
       dispatch({
-        type: 'login/login',
+        type: 'account/login',
         payload: {
           ...values,
-          type,
         },
       });
     }
@@ -63,34 +61,74 @@ class LoginPage extends Component {
     <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
   );
 
+  handleForgetModalOk = () => {
+    const { form } = this.props;
+    // 忘记密码
+    form.validateFields(err => {
+      if (!err) {
+        // dispatch({
+        //   type: 'account/updatePassword',
+        //   payload: {
+        //     ...values,
+        //     type,
+        //   },
+        // });
+      }
+    });
+  };
+
   render() {
-    const { login, submitting } = this.props;
-    const { type, autoLogin } = this.state;
+    const { form, account, submitting } = this.props;
+    const { type, autoLogin, forgetModalState } = this.state;
+    const { getFieldDecorator } = form;
+    const itemLayout = {
+      labelCol: {
+        sm: {
+          span: 24,
+        },
+        md: {
+          span: 5,
+        },
+      },
+      wrapperCol: {
+        sm: {
+          span: 24,
+        },
+        md: {
+          span: 19,
+        },
+      },
+    };
     return (
       <div className={styles.main}>
         <Login
           defaultActiveKey={type}
           onTabChange={this.onTabChange}
           onSubmit={this.handleSubmit}
-          ref={form => {
-            this.loginForm = form;
+          ref={i => {
+            this.loginForm = i;
           }}
         >
           <Tab key="account" tab={formatMessage({ id: 'app.login.tab-login-credentials' })}>
-            {login.status === 'error' &&
-              login.type === 'account' &&
+            {account.status === 'error' &&
+              account.type === 'account' &&
               !submitting &&
               this.renderMessage(formatMessage({ id: 'app.login.message-invalid-credentials' }))}
-            <UserName name="userName" placeholder="username: admin or user" />
+            <UserName
+              name="username"
+              // placeholder="username: admin or user"
+              placeholder="请输入学号"
+            />
             <Password
               name="password"
-              placeholder="password: ant.design"
+              // placeholder="password: ant.design"
+              placeholder="请输入密码"
               onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
             />
           </Tab>
           <Tab key="mobile" tab={formatMessage({ id: 'app.login.tab-login-mobile' })}>
-            {login.status === 'error' &&
-              login.type === 'mobile' &&
+            {account.status === 'error' &&
+              account.type === 'mobile' &&
               !submitting &&
               this.renderMessage(
                 formatMessage({ id: 'app.login.message-invalid-verification-code' })
@@ -108,22 +146,58 @@ class LoginPage extends Component {
             <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
               <FormattedMessage id="app.login.remember-me" />
             </Checkbox>
-            <a style={{ float: 'right' }} href="">
+            <a style={{ float: 'right' }} onClick={() => this.setState({ forgetModalState: true })}>
               <FormattedMessage id="app.login.forgot-password" />
             </a>
+            {/* </Popconfirm> */}
           </div>
           <Submit loading={submitting}>
             <FormattedMessage id="app.login.login" />
           </Submit>
-          <div className={styles.other}>
-            <FormattedMessage id="app.login.sign-in-with" />
-            <Icon type="alipay-circle" className={styles.icon} theme="outlined" />
-            <Icon type="taobao-circle" className={styles.icon} theme="outlined" />
-            <Icon type="weibo-circle" className={styles.icon} theme="outlined" />
-            <Link className={styles.register} to="/user/register">
-              <FormattedMessage id="app.login.signup" />
-            </Link>
-          </div>
+          <Modal
+            width={420}
+            visible={forgetModalState}
+            title={<Tooltip title="不要再忘了">初始化密码</Tooltip>}
+            className={styles.forgetPasswordModal}
+            okText="确定"
+            cancelText="取消"
+            maskClosable="true"
+            onOk={this.handleForgetModalOk}
+            onCancel={() => {
+              this.setState({
+                forgetModalState: false,
+              });
+            }}
+          >
+            <Form>
+              <Form.Item key="uCode" {...itemLayout} label="学号">
+                {getFieldDecorator('uCode', {
+                  initialValue: '',
+                  rules: [{ required: true, message: '请输入你的学号!' }],
+                })(
+                  <Input
+                    prefix={<Icon type="bulb" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    placeholder="学号"
+                  />
+                )}
+              </Form.Item>
+              <Form.Item key="phoneNum" {...itemLayout} label="手机号">
+                {getFieldDecorator('phoneNum', {
+                  initialValue: '',
+                  rules: [
+                    { required: true, message: '请输入你的手机号!' },
+                    { pattern: /^1\d{10}$/, message: '手机号格式不正确!' },
+                  ],
+                })(
+                  <Input
+                    prefix={<Icon type="mobile" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    placeholder="手机号"
+                  />
+                )}
+              </Form.Item>
+              <div className={styles.tips}>tips: 密码将被重置为603+学号</div>
+            </Form>
+          </Modal>
         </Login>
       </div>
     );

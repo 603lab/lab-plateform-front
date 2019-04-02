@@ -1,32 +1,32 @@
 import React, { Fragment } from 'react';
-import { formatMessage } from 'umi/locale';
 import Link from 'umi/link';
 import { Icon } from 'antd';
 import GlobalFooter from '@/components/GlobalFooter';
 import styles from './UserLayout.less';
 import logo from '../assets/logo.png';
 
-const links = [
+const popUp = [
   {
-    key: 'help',
-    title: formatMessage({ id: 'layout.user.link.help' }),
-    href: '',
-  },
-  {
-    key: 'privacy',
-    title: formatMessage({ id: 'layout.user.link.privacy' }),
-    href: '',
-  },
-  {
-    key: 'terms',
-    title: formatMessage({ id: 'layout.user.link.terms' }),
-    href: '',
+    key: 'develop',
+    title: '参与成员',
+    content: (
+      <>
+        <span>前端开发: 陈晓斌</span>
+        <br />
+        <span>后端开发: 陆仁杰</span>
+        <br />
+        <span>前端维护: 钟天</span>
+        <br />
+        <span>产品设计: 常继荣、吴悦、王旭、薛露娜</span>
+        <br />
+      </>
+    ),
   },
 ];
 
 const copyright = (
   <Fragment>
-    Copyright <Icon type="copyright" /> 2018 蚂蚁金服体验技术部出品
+    Copyright <Icon type="copyright" /> 2019 603实验室
   </Fragment>
 );
 
@@ -52,14 +52,14 @@ class UserLayout extends React.PureComponent {
             <div className={styles.header}>
               <Link to="/">
                 <img alt="logo" className={styles.logo} src={logo} />
-                <span className={styles.title}>Ant Design</span>
+                <span className={styles.title}>603实验室平台</span>
               </Link>
             </div>
-            <div className={styles.desc}>Ant Design 是西湖区最具影响力的 Web 设计规范</div>
+            <div className={styles.desc}>603结晶</div>
           </div>
           {children}
         </div>
-        <GlobalFooter links={links} copyright={copyright} />
+        <GlobalFooter popUp={popUp} copyright={copyright} />
       </div>
     );
   }

@@ -2,23 +2,38 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 // import Link from 'umi/link';
 import router from 'umi/router';
-import { Card, Row, Col, Icon, Tag, Divider, Spin, Input, Tooltip, Button } from 'antd';
+import {
+  Card,
+  Row,
+  Col,
+  Icon,
+  Divider,
+  Spin,
+  Tooltip,
+  Button,
+  Tag,
+  Input,
+  Popconfirm,
+  message,
+} from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import CenterPieChart from '@/components/CenterPieChart';
 import CenterModal from '@/components/CenterModal';
+import { basicInfo } from './personinfo';
 import styles from './Center.less';
 import baseColor from '../../../utils/colors';
 
-@connect(({ loading, user, project }) => ({
-  listLoading: loading.effects['list/fetch'],
+@connect(({ loading, user }) => ({
+  skills: user.skills,
+  skillsLoading: loading.effects['user/fetchSkills'],
+  tags: user.tags,
+  tagsLoading: loading.effects['user/fetchtags'],
   currentUser: user.currentUser,
   currentUserLoading: loading.effects['user/fetchCurrent'],
-  project,
-  projectLoading: loading.effects['project/fetchNotice'],
+  listLoading: loading.effects['list/fetch'],
 }))
 class Center extends PureComponent {
   state = {
-    newTags: [],
     modalType: '',
     inputValue: '',
     modalState: false,
@@ -27,17 +42,36 @@ class Center extends PureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props;
+    // 获取用户信息
     dispatch({
-      type: 'user/fetchCurrent',
+      type: 'user/fetchInfo',
+      payload: {
+        uCode: '150701206',
+      },
     });
+    // 获取用户技能
+    dispatch({
+      type: 'user/fetchSkills',
+      payload: {
+        createUserCode: '150701206',
+      },
+    });
+    // 获取用户标签
+    dispatch({
+      type: 'user/fetchTags',
+      payload: {
+        createUserCode: '150701206',
+      },
+    });
+
+    // 获取用户文章
     dispatch({
       type: 'list/fetch',
       payload: {
-        count: 8,
+        uCode: '150701204',
+        currentPage: 1,
+        pageSize: 3,
       },
-    });
-    dispatch({
-      type: 'project/fetchNotice',
     });
   }
 
@@ -71,7 +105,17 @@ class Center extends PureComponent {
   };
 
   showInput = () => {
-    this.setState({ inputVisible: true }, () => this.input.focus());
+    const { tags = [] } = this.props;
+    if (tags.length > 7) {
+      message.error('标签数量不能超过8个');
+      return;
+    }
+    this.setState(
+      {
+        inputVisible: true,
+      },
+      () => this.input.focus()
+    );
   };
 
   saveInputRef = input => {
@@ -83,16 +127,49 @@ class Center extends PureComponent {
   };
 
   handleInputConfirm = () => {
-    const { state } = this;
+    const { state, props } = this;
     const { inputValue } = state;
-    let { newTags } = state;
-    if (inputValue && newTags.filter(tag => tag.label === inputValue).length === 0) {
-      newTags = [...newTags, { key: `new-${newTags.length}`, label: inputValue }];
+    const { dispatch } = props;
+    // 未填写
+    if (!inputValue) {
+      this.setState({
+        inputVisible: false,
+      });
+      return;
     }
-    this.setState({
-      newTags,
-      inputVisible: false,
-      inputValue: '',
+    if (inputValue.length > 12) {
+      message.error('标签字符不能超过12个');
+      return;
+    }
+    // 添加个人标签接口
+    dispatch({
+      type: 'user/addTag',
+      payload: {
+        createUserCode: '150701206',
+        createUserName: '陆仁杰',
+        label: inputValue,
+      },
+    }).then(result => {
+      if (result) {
+        this.setState({
+          inputVisible: false,
+          inputValue: '',
+        });
+      }
+    });
+  };
+
+  // 点击标签 -> 删除标签
+  handleDeleteTag = item => {
+    const { dispatch } = this.props;
+    const { id, createUserCode } = item;
+    // 删除个人标签接口
+    dispatch({
+      type: 'user/deleteTag',
+      payload: {
+        id,
+        createUserCode,
+      },
     });
   };
 
@@ -110,17 +187,25 @@ class Center extends PureComponent {
   };
 
   render() {
-    const { newTags, inputVisible, inputValue, modalState, modalType } = this.state;
+    const { inputVisible, inputValue, modalState, modalType } = this.state;
     const {
-      listLoading,
+      tags,
+      skills,
+      skillsLoading,
       currentUser,
       currentUserLoading,
-      // project: { notice },
-      projectLoading,
+      listLoading,
       match,
       location,
       children,
     } = this.props;
+    const transformUserInfo = {};
+    // 把个人信息null的值转换成-
+    currentUser &&
+      Object.keys(currentUser).forEach(item => {
+        transformUserInfo[item] = currentUser[item] === null ? '-' : currentUser[item];
+      });
+    const { avatar, scores, nickName, techDirection } = transformUserInfo;
     const operationTabList = [
       {
         key: 'articles',
@@ -166,19 +251,25 @@ class Center extends PureComponent {
                     <Tooltip
                       title={
                         <span>
+                          {/*
+                           * egg: 鼠标悬浮4秒 显示在实验室的天数
+                           */}
                           你在实验室的第<a className={styles.stayDay}>70</a>天！加油哟！&nbsp;
                           <Icon type="smile" />
                         </span>
                       }
                       mouseEnterDelay={4}
                     >
-                      <img alt="" src={currentUser.avatar} />
+                      <img alt="" src={avatar} />
                     </Tooltip>
-                    <div className={styles.name}>{currentUser.nickName}</div>
+                    <div className={styles.name}>{nickName}</div>
                     <div>
                       {/* 方向 */}
-                      {currentUser.techDirection}
-                      <Button className={styles.scores}>{currentUser.scores}&nbsp;积分</Button>
+                      {/*
+                       * egg: 快速点击2次，出现当前排名
+                       */}
+                      {techDirection}
+                      <Button className={styles.scores}>{scores}&nbsp;积分</Button>
                     </div>
                   </div>
                   <Divider dashed />
@@ -188,66 +279,37 @@ class Center extends PureComponent {
                       <Icon type="edit" onClick={() => this.handleOpenModal('personInfo')} />
                     </div>
                     <ul className={styles.personInfoUl}>
-                      <li>
-                        <Icon type="rocket" />
-                        &nbsp;&nbsp;姓名：{currentUser.realName}
-                      </li>
-                      <li>
-                        <Icon type="team" />
-                        &nbsp;&nbsp;年级：{currentUser.entranceYear}
-                      </li>
-                      <li>
-                        <Icon type="bulb" />
-                        &nbsp;&nbsp;学号：{currentUser.uCode}
-                      </li>
-                      <li>
-                        <Icon type="experiment" />
-                        &nbsp;&nbsp;专业：{currentUser.uMajor}
-                      </li>
-                      <li>
-                        <Icon type="desktop" />
-                        &nbsp;&nbsp;方向：{currentUser.techDirection}
-                      </li>
-                      <li>
-                        <Icon type="flag" />
-                        &nbsp;&nbsp;团队：{currentUser.teamName}
-                      </li>
-                      <li>
-                        <Icon type="mobile" />
-                        &nbsp;&nbsp;手机：{currentUser.phoneNum}
-                      </li>
-                      <li>
-                        <Icon type="qq" />
-                        &nbsp;&nbsp;QQ：{currentUser.qq}
-                      </li>
-                      <li>
-                        <Icon type="wechat" />
-                        &nbsp;&nbsp;微信：{currentUser.wechat}
-                      </li>
-                      <li>
-                        <Icon type="idcard" />
-                        &nbsp;&nbsp;身份证：{currentUser.idCard}
-                      </li>
+                      {basicInfo.map(item => (
+                        <li key={item.field}>
+                          <Icon type={item.icon} />
+                          <span className={styles.basic}>{item.label}:</span>
+                          {transformUserInfo[item.field]}
+                        </li>
+                      ))}
                     </ul>
                   </div>
                   <Divider dashed />
                   <div className={styles.tags}>
                     <div className={styles.tagsTitle}>个人标签</div>
-                    {currentUser.tags.concat(newTags).map((item, index) => (
-                      <Tag
-                        key={item.key}
-                        color={this.getBaseColor(currentUser.tags.concat(newTags), index)}
+                    {tags.map((item, index) => (
+                      <Popconfirm
+                        key={item.id}
+                        title={`确定要删除"${item.label}"标签吗`}
+                        okText="删除"
+                        cancelText={`依旧${item.label}`}
+                        className={styles.tagsPop}
+                        onConfirm={() => this.handleDeleteTag(item)}
                       >
-                        {item.label}
-                      </Tag>
+                        <Tag color={this.getBaseColor(tags, index)}>{item.label}</Tag>
+                      </Popconfirm>
                     ))}
                     {inputVisible && (
                       <Input
-                        ref={this.saveInputRef}
                         type="text"
                         size="small"
-                        style={{ width: 78 }}
                         value={inputValue}
+                        style={{ width: 78 }}
+                        ref={this.saveInputRef}
                         onChange={this.handleInputChange}
                         onBlur={this.handleInputConfirm}
                         onPressEnter={this.handleInputConfirm}
@@ -268,23 +330,13 @@ class Center extends PureComponent {
                       掌握技能&nbsp;
                       <Icon type="edit" onClick={() => this.handleOpenModal('skills')} />
                     </div>
-                    <Spin spinning={projectLoading}>
-                      <CenterPieChart skills={currentUser.skills} />
-                      {/* <Row gutter={36}>
-                        {notice.map(item => (
-                          <Col key={item.id} lg={24} xl={12}>
-                            <Link to={item.href}>
-                              <Avatar size="small" src={item.logo} />
-                              {item.member}
-                            </Link>
-                          </Col>
-                        ))}
-                      </Row> */}
+                    <Spin spinning={skillsLoading}>
+                      <CenterPieChart skills={skills} />
                     </Spin>
                   </div>
                 </div>
               ) : (
-                'loading...'
+                <Icon type="loading" />
               )}
             </Card>
           </Col>
@@ -299,12 +351,12 @@ class Center extends PureComponent {
           )}
           <Col lg={18} md={24}>
             <Card
-              className={styles.tabsCard}
               bordered={false}
+              loading={listLoading}
               tabList={operationTabList}
+              className={styles.tabsCard}
               activeTabKey={location.pathname.replace(`${match.path}/`, '')}
               onTabChange={this.onTabChange}
-              loading={listLoading}
             >
               {children}
             </Card>

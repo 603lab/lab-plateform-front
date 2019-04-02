@@ -7,11 +7,10 @@ import styles from './Articles.less';
 @connect(({ list }) => ({
   list,
 }))
-class Center extends PureComponent {
+class CenterArticle extends PureComponent {
   render() {
-    const {
-      list: { list },
-    } = this.props;
+    const { list } = this.props;
+    const { article } = list;
     const IconText = ({ type, text }) => (
       <span>
         <Icon type={type} style={{ marginRight: 8 }} />
@@ -20,11 +19,11 @@ class Center extends PureComponent {
     );
     return (
       <List
-        size="large"
-        className={styles.articleList}
         rowKey="id"
+        size="large"
         itemLayout="vertical"
-        dataSource={list}
+        className={styles.articleList}
+        dataSource={article}
         pagination={{
           pageSize: 5,
         }}
@@ -32,15 +31,15 @@ class Center extends PureComponent {
           <List.Item
             key={item.id}
             actions={[
-              <IconText type="star-o" text={item.star} />,
-              <IconText type="like-o" text={item.like} />,
-              <IconText type="message" text={item.message} />,
+              <IconText type="eye" text={item.browseNum} />,
+              <IconText type="like-o" text={item.likeNum} />,
+              <IconText type="message" text={item.commentNum} />,
             ]}
           >
             <List.Item.Meta
               title={
-                <a className={styles.listItemMetaTitle} href={item.href}>
-                  {item.title}
+                <a className={styles.listItemMetaTitle} href={item.href || ''}>
+                  {item.fileName || '暂无标题'}
                 </a>
               }
               description={
@@ -59,4 +58,4 @@ class Center extends PureComponent {
   }
 }
 
-export default Center;
+export default CenterArticle;

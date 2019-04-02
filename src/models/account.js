@@ -1,12 +1,15 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import { fakeAccountLogin, getFakeCaptcha } from '@/services/api';
+// import { fakeAccountLogin, getFakeCaptcha } from '@/services/api';
+import { fakeAccountLogin } from '@/services/account';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
+import { message } from 'antd';
+import Store from '@/utils/store';
 
 export default {
-  namespace: 'login',
+  namespace: 'account',
 
   state: {
     status: undefined,
@@ -19,8 +22,20 @@ export default {
         type: 'changeLoginStatus',
         payload: response,
       });
+      const {
+        statusCode,
+        data: { uCode },
+        msg,
+      } = response;
       // Login successfully
-      if (response.status === 'ok') {
+      if (statusCode === 200) {
+        message.error(`登陆成功`);
+        // 存储信息
+        Store.setStore({
+          basicInfo: {
+            uCode,
+          },
+        });
         reloadAuthorized();
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
@@ -38,12 +53,14 @@ export default {
           }
         }
         yield put(routerRedux.replace(redirect || '/'));
+      } else {
+        message.error(`登陆失败 ${msg}`);
       }
     },
 
-    *getCaptcha({ payload }, { call }) {
-      yield call(getFakeCaptcha, payload);
-    },
+    // *getCaptcha({ payload }, { call }) {
+    //   yield call(getFakeCaptcha, payload);
+    // },
 
     *logout(_, { put }) {
       yield put({
