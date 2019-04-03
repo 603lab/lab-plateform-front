@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-04-02 11:27:23
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-04-02 17:40:17
+ * @Last Modified time: 2019-04-02 18:48:36
  * 修改/新增文章分支Modal组件
  */
 import React, { PureComponent } from 'react';
@@ -18,7 +18,7 @@ export default class ArticleTreeModal extends PureComponent {
     super(props);
 
     this.state = {
-      selectedKeys: ['create'],
+      selectedKeys: ['choose'],
       visiable: props.visiable,
     };
   }

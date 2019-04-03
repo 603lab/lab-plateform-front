@@ -26,7 +26,12 @@ class CreateTree extends PureComponent {
     };
     return (
       <>
-        <Alert message="路径格式：大前端/React" className={styles.topAlert} />
+        <Alert
+          message="路径格式：大前端/React。不支持新增一级目录。"
+          className={styles.topAlert}
+          closable="true"
+          closeText="知道了"
+        />
         <Form>
           <Form.Item
             {...formItemLayout}
