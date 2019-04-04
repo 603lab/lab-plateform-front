@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Icon, Breadcrumb } from 'antd';
-import ArticleTree from '../../../../components/ArticleTreeModal';
+import ArticleTree from '../../../../../components/ArticleTreeModal';
 import styles from './ArticleTree.less';
 
 export default class CreateInfo extends PureComponent {

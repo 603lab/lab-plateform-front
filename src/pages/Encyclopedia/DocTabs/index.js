@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-14 16:14:46
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-04-04 10:51:58
+ * @Last Modified time: 2019-04-04 16:30:56
  * 最新文章无法删除、其他文章可删除Tab
  * 且新增文章一次只能一篇,其状态管理可查看store.js
  */
@@ -10,8 +10,8 @@ import React, { PureComponent } from 'react';
 import { Tabs, Icon, Button, Modal } from 'antd';
 import Store from '../store';
 import styles from './index.less';
-import OtherTabs from './OtherTabs';
-import NewArticleTabs from './NewArticleTabs';
+import ActionArticleTabs from './ActionArticleTabs';
+import LastestArticleTabs from './LastestArticleTabs';
 
 const TabPane = Tabs.TabPane;
 const confirm = Modal.confirm;
@@ -96,9 +96,6 @@ export default class DocTabsContent extends PureComponent {
       }
       this.setState({ panes: tempPanes, activeKey: tempActiveKey });
     };
-    console.log('targetKey', targetKey);
-    console.log('tabsId', tabsId);
-    console.log('isSaving', isSaving);
     if (tabsId === targetKey && !isSaving) {
       confirm({
         title: '提示',
@@ -145,7 +142,11 @@ export default class DocTabsContent extends PureComponent {
               key={pane.key}
             >
               <div className={styles.docTabsPaneContent}>
-                {pane.key === '1' ? <NewArticleTabs /> : <OtherTabs tabType={pane.type} />}
+                {pane.key === '1' ? (
+                  <LastestArticleTabs />
+                ) : (
+                  <ActionArticleTabs tabType={pane.type} />
+                )}
               </div>
             </TabPane>
           ))}
