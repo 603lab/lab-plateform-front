@@ -2,16 +2,19 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-14 16:14:46
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-03-18 14:25:53
- * 最新文章无法删除、其他文章可删除
+ * @Last Modified time: 2019-04-04 10:51:58
+ * 最新文章无法删除、其他文章可删除Tab
+ * 且新增文章一次只能一篇,其状态管理可查看store.js
  */
 import React, { PureComponent } from 'react';
-import { Tabs, Icon, Button } from 'antd';
+import { Tabs, Icon, Button, Modal } from 'antd';
+import Store from '../store';
 import styles from './index.less';
 import OtherTabs from './OtherTabs';
 import NewArticleTabs from './NewArticleTabs';
 
 const TabPane = Tabs.TabPane;
+const confirm = Modal.confirm;
 export default class DocTabsContent extends PureComponent {
   constructor(props) {
     super(props);
@@ -22,12 +25,12 @@ export default class DocTabsContent extends PureComponent {
         canDelete: false,
         title: '最新文章',
       },
-      {
-        key: '2',
-        canDelete: true,
-        title: '新建文章',
-        type: 'create',
-      },
+      // {
+      //   key: '2',
+      //   canDelete: true,
+      //   title: '新建文章',
+      //   type: 'create',
+      // },
       {
         key: '3',
         canDelete: true,
@@ -36,7 +39,7 @@ export default class DocTabsContent extends PureComponent {
       },
     ];
     this.state = {
-      activeKey: panes[2].key,
+      activeKey: panes[0].key,
       panes,
     };
   }
@@ -56,7 +59,7 @@ export default class DocTabsContent extends PureComponent {
   add = () => {
     const { panes } = this.state;
     const tempPanes = [...panes];
-    const activeKey = `${tempPanes.length + 1}`;
+    const activeKey = `${tempPanes.length + 100}`; // 防止activeKey重复
     tempPanes.push({
       key: activeKey,
       title: '新建文章',
@@ -64,26 +67,52 @@ export default class DocTabsContent extends PureComponent {
       type: 'create',
     });
     this.setState({ panes: tempPanes, activeKey });
+    Store.setStore({
+      createArticleInfo: {
+        tabsId: activeKey,
+        isSaving: true,
+      },
+    });
   };
 
   remove = targetKey => {
     const { panes, activeKey } = this.state;
+    const { tabsId, isSaving } = Store.getCreateArticleInfo();
     let lastIndex;
     let tempActiveKey = activeKey;
-    panes.forEach((pane, i) => {
-      if (pane.key === targetKey) {
-        lastIndex = i - 1;
+    const deleteTabs = () => {
+      panes.forEach((pane, i) => {
+        if (pane.key === targetKey) {
+          lastIndex = i - 1;
+        }
+      });
+      const tempPanes = panes.filter(pane => pane.key !== targetKey);
+      if (panes.length && tempActiveKey === targetKey) {
+        if (lastIndex >= 0) {
+          tempActiveKey = panes[lastIndex].key;
+        } else {
+          tempActiveKey = panes[0].key;
+        }
       }
-    });
-    const tempPanes = panes.filter(pane => pane.key !== targetKey);
-    if (panes.length && tempActiveKey === targetKey) {
-      if (lastIndex >= 0) {
-        tempActiveKey = panes[lastIndex].key;
-      } else {
-        tempActiveKey = panes[0].key;
-      }
+      this.setState({ panes: tempPanes, activeKey: tempActiveKey });
+    };
+    console.log('targetKey', targetKey);
+    console.log('tabsId', tabsId);
+    console.log('isSaving', isSaving);
+    if (tabsId === targetKey && !isSaving) {
+      confirm({
+        title: '提示',
+        content: '文章未保存,确认删除吗?',
+        onOk() {
+          deleteTabs();
+        },
+        onCancel() {
+          console.log('取消');
+        },
+      });
+    } else {
+      deleteTabs();
     }
-    this.setState({ panes: tempPanes, activeKey: tempActiveKey });
   };
 
   render() {
