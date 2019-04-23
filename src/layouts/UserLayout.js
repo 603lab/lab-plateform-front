@@ -55,7 +55,7 @@ class UserLayout extends React.PureComponent {
                 <span className={styles.title}>603实验室平台</span>
               </Link>
             </div>
-            <div className={styles.desc}>603结晶</div>
+            {/* <div className={styles.desc}>603结晶</div> */}
           </div>
           {children}
         </div>

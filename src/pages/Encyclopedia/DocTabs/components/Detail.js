@@ -9,12 +9,15 @@ export default class Detail extends PureComponent {
     super(props);
 
     this.state = {
-      initContent: '<h1>h1</h1><p><strong>strong</strong></p><p>p</p><p></p>',
+      title: 'PureComponent',
+      content: '<h1>h1</h1><p><strong>strong</strong></p><p>p</p><p></p>',
     };
   }
 
+  handleShare = () => {};
+
   render() {
-    const { initContent } = this.state;
+    const { title, content } = this.state;
     return (
       <div className={styles.detailWrapper}>
         <div className={styles.top}>
@@ -31,16 +34,16 @@ export default class Detail extends PureComponent {
               <span>编辑</span>
             </div>
             <div className={styles.topActionList}>
-              <Icon type="download" />
+              <Icon type="share" />
               &nbsp;
-              <span>导出</span>
+              <span onClick={this.handleShare}>分享</span>
             </div>
           </div>
         </div>
         <div className={styles.content}>
           {/* 文章标题 */}
           <h1>
-            PureComponent
+            {title}
             <div className={styles.titleTag}>
               {['React', 'Node', 'ES6'].map((item, index) => (
                 <Tag key={item} color={Color.category12[index]}>
@@ -59,7 +62,7 @@ export default class Detail extends PureComponent {
           </div>
           <div className={styles.articleContent}>
             {/* 文章内容 */}
-            <div dangerouslySetInnerHTML={{ __html: initContent }} />
+            <div dangerouslySetInnerHTML={{ __html: content }} />
           </div>
         </div>
       </div>

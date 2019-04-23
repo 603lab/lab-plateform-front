@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-27 16:32:35
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-03-29 15:30:43
+ * @Last Modified time: 2019-04-23 14:36:04
  * tips: 接口参数需罗列清楚
  */
 
@@ -23,7 +23,7 @@ export async function queryUserInfo(params) {
 }
 
 /**
- * 获取个人信息
+ * 更新个人信息
  * @param {number} ID
  * @param {string} createUserName	    文章编号	required
  * @param {string} createUserCode	 	当前用户编号	required
