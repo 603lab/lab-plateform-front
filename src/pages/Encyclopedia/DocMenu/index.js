@@ -44,12 +44,18 @@ class Encyclopedia extends PureComponent {
     return result;
   };
 
+  handleMenuSelect = () => {};
+
   render() {
     const {
       doc: { menu: menuData = [] },
     } = this.props;
     return (
-      <Menu mode="inline" style={{ width: '100%', minHeight: 500 }}>
+      <Menu
+        mode="inline"
+        style={{ width: '100%', minHeight: 500 }}
+        onSelect={this.handleMenuSelect}
+      >
         {/* 第一层 */}
         {menuData.map(item => (
           <SubMenu key={item.id} title={item.fileName}>

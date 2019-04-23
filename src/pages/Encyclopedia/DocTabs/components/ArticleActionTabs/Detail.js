@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Icon, Tag } from 'antd';
 import ArticleTree from './ArticleTree';
 import styles from './Detail.less';
-import Color from '../../../../utils/colors';
+import Color from '../../../../../utils/colors';
 
 export default class Detail extends PureComponent {
   constructor(props) {

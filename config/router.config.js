@@ -32,6 +32,12 @@ export default [
         name: 'doc',
         icon: 'inbox',
         component: './Encyclopedia/index',
+        // routes: [
+        //   {
+        //     path: '/doc/create/:id',
+        //     component: './Encyclopedia/DocTabs/components/Create',
+        //   },
+        // ]
       },
       // 项目
       {

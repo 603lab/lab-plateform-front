@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Row, Col } from 'antd';
-import MenuDoc from '@/components/DocMenu';
+import MenuDoc from './DocMenu';
 import ContentDoc from './ContentDoc';
 
 export default class Encyclopedia extends PureComponent {

@@ -1,3 +1,9 @@
+/*
+ * @Author: chenxiaobin
+ * @Date: 2019-04-03 16:29:31
+ * @Last Modified by: chenxiaobin
+ * @Last Modified time: 2019-04-03 16:32:20
+ */
 import React, { PureComponent } from 'react';
 import { Alert } from 'antd';
 import styles from './ContentDoc.less';
@@ -15,11 +21,11 @@ class ContentDoc extends PureComponent {
     const breadcrumbList = [
       {
         title: '百科',
-        href: '/',
+        // href: '/',
       },
       {
         title: '二级菜单',
-        href: '/',
+        // href: '/',
       },
       {
         title: '三级菜单',
@@ -36,7 +42,7 @@ class ContentDoc extends PureComponent {
           style={{ margin: '10px 0', width: '50%' }}
           message="欢迎你！百科的扩展离不开你的分享"
         />
-        <DocTabsContent />
+        <DocTabsContent tabInfo={this.tabInfo} />
       </div>
     );
   }

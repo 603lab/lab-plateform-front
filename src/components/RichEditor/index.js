@@ -40,10 +40,13 @@ export default class EditorDemo extends React.Component {
 
   handleEditorChange = newEditorState => {
     const { InitHtmlContent } = this.state;
+    const { onChange } = this.props;
+    const state = InitHtmlContent === newEditorState.toHTML();
     this.setState({
-      saveState: InitHtmlContent === newEditorState.toHTML(),
+      saveState: state,
       editorState: newEditorState,
     });
+    onChange(newEditorState.toHTML());
   };
 
   handleEditorSave = () => {
