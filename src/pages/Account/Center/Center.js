@@ -223,14 +223,14 @@ class Center extends PureComponent {
           </span>
         ),
       },
-      {
-        key: 'projects',
-        tab: (
-          <span>
-            项目动态 <span style={{ fontSize: 14 }}>(8)</span>
-          </span>
-        ),
-      },
+      // {
+      //   key: 'projects',
+      //   tab: (
+      //     <span>
+      //       项目动态 <span style={{ fontSize: 14 }}>(8)</span>
+      //     </span>
+      //   ),
+      // },
       {
         key: 'follow',
         tab: (

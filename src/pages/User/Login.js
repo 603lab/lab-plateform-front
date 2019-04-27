@@ -195,6 +195,20 @@ class LoginPage extends Component {
                   />
                 )}
               </Form.Item>
+              <Form.Item key="idcard" {...itemLayout} label="身份证">
+                {getFieldDecorator('idcard', {
+                  initialValue: '',
+                  rules: [
+                    { required: true, message: '请输入你的身份证!' },
+                    // { pattern: /^1\d{10}$/, message: '手机号格式不正确!' },
+                  ],
+                })(
+                  <Input
+                    prefix={<Icon type="idcard" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    placeholder="身份证"
+                  />
+                )}
+              </Form.Item>
               <div className={styles.tips}>tips: 密码将被重置为603+学号</div>
             </Form>
           </Modal>

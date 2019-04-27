@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { List, Card, Icon, Dropdown, Menu, Avatar, Tooltip } from 'antd';
-import numeral from 'numeral';
 import { connect } from 'dva';
 import { formatWan } from '@/utils/utils';
 // import stylesApplications from '../../List/Applications.less';
@@ -73,7 +72,7 @@ class Center extends PureComponent {
               <div>
                 <CardInfo
                   activeUser={formatWan(item.activeUser)}
-                  newUser={numeral(item.newUser).format('0,0')}
+                  // newUser={numeral(item.newUser).format('0,0')}
                 />
               </div>
             </Card>

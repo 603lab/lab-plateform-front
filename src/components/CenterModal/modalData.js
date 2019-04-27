@@ -14,12 +14,12 @@ export default {
       field: 'entranceYear',
       values: new Array(10).fill('').map((item, index) => 2014 + index),
     },
-    {
-      title: '学号',
-      type: 'input',
-      required: true,
-      field: 'uCode',
-    },
+    // {
+    //   title: '学号',
+    //   type: 'input',
+    //   required: true,
+    //   field: 'uCode',
+    // },
     {
       title: '专业',
       type: 'input',
@@ -30,7 +30,7 @@ export default {
       title: '方向',
       type: 'cascader',
       required: true,
-      field: 'techDirection',
+      field: 'techList',
     },
     {
       title: '手机',
