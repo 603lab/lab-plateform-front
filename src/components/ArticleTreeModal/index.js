@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-04-02 11:27:23
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-04-02 18:48:36
+ * @Last Modified time: 2019-04-27 15:41:54
  * 修改/新增文章分支Modal组件
  */
 import React, { PureComponent } from 'react';
@@ -97,9 +97,9 @@ export default class ArticleTreeModal extends PureComponent {
           <Content className={styles.rightContentWrapper}>
             <div className={styles.formWrapper}>{this.showForm(selectedKeys[0])}</div>
             <div className={styles.locationWrapper}>
-              <span>当前位置: xxx</span>
+              <span>当前位置: 前端/React/PureComponent</span>
               <br />
-              <span>更新位置: xxx</span>
+              <span>更新位置: </span>
             </div>
           </Content>
         </Layout>

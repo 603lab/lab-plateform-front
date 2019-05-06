@@ -1,3 +1,41 @@
+.cardWrapperStyle {
+  font-size: 14px;
+  .actionBtn {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
+  }
+  :global {
+    .ant-card-head {
+      font-size: 14px;
+      padding: 0 16px;
+    }
+    .ant-card-body {
+      overflow-x: scroll;
+      padding: 15px 6px 10px;
+    }
+  }
+}
+.taskCard {
+  background-color: #364d79;
+  color: white;
+  span {
+    color: white;
+  }
+  margin-top: -10px;
+}
+.cardLeftMover {
+  // position: absolute;
+  // margin-top: -126px;
+  z-index: 2;
+}
+.cardRightMover {
+  // position: absolute;
+  // margin-left: 840px;
+  // margin-top: -126px;
+  z-index: 2;
+}
 .wordWriedCard {
   margin-top: 6px;
   .workList {

@@ -1,0 +1,52 @@
+.tabsWrapperStyle {
+  margin-top: 10px;
+  .cardStyleWrapper {
+    width: 100%;
+    margin-top: -20px;
+    min-height: 228px;
+    overflow-y: scroll;
+    .gridStyle {
+      width: 50%;
+      padding: 12px;
+      cursor: pointer;
+    }
+    .cardBody {
+      span {
+        font-size: 15px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      p {
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 0.1px;
+      }
+    }
+    .avatarInfo {
+      width: 30%;
+      float: left;
+      height: 80px;
+      .noFollow {
+        color: #722ed1;
+        background-color: #fff;
+      }
+    }
+
+    :global {
+      .ant-card-body {
+        padding: 12px;
+      }
+    }
+  }
+  .pagination {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+  }
+  :global {
+    .ant-card-bordered {
+      border: none;
+    }
+  }
+}
