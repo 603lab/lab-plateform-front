@@ -1,0 +1,32 @@
+.treeModalWrapper {
+  .rightContentWrapper {
+    background-color: #fff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 15px;
+    .formWrapper {
+      width: 100%;
+    }
+    .locationWrapper {
+      width: 100%;
+      border-top: 1px solid #ddd;
+      padding: 10px 20px;
+    }
+  }
+  :global {
+    .ant-menu {
+      .ant-menu-item {
+        margin-top: 0;
+      }
+    }
+    .ant-modal-body {
+      height: 400px;
+      padding: 0;
+      .ant-layout-has-sider {
+        height: 100%;
+      }
+    }
+  }
+}

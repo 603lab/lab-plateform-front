@@ -9,8 +9,8 @@ const totalD = Object.keys(developerData).length;
 // const totalA = Object.keys(articleData).length;
 const pageSize = 6;
 export default class CommisionWork extends React.Component {
-  constructor(args) {
-    super(args);
+  constructor(props) {
+    super(props);
 
     this.state = {
       currentPage: 1,

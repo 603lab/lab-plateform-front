@@ -7,8 +7,8 @@ import CommisionWork from './CommisionWork';
 // import styles from './index.less';
 
 export default class Home extends PureComponent {
-  constructor(args) {
-    super(args);
+  constructor(props) {
+    super(props);
 
     this.state = {};
   }

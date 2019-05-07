@@ -22,8 +22,8 @@ const moveWidth = 274;
 const { TextArea } = Input;
 
 class CommisionWork extends React.Component {
-  constructor(args) {
-    super(args);
+  constructor(props) {
+    super(props);
 
     this.state = {
       currentId: '',

@@ -1,10 +1,15 @@
 import React, { PureComponent } from 'react';
-import { Modal, Form, Input, message, Select } from 'antd';
+import { connect } from 'dva';
+import { Modal, Form, Input, message, Select, Cascader } from 'antd';
 import modalLabel from './modalData';
 
+@connect(({ loading }) => ({
+  loading: loading.effects['user/updateUserInfo'],
+}))
+@Form.create()
 class CenterModal extends PureComponent {
-  constructor(args) {
-    super(args);
+  constructor(props) {
+    super(props);
 
     this.state = {
       visible: false,
@@ -18,10 +23,10 @@ class CenterModal extends PureComponent {
     form.validateFields();
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
+  static getDerivedStateFromProps(nextProps) {
+    return {
       visible: nextProps.modalState,
-    });
+    };
   }
 
   showModal = () => {
@@ -31,11 +36,17 @@ class CenterModal extends PureComponent {
   };
 
   handleOk = () => {
-    const { form, onCloseModal } = this.props;
+    const { form, onCloseModal, dispatch } = this.props;
     form.validateFields(err => {
       if (!err) {
         this.setState({
           confirmLoading: true,
+        });
+        dispatch({
+          type: 'user/updateInfo',
+          payload: {
+            ...form.getFieldsValue(),
+          },
         });
         setTimeout(() => {
           this.setState({
@@ -89,6 +100,9 @@ class CenterModal extends PureComponent {
           </Select>
         );
         break;
+      case 'cascader':
+        result = <Cascader options={modalLabel.directionOptions} />;
+        break;
       default:
         break;
     }
@@ -123,7 +137,10 @@ class CenterModal extends PureComponent {
             {modalLabel[modalType].map(item => (
               <Form.Item key={item.field} label={item.title} {...formItemLayout}>
                 {getFieldDecorator(item.field, {
-                  initialValue: modalInitData[item.field],
+                  initialValue:
+                    item.type === 'cascader'
+                      ? ['developMonkey', 'frontEnd', 'react']
+                      : modalInitData[item.field],
                   rules: [{ required: item.required, message: `请输入你的${item.title}!` }],
                 })(this.FormContent(item))}
               </Form.Item>
@@ -142,8 +159,7 @@ class CenterModal extends PureComponent {
   }
 }
 
-const CenterModalForm = Form.create({ name: 'CenterModalForm' })(CenterModal);
-export default CenterModalForm;
+export default CenterModal;
 
 /* // modalInitData[modalType].map(skillsItem => (
             //   <Form.Item key={skillsItem.id} label={skillsItem.item} {...formItemLayout}>

@@ -17,8 +17,8 @@ import {
 import DataSet from '@antv/data-set';
 
 export default class CenterPieChart extends React.Component {
-  constructor(args) {
-    super(args);
+  constructor(props) {
+    super(props);
 
     this.state = {};
   }
@@ -39,40 +39,38 @@ export default class CenterPieChart extends React.Component {
       },
     };
     return (
-      <div>
-        <Chart forceFit height={240} data={dv} scale={cols}>
-          <Coord type="theta" scale={[1.3, 1.3]} />
-          <Axis name="percent" />
-          <Legend position="left" offsetY={-10} offsetX={-20} />
-          <Tooltip
-            showTitle={false}
-            itemTpl='<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
-          />
-          <Geom
-            type="intervalStack"
-            position="percent"
-            color="item"
-            tooltip={[
-              `item*percent`,
-              (item, percent) => ({
-                name: item,
-                value: `${percent * 100}%`,
-              }),
-            ]}
-            style={{
-              lineWidth: 1,
-              stroke: '#fff',
+      <Chart forceFit height={240} data={dv} scale={cols}>
+        <Coord type="theta" scale={[1.3, 1.3]} />
+        <Axis name="percent" />
+        <Legend position="left" offsetY={-10} offsetX={-20} />
+        <Tooltip
+          showTitle={false}
+          itemTpl='<li><span style="background-color:{color};" class="g2-tooltip-marker"></span>{name}: {value}</li>'
+        />
+        <Geom
+          type="intervalStack"
+          position="percent"
+          color="item"
+          tooltip={[
+            `item*percent`,
+            (item, percent) => ({
+              name: item,
+              value: `${percent * 100}%`,
+            }),
+          ]}
+          style={{
+            lineWidth: 1,
+            stroke: '#fff',
+          }}
+        >
+          <Label
+            content="percent"
+            formatter={(val, item) => {
+              `${item.point.item}: ${val}`;
             }}
-          >
-            <Label
-              content="percent"
-              formatter={(val, item) => {
-                `${item.point.item}: ${val}`;
-              }}
-            />
-          </Geom>
-        </Chart>
-      </div>
+          />
+        </Geom>
+      </Chart>
     );
   }
 }

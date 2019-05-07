@@ -7,8 +7,8 @@ import styles from './NoticeCard.less';
 // 数组长度
 const listLength = Object.keys(noticeList).length;
 export default class CommisionWork extends React.Component {
-  constructor(args) {
-    super(args);
+  constructor(props) {
+    super(props);
 
     this.state = {
       isShowMenu: true,

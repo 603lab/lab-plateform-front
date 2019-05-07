@@ -1,6 +1,6 @@
 {
-  "name": "ant-design-pro",
-  "short_name": "antd-pro",
+  "name": "603_platform",
+  "short_name": "603",
   "display": "standalone",
   "start_url": "./?utm_source=homescreen",
   "theme_color": "#002140",
