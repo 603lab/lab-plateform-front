@@ -62,17 +62,21 @@ class LoginPage extends Component {
   );
 
   handleForgetModalOk = () => {
-    const { form } = this.props;
+    const { form, dispatch } = this.props;
     // 忘记密码
-    form.validateFields(err => {
+    form.validateFields((err, values) => {
       if (!err) {
-        // dispatch({
-        //   type: 'account/updatePassword',
-        //   payload: {
-        //     ...values,
-        //     type,
-        //   },
-        // });
+        dispatch({
+          type: 'account/forget',
+          payload: {
+            ...values,
+            password: `603${values.uCode}`,
+          },
+        }).then(() => {
+          this.setState({
+            forgetModalState: false,
+          });
+        });
       }
     });
   };

@@ -20,6 +20,7 @@ import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import CenterPieChart from '@/components/CenterPieChart';
 import CenterModal from '@/components/CenterModal';
 import { basicInfo } from './personinfo';
+// import { directionOptions } from '../../../components/CenterModal/modalData';
 import styles from './Center.less';
 import baseColor from '../../../utils/colors';
 
@@ -205,7 +206,7 @@ class Center extends PureComponent {
       Object.keys(currentUser).forEach(item => {
         transformUserInfo[item] = currentUser[item] === null ? '-' : currentUser[item];
       });
-    const { avatar, scores, nickName, techDirection } = transformUserInfo;
+    const { avatar, scores, nickName } = transformUserInfo;
     const operationTabList = [
       {
         key: 'articles',
@@ -240,6 +241,7 @@ class Center extends PureComponent {
         ),
       },
     ];
+    // console.log('directionOptions', directionOptions);
     return (
       <GridContent className={styles.userCenter}>
         <Row gutter={24}>
@@ -268,7 +270,6 @@ class Center extends PureComponent {
                       {/*
                        * egg: 快速点击2次，出现当前排名
                        */}
-                      {techDirection}
                       <Button className={styles.scores}>{scores}&nbsp;积分</Button>
                     </div>
                   </div>

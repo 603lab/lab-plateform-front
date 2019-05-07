@@ -1,7 +1,7 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
 // import { fakeAccountLogin, getFakeCaptcha } from '@/services/api';
-import { fakeAccountLogin } from '@/services/account';
+import { fakeAccountLogin, forgetPassword } from '@/services/account';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
@@ -22,18 +22,14 @@ export default {
         type: 'changeLoginStatus',
         payload: response,
       });
-      const {
-        statusCode,
-        data: { uCode },
-        msg,
-      } = response;
+      const { statusCode, data, msg } = response;
       // Login successfully
       if (statusCode === 200) {
-        message.error(`登陆成功`);
+        message.success(`登陆成功`);
         // 存储信息
         Store.setStore({
           basicInfo: {
-            uCode,
+            uCode: data.uCode,
           },
         });
         reloadAuthorized();
@@ -79,6 +75,17 @@ export default {
           }),
         })
       );
+    },
+
+    *forget({ payload }, { call }) {
+      const response = yield call(forgetPassword, payload);
+      console.log(response);
+      const { msg, statusCode } = response;
+      if (statusCode === 200) {
+        message.success(`密码重置成功 603+学号`);
+      } else {
+        message.error(`密码重置失败 ${msg}`);
+      }
     },
   },
 
