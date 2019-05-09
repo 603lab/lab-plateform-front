@@ -69,7 +69,7 @@ class Center extends PureComponent {
     dispatch({
       type: 'list/fetch',
       payload: {
-        uCode: '150701204',
+        uCode: '150701206',
         currentPage: 1,
         pageSize: 3,
       },
@@ -104,6 +104,11 @@ class Center extends PureComponent {
         break;
     }
   };
+
+  // 更改nickName
+  // changeNickName = e => {
+  // console.log(e.target.value);
+  // };
 
   showInput = () => {
     const { tags = [] } = this.props;
@@ -264,7 +269,16 @@ class Center extends PureComponent {
                     >
                       <img alt="" src={avatar} />
                     </Tooltip>
-                    <div className={styles.name}>{nickName}</div>
+                    <div className={styles.name}>
+                      <span
+                        // contentEditable="true"
+                        style={{ cursor: 'pointer' }}
+                        // suppressContentEditableWarning
+                        // onChange={() => this.changeNickName}
+                      >
+                        {nickName}
+                      </span>
+                    </div>
                     <div>
                       {/* 方向 */}
                       {/*
