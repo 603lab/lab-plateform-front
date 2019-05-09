@@ -42,6 +42,7 @@
     "lodash": "^4.17.10",
     "lodash-decorators": "^6.0.0",
     "memoize-one": "^4.0.0",
+    "mo-js": "^0.288.2",
     "moment": "^2.22.2",
     "numeral": "^2.0.6",
     "nzh": "^1.0.3",

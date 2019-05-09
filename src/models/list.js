@@ -1,4 +1,4 @@
-import { queryList } from '@/services/list';
+import { queryList, likeArticle } from '@/services/list';
 import { message } from 'antd';
 
 export default {
@@ -18,9 +18,21 @@ export default {
           type: 'setArticleList',
           payload: data,
         });
-      } else {
-        message.error(`获取用户文章失败 ${msg}`);
+        return data;
       }
+      message.error(`获取用户文章失败 ${msg}`);
+      return false;
+    },
+
+    // 文章点赞
+    *like({ payload }, { call }) {
+      const response = yield call(likeArticle, payload);
+      const { statusCode, msg } = response || {};
+      if (statusCode === 200) {
+        return true;
+      }
+      message.error(`点赞失败 ${msg}`);
+      return false;
     },
   },
 
