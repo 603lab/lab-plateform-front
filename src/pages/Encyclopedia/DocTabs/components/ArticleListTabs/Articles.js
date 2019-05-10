@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Form, Card, List, Tag, Icon, Input, Row, Col, Button } from 'antd';
-
+import { connect } from 'dva';
 import StandardFormRow from '@/components/StandardFormRow';
 import ArticleListContent from '@/components/ArticleListContent';
 import styles from './Articles.less';
@@ -30,7 +30,10 @@ const tagsFromServer = [
     title: 'ES6',
   },
 ];
-
+@connect(({ loading, doc }) => ({
+  doc,
+  searchLoading: loading.effects['doc/search'],
+}))
 @Form.create()
 class SearchList extends Component {
   constructor(props) {
@@ -40,6 +43,16 @@ class SearchList extends Component {
       selectedTags: ['all'],
     };
   }
+
+  articleSearch = value => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'doc/search',
+      payload: {
+        authorName: value,
+      },
+    });
+  };
 
   handleChange(tag, checked) {
     const { selectedTags } = this.state;
@@ -51,9 +64,8 @@ class SearchList extends Component {
 
   render() {
     const { selectedTags } = this.state;
-    const { form, list, loading } = this.props;
+    const { form, list, loading = false, searchLoading } = this.props;
     const { getFieldDecorator } = form;
-
     const IconText = ({ type, text }) => (
       <span>
         <Icon type={type} style={{ marginRight: 8 }} />
@@ -109,10 +121,11 @@ class SearchList extends Component {
                     {getFieldDecorator('search', {})(
                       <Search
                         // size="small"
-                        style={{ width: 300 }}
                         enterButton="搜索"
                         placeholder=" 请输入关键字"
-                        onSearch={value => console.log(value)}
+                        style={{ width: 300 }}
+                        suffix={searchLoading ? <Icon type="loading" /> : ''}
+                        onSearch={value => this.articleSearch(value)}
                       />
                     )}
                   </FormItem>

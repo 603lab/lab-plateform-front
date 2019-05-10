@@ -95,7 +95,6 @@ export function likeAnimation(parentClass, selfClass, index, type) {
       LikeIcon.style.opacity = opacityProgress;
     },
   });
-  console.log('type', type);
   type
     ? new mojs.Timeline().add(Tween).play()
     : new mojs.Timeline().add(Burst, Burst2, Burst3, Tween).play();

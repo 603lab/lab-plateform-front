@@ -79,7 +79,6 @@ export default {
 
     *forget({ payload }, { call }) {
       const response = yield call(forgetPassword, payload);
-      console.log(response);
       const { msg, statusCode } = response;
       if (statusCode === 200) {
         message.success(`密码重置成功 603+学号`);

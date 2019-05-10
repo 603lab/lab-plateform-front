@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-04-03 16:29:31
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-04-03 16:32:20
+ * @Last Modified time: 2019-05-10 16:34:23
  */
 import React, { PureComponent } from 'react';
 import { Alert } from 'antd';
@@ -17,6 +17,17 @@ class ContentDoc extends PureComponent {
     this.state = {};
   }
 
+  /**
+   * 触发回调事件
+   * 切换tabs: 改变Menu的selectedKeys为当前changeTabs的key
+   */
+  handleTabsChange = tabs => {
+    const { getCurrentTabs } = this.props;
+    getCurrentTabs({
+      ...tabs,
+    });
+  };
+
   render() {
     const breadcrumbList = [
       {
@@ -24,14 +35,10 @@ class ContentDoc extends PureComponent {
         // href: '/',
       },
       {
-        title: '二级菜单',
-        // href: '/',
-      },
-      {
-        title: '三级菜单',
+        title: '首页',
       },
     ];
-
+    const { selectMenu } = this.props;
     return (
       <div className={styles.contentWried}>
         <PageHeader breadcrumbList={breadcrumbList} />
@@ -42,7 +49,7 @@ class ContentDoc extends PureComponent {
           style={{ margin: '10px 0', width: '50%' }}
           message="欢迎你！百科的扩展离不开你的分享"
         />
-        <DocTabsContent tabInfo={this.tabInfo} />
+        <DocTabsContent selectMenu={selectMenu} tabsChange={this.handleTabsChange} />
       </div>
     );
   }

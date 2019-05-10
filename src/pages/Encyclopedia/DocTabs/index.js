@@ -2,13 +2,14 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-14 16:14:46
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-04-04 16:30:56
+ * @Last Modified time: 2019-05-10 17:26:42
  * 最新文章无法删除、其他文章可删除Tab
  * 且新增文章一次只能一篇,其状态管理可查看store.js
  */
 import React, { PureComponent } from 'react';
 import { Tabs, Icon, Button, Modal } from 'antd';
-import Store from '../store';
+import findIndex from 'lodash/findIndex';
+import Store from '../docStore';
 import styles from './index.less';
 import ActionArticleTabs from './ActionArticleTabs';
 import LastestArticleTabs from './LastestArticleTabs';
@@ -19,28 +20,32 @@ export default class DocTabsContent extends PureComponent {
   constructor(props) {
     super(props);
     this.newTabIndex = 0;
-    const panes = [
-      {
-        key: '1',
-        canDelete: false,
-        title: '最新文章',
-      },
-      // {
-      //   key: '2',
-      //   canDelete: true,
-      //   title: '新建文章',
-      //   type: 'create',
-      // },
-      {
-        key: '3',
-        canDelete: true,
-        title: 'React',
-        type: 'detail',
-      },
-    ];
     this.state = {
-      activeKey: panes[0].key,
-      panes,
+      activeKey: '1',
+      panes: Store.getTabsData(),
+    };
+  }
+
+  static getDerivedStateFromProps(props, prevState) {
+    const { selectMenu } = props;
+    const { panes } = prevState;
+    // 保证点击了左侧Menu, 防止页面崩溃
+    if (Object.keys(selectMenu).length) {
+      // 如果点击的文章不存在Tabs,则新开一个Tabs.否则只需要把activeKey指向点击的文章id即可
+      if (findIndex(panes, { key: selectMenu.key }) === -1) {
+        const tempPanes = [...panes];
+        tempPanes.push({ ...selectMenu });
+        return {
+          activeKey: selectMenu.key,
+          panes: [...tempPanes],
+        };
+      }
+      return {
+        activeKey: selectMenu.key,
+      };
+    }
+    return {
+      ...prevState,
     };
   }
 
@@ -49,6 +54,14 @@ export default class DocTabsContent extends PureComponent {
   };
 
   onChange = activeKey => {
+    const { panes } = this.state;
+    let currentTabs = {};
+    panes.forEach(item => {
+      if (item.key === activeKey) {
+        currentTabs = item;
+      }
+    });
+    this.changeTabs({ ...currentTabs });
     this.setState({ activeKey });
   };
 
@@ -56,10 +69,10 @@ export default class DocTabsContent extends PureComponent {
     this[action](targetKey);
   };
 
-  add = () => {
+  create = () => {
     const { panes } = this.state;
     const tempPanes = [...panes];
-    const activeKey = `${tempPanes.length + 100}`; // 防止activeKey重复
+    const activeKey = `create${tempPanes.length + 100}`; // 防止activeKey重复
     tempPanes.push({
       key: activeKey,
       title: '新建文章',
@@ -68,10 +81,7 @@ export default class DocTabsContent extends PureComponent {
     });
     this.setState({ panes: tempPanes, activeKey });
     Store.setStore({
-      createArticleInfo: {
-        tabsId: activeKey,
-        isSaving: true,
-      },
+      tabsData: [...tempPanes],
     });
   };
 
@@ -90,11 +100,16 @@ export default class DocTabsContent extends PureComponent {
       if (panes.length && tempActiveKey === targetKey) {
         if (lastIndex >= 0) {
           tempActiveKey = panes[lastIndex].key;
+          this.changeTabs({ ...panes[lastIndex] });
         } else {
           tempActiveKey = panes[0].key;
+          this.changeTabs({ ...panes[0] });
         }
       }
       this.setState({ panes: tempPanes, activeKey: tempActiveKey });
+      Store.setStore({
+        tabsData: [...tempPanes],
+      });
     };
     if (tabsId === targetKey && !isSaving) {
       confirm({
@@ -112,8 +127,16 @@ export default class DocTabsContent extends PureComponent {
     }
   };
 
+  changeTabs = data => {
+    const { tabsChange } = this.props;
+    tabsChange({
+      ...data,
+    });
+  };
+
   render() {
     const { panes, activeKey } = this.state;
+    // console.log('panes', panes);
     return (
       <div className={styles.docTabs}>
         <Tabs
@@ -122,7 +145,7 @@ export default class DocTabsContent extends PureComponent {
           // onEdit={this.onEdit}
           onChange={this.onChange}
           tabBarExtraContent={
-            <Button type="primary" size="small" style={{ fontSize: 12 }} onClick={this.add}>
+            <Button type="primary" size="small" style={{ fontSize: 12 }} onClick={this.create}>
               新增文章
             </Button>
           }

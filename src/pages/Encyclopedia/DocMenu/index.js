@@ -1,16 +1,21 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
+import { withRouter } from 'dva/router';
 import { Menu } from 'antd';
+import styles from './index.less';
 
 const SubMenu = Menu.SubMenu;
 
 @connect(({ doc }) => ({
   doc,
 }))
+@withRouter
 class Encyclopedia extends PureComponent {
-  constructor(propas) {
-    super(propas);
-    this.state = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedKeys: ['1'],
+    };
   }
 
   componentDidMount() {
@@ -19,6 +24,18 @@ class Encyclopedia extends PureComponent {
       type: 'doc/fetchMenu',
       payload: {},
     });
+  }
+
+  static getDerivedStateFromProps(props) {
+    const { currentTabs, onSelect } = props;
+    if (Object.keys(currentTabs).length) {
+      const { key, title } = currentTabs;
+      onSelect({ key, canDelete: true, title, type: 'detail' });
+      return {
+        selectedKeys: [key],
+      };
+    }
+    return {};
   }
 
   resolveDeepMenu = deepMenu => {
@@ -44,18 +61,57 @@ class Encyclopedia extends PureComponent {
     return result;
   };
 
-  handleMenuSelect = () => {};
+  // handleMenuClick = selectKey => {
+  //   console.log('handleMenuClick', selectKey);
+  // }
+
+  handleMenuSelect = selected => {
+    const {
+      key,
+      keyPath,
+      item: {
+        props: { children },
+      },
+    } = selected;
+    const { getCurrentMenu } = this.props;
+    /*
+     * 由于右侧内容是通过tabs的数组渲染的，因此无法根据路由渲染
+     * 通过props相互通信.Menu切换时影响Tabs切换,Tabs切换时影响Menu切换
+     */
+    this.setState({
+      selectedKeys: keyPath,
+    });
+    const tabs = { key, canDelete: true, title: children, type: 'detail' };
+    getCurrentMenu({ ...tabs });
+    this.renderTabs({ ...tabs });
+  };
+
+  renderTabs = tabs => {
+    /**
+     *  @param {string} key 唯一id
+     *  @param {boolean} canDelete 是否可以删除
+     *  @param {string} title tabs标题
+     *  @param {string} type tabs类型 detail create
+     */
+    const { onSelect } = this.props;
+    onSelect({ ...tabs });
+  };
 
   render() {
     const {
       doc: { menu: menuData = [] },
     } = this.props;
+    const { selectedKeys } = this.state;
     return (
       <Menu
         mode="inline"
-        style={{ width: '100%', minHeight: 500 }}
+        inlineCollapsed={false}
+        selectedKeys={selectedKeys}
+        className={styles.menuWrapper}
         onSelect={this.handleMenuSelect}
+        // onClick={this.handleMenuClick}
       >
+        <Menu.Item key="1">首页</Menu.Item>
         {/* 第一层 */}
         {menuData.map(item => (
           <SubMenu key={item.id} title={item.fileName}>
