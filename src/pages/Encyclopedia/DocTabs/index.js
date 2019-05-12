@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-14 16:14:46
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-10 17:26:42
+ * @Last Modified time: 2019-05-12 17:10:37
  * 最新文章无法删除、其他文章可删除Tab
  * 且新增文章一次只能一篇,其状态管理可查看store.js
  */
@@ -119,7 +119,7 @@ export default class DocTabsContent extends PureComponent {
           deleteTabs();
         },
         onCancel() {
-          console.log('取消');
+          // console.log('取消');
         },
       });
     } else {
@@ -136,7 +136,6 @@ export default class DocTabsContent extends PureComponent {
 
   render() {
     const { panes, activeKey } = this.state;
-    // console.log('panes', panes);
     return (
       <div className={styles.docTabs}>
         <Tabs
@@ -168,7 +167,7 @@ export default class DocTabsContent extends PureComponent {
                 {pane.key === '1' ? (
                   <LastestArticleTabs />
                 ) : (
-                  <ActionArticleTabs tabType={pane.type} />
+                  <ActionArticleTabs tabsType={pane.type} tabsData={pane} />
                 )}
               </div>
             </TabPane>

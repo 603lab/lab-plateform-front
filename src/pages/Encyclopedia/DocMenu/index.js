@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { withRouter } from 'dva/router';
-import { Menu } from 'antd';
+import { Menu, Icon, Tooltip } from 'antd';
 import styles from './index.less';
 
 const SubMenu = Menu.SubMenu;
@@ -15,6 +15,7 @@ class Encyclopedia extends PureComponent {
     super(props);
     this.state = {
       selectedKeys: ['1'],
+      mouseOverMenuKey: -1,
     };
   }
 
@@ -39,6 +40,7 @@ class Encyclopedia extends PureComponent {
   }
 
   resolveDeepMenu = deepMenu => {
+    const { mouseOverMenuKey } = this.state;
     /**
      * 解决思路: 因为第一层是不可修改,所以需独立写在外层.该层返回的都是可配置项
      * 递归步骤:
@@ -50,12 +52,40 @@ class Encyclopedia extends PureComponent {
     deepMenu.forEach(item => {
       if (item.childrenList.length) {
         result.push(
-          <SubMenu key={item.id} title={item.fileName}>
+          <SubMenu
+            key={item.id}
+            title={
+              item.id === mouseOverMenuKey ? (
+                <>
+                  <Tooltip title="新增目录">
+                    <Icon type="plus-circle" />
+                  </Tooltip>
+                  <span>{item.fileName}</span>
+                </>
+              ) : (
+                item.fileName
+              )
+            }
+            onMouseEnter={() => this.handleSubMenuMouseEnter(item)}
+          >
             {this.resolveDeepMenu(item.childrenList)}
           </SubMenu>
         );
       } else {
-        result.push(<Menu.Item key={item.id}>{item.fileName}</Menu.Item>);
+        result.push(
+          <Menu.Item key={item.id} onMouseEnter={() => this.handleSubMenuMouseEnter(item)}>
+            {item.id === mouseOverMenuKey ? (
+              <>
+                <Tooltip title="新增目录">
+                  <Icon type="plus-circle" />
+                </Tooltip>
+                <span>{item.fileName}</span>
+              </>
+            ) : (
+              item.fileName
+            )}
+          </Menu.Item>
+        );
       }
     });
     return result;
@@ -86,6 +116,12 @@ class Encyclopedia extends PureComponent {
     this.renderTabs({ ...tabs });
   };
 
+  handleSubMenuMouseEnter = item => {
+    this.setState({
+      mouseOverMenuKey: item.id || -1,
+    });
+  };
+
   renderTabs = tabs => {
     /**
      *  @param {string} key 唯一id
@@ -101,7 +137,7 @@ class Encyclopedia extends PureComponent {
     const {
       doc: { menu: menuData = [] },
     } = this.props;
-    const { selectedKeys } = this.state;
+    const { selectedKeys, mouseOverMenuKey } = this.state;
     return (
       <Menu
         mode="inline"
@@ -114,7 +150,22 @@ class Encyclopedia extends PureComponent {
         <Menu.Item key="1">首页</Menu.Item>
         {/* 第一层 */}
         {menuData.map(item => (
-          <SubMenu key={item.id} title={item.fileName}>
+          <SubMenu
+            key={item.id}
+            title={
+              item.id === mouseOverMenuKey ? (
+                <>
+                  <Tooltip title="新增目录">
+                    <Icon type="plus-circle" />
+                  </Tooltip>
+                  <span>{item.fileName}</span>
+                </>
+              ) : (
+                item.fileName
+              )
+            }
+            onMouseEnter={() => this.handleSubMenuMouseEnter(item)}
+          >
             {this.resolveDeepMenu(item.childrenList)}
           </SubMenu>
         ))}
