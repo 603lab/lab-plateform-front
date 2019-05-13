@@ -16,8 +16,8 @@ const PageHeaderWrapper = ({ children, contentWidth, wrapperClassName, top, ...r
           wide={contentWidth === 'Fixed'}
           home={<FormattedMessage id="menu.home" defaultMessage="Home" />}
           {...value}
-          key="pageheader"
           {...restProps}
+          key="pageheader"
           linkElement={Link}
           itemRender={item => {
             if (item.locale) {

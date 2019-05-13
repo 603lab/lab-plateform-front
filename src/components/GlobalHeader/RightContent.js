@@ -93,6 +93,8 @@ export default class GlobalHeaderRight extends PureComponent {
     if (theme === 'dark') {
       className = `${styles.right}  ${styles.dark}`;
     }
+    console.log('currentUser', currentUser);
+    console.log('currentUser.nickName', currentUser.nickName);
     return (
       <div className={className}>
         <HeaderSearch
