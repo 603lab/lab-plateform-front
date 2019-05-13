@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card, Icon, Alert, Form, Input, Modal, DatePicker } from 'antd';
 import moment from 'moment';
+import { connect } from 'dva';
 import styles from './CommisionWork.less';
 import {
-  cardData,
   cardStyle,
   cardDefaultStyle,
   cardMoveLeftStyle,
@@ -13,14 +13,17 @@ import {
 // 卡片宽度
 const cardWidth = 274;
 // 设置卡片长度
-const cardLength = Object.keys(cardData).length;
-// 设置极限长度
-const utMost = cardWidth * (cardLength - 1);
+// const cardLength = Object.keys(cardData).length;
+// // 设置极限长度
+// const utMost = cardWidth * (cardLength - 1);
 // 定义单次点击以后移动的距离
 const moveWidth = 274;
 
 const { TextArea } = Input;
-
+@connect(({ user, home }) => ({
+  currentUser: user.currentUser,
+  commisionWorkList: home.commisionWorkList,
+}))
 class CommisionWork extends React.Component {
   constructor(props) {
     super(props);
@@ -30,7 +33,25 @@ class CommisionWork extends React.Component {
       position: 0,
       visible: false,
       boardVisible: false,
+      titleInputValue: '',
+      endTimeInputValue: '',
+      descripInputValue: '',
     };
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+
+    // 获取待办工作
+    dispatch({
+      type: 'home/fetchCommisionWork',
+      payload: {
+        currentPage: 1,
+        pageSize: 6,
+        isDone: 0,
+        createUserCode: '150701206',
+      },
+    });
   }
 
   handleClose = () => {
@@ -44,9 +65,39 @@ class CommisionWork extends React.Component {
   };
 
   handleOk = () => {
-    this.setState({
-      boardVisible: false,
+    const { dispatch } = this.props;
+    const { titleInputValue, endTimeInputValue, descripInputValue } = this.state;
+    // 添加任务
+    dispatch({
+      type: 'home/addTask',
+      payload: {
+        createUserCode: '150701206',
+        createUserName: '陆仁杰',
+        taskTitle: titleInputValue,
+        endTime: endTimeInputValue,
+        taskDescription: descripInputValue,
+        receivedUserName: '陆仁杰',
+        receivedUserCode: '150701206',
+      },
+    }).then(result => {
+      if (result) {
+        this.setState({
+          boardVisible: false,
+        });
+      }
     });
+  };
+
+  handleTitleInputChange = e => {
+    this.setState({ titleInputValue: e.target.value });
+  };
+
+  handleEndTimeInputChange = (date, dateString) => {
+    this.setState({ endTimeInputValue: dateString });
+  };
+
+  handleDescripInputChange = e => {
+    this.setState({ descripInputValue: e.target.value });
   };
 
   handleCancel = () => {
@@ -55,8 +106,9 @@ class CommisionWork extends React.Component {
     });
   };
 
-  taskCardMove = distance => {
+  taskCardMove = (distance, utMost) => {
     const { position } = this.state;
+
     if (position === 0 && distance !== -1) {
       //  左极限位置 则不执行距离变化
       this.setState({ visible: true });
@@ -123,7 +175,9 @@ class CommisionWork extends React.Component {
 
   render() {
     const { currentId, isShowTopIcon, visible, boardVisible } = this.state;
-
+    const { commisionWorkList = [] } = this.props;
+    const cardLength = commisionWorkList.length;
+    const utMost = cardWidth * (cardLength - 1);
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -149,8 +203,8 @@ class CommisionWork extends React.Component {
         >
           {/* 设置移动按钮 */}
           <div className={styles.actionBtn}>
-            <Icon type="left" onClick={() => this.taskCardMove(1)} />
-            <Icon type="right" onClick={() => this.taskCardMove(-1)} />
+            <Icon type="left" onClick={() => this.taskCardMove(1, utMost)} />
+            <Icon type="right" onClick={() => this.taskCardMove(-1, utMost)} />
           </div>
           {/* <Button
             type="primary"
@@ -174,7 +228,7 @@ class CommisionWork extends React.Component {
           </Button> */}
           {/*     动态设置width ↓    */}
           <div style={{ width: cardWidth * (cardLength + 1) }}>
-            {cardData.map((item, i) => (
+            {commisionWorkList.map((item, i) => (
               <Card
                 key={`Card${item.id}`}
                 className={i === currentId ? styles.taskCard : null}
@@ -233,7 +287,12 @@ class CommisionWork extends React.Component {
                 validateStatus="success"
                 style={{ marginLeft: 28, marginBottom: 20 }}
               >
-                <Input placeholder="任务标题" id="success" style={{ width: 300 }} />
+                <Input
+                  placeholder="任务标题"
+                  id="success"
+                  style={{ width: 300 }}
+                  onChange={this.handleTitleInputChange}
+                />
               </Form.Item>
 
               <Form.Item
@@ -242,7 +301,7 @@ class CommisionWork extends React.Component {
                 validateStatus="success"
                 style={{ marginBottom: 20 }}
               >
-                <DatePicker style={{ width: 300 }} />
+                <DatePicker style={{ width: 300 }} onChange={this.handleEndTimeInputChange} />
               </Form.Item>
 
               <Form.Item label="工作描述">
@@ -250,6 +309,7 @@ class CommisionWork extends React.Component {
                   placeholder="工作描述"
                   autosize={{ minRows: 2, maxRows: 6 }}
                   style={{ width: 300 }}
+                  onChange={this.handleDescripInputChange}
                 />
               </Form.Item>
             </Form>
@@ -259,5 +319,4 @@ class CommisionWork extends React.Component {
     );
   }
 }
-
 export default CommisionWork;

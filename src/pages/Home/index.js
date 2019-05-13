@@ -6,7 +6,7 @@ import ArticleCard from './ArticleCard';
 import CommisionWork from './CommisionWork';
 // import styles from './index.less';
 
-export default class Home extends PureComponent {
+class Home extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -30,3 +30,4 @@ export default class Home extends PureComponent {
     );
   }
 }
+export default Home;

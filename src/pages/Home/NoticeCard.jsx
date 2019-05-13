@@ -1,12 +1,19 @@
 import React from 'react';
 import { Card, Icon, Alert } from 'antd';
 import moment from 'moment';
-import { noticeList } from './NoticeCardJson';
+import { connect } from 'dva';
 import styles from './NoticeCard.less';
+// import {noticeList} from './NoticeCardJson';
 
-// 数组长度
-const listLength = Object.keys(noticeList).length;
-export default class CommisionWork extends React.Component {
+// // let noticeList = [];
+//  // 数组长度
+//  const listLength = Object.keys(noticeList).length;
+
+@connect(({ user, home }) => ({
+  currentUser: user.currentUser,
+  noticeList: home.noticeList,
+}))
+class NoticeCard extends React.Component {
   constructor(props) {
     super(props);
 
@@ -16,6 +23,19 @@ export default class CommisionWork extends React.Component {
       visible: false,
       isShowAll: false,
     };
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+
+    // 获取公示栏
+    dispatch({
+      type: 'home/fetchNoticesBoard',
+      payload: {
+        currentPage: 1,
+        pageSize: 6,
+      },
+    });
   }
 
   handleClose = () => {
@@ -30,8 +50,9 @@ export default class CommisionWork extends React.Component {
     });
   };
 
-  turnBoard = key => {
+  turnBoard = (key, noticeList) => {
     const { currentKey } = this.state;
+    const listLength = noticeList.length;
     const newKey = currentKey + key;
     if (newKey >= listLength || newKey < 0) {
       this.setState({
@@ -44,26 +65,28 @@ export default class CommisionWork extends React.Component {
     }
   };
 
-  initBoard() {
+  initBoard = noticeList => {
     let res = null;
     const { currentKey } = this.state;
+    const listLength = noticeList.length;
     if (listLength > 0) {
       res = noticeList[currentKey];
     }
     return res;
-  }
+  };
 
   render() {
     const { isShowMenu, visible, isShowAll } = this.state;
+    const { noticeList = [] } = this.props;
     const cardAction = isShowMenu
       ? [
-          <Icon type="arrow-left" onClick={() => this.turnBoard(-1)} />,
-          <Icon type="arrow-right" onClick={() => this.turnBoard(1)} />,
+          <Icon type="arrow-left" onClick={() => this.turnBoard(-1, noticeList)} />,
+          <Icon type="arrow-right" onClick={() => this.turnBoard(1, noticeList)} />,
           <span onClick={this.turnMenu}>查看所有</span>,
         ]
       : [<Icon type="up" onClick={this.turnMenu} />];
 
-    const board = this.initBoard();
+    const board = this.initBoard(noticeList);
     const boardStyle = {
       height: 152,
       // width: 612,
@@ -125,3 +148,4 @@ export default class CommisionWork extends React.Component {
     );
   }
 }
+export default NoticeCard;
