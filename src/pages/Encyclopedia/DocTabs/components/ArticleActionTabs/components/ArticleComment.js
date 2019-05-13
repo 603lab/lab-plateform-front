@@ -23,11 +23,12 @@ class ArtivleComment extends PureComponent {
   }
 
   componentDidMount() {
-    const { dispatch, id, createUserCode, createUserName } = this.props;
+    const { dispatch, docId, createUserCode, createUserName } = this.props;
+    if (!docId) return;
     dispatch({
-      type: 'doc/fetchComment',
+      type: 'doc/fetchComments',
       payload: {
-        id,
+        ID: docId,
         createUserCode,
         createUserName,
       },
@@ -76,6 +77,12 @@ class ArtivleComment extends PureComponent {
         createUserCode,
         createUserName,
       },
+    }).then(res => {
+      if (res) {
+        this.setState({
+          commentContent: '',
+        });
+      }
     });
     return true;
   };
@@ -87,19 +94,6 @@ class ArtivleComment extends PureComponent {
       fetchLoading,
       addCommentLoading,
     } = this.props;
-    // const Editor = ({ onChange, onSubmitComment, submitting, value }) => (
-    //   <div>
-    //     {/* <p>陈晓斌</p> */}
-    //     <Form.Item style={{ marginBottom: 10 }}>
-    //       <TextArea placeholder="少发段子，多发知识" rows={4} onChange={onChange} value={value} />
-    //     </Form.Item>
-    //     <Form.Item>
-    //       <Button loading={submitting} onClick={onSubmitComment} type="primary">
-    //         评论
-    //       </Button>
-    //     </Form.Item>
-    //   </div>
-    // );
     const actions = [
       <span>
         <Tooltip title="Like">
@@ -134,12 +128,7 @@ class ArtivleComment extends PureComponent {
               key={item.id}
               actions={actions}
               author={<a>{item.createUserName}</a>}
-              avatar={
-                <Avatar
-                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                  alt="Han Solo"
-                />
-              }
+              avatar={<Avatar src={item.avatar} alt={item.createUserName} />}
               content={<p>{item.content}</p>}
               datetime={
                 <Tooltip title={moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}>

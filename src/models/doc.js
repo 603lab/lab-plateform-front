@@ -1,4 +1,11 @@
-import { getDocMenu, searchArticle, getDocDetail, fetchComments, addComment } from '@/services/doc';
+import {
+  getDocMenu,
+  searchArticle,
+  getDocDetail,
+  collectArticle,
+  fetchComments,
+  addComment,
+} from '@/services/doc';
 import { message } from 'antd';
 
 export default {
@@ -41,9 +48,20 @@ export default {
           type: 'setDocDetail',
           payload: data,
         });
-      } else {
-        message.error(`获取文章详情失败 ${msg}`);
+        return data.isCollected;
       }
+      message.error(`获取文章详情失败 ${msg}`);
+      return false;
+    },
+    *collect({ payload }, { call }) {
+      const response = yield call(collectArticle, payload);
+      const { statusCode, msg } = response;
+      if (statusCode === 200) {
+        message.success(msg);
+        return 1;
+      }
+      message.error(msg);
+      return 0;
     },
     // 获取所有评论
     *fetchComments({ payload }, { call, put }) {
@@ -68,14 +86,15 @@ export default {
         yield put({
           type: 'fetchComments',
           payload: {
-            docId,
+            ID: docId,
             createUserCode,
             createUserName,
           },
         });
-      } else {
-        message.error(`评论失败 ${msg}`);
+        return true;
       }
+      message.error(`评论失败 ${msg}`);
+      return false;
     },
   },
 
