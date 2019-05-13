@@ -76,7 +76,7 @@ export default class GlobalHeaderRight extends PureComponent {
           <Icon type="user" />
           <FormattedMessage id="menu.account.center" defaultMessage="account center" />
         </Menu.Item>
-        <Menu.Item key="userinfo">
+        <Menu.Item key="settings">
           <Icon type="setting" />
           <FormattedMessage id="menu.account.settings" defaultMessage="account settings" />
         </Menu.Item>
@@ -93,17 +93,15 @@ export default class GlobalHeaderRight extends PureComponent {
     if (theme === 'dark') {
       className = `${styles.right}  ${styles.dark}`;
     }
-    console.log('currentUser', currentUser);
-    console.log('currentUser.nickName', currentUser.nickName);
     return (
       <div className={className}>
         <HeaderSearch
           className={`${styles.action} ${styles.search}`}
           placeholder={formatMessage({ id: 'component.globalHeader.search' })}
           dataSource={[
-            formatMessage({ id: 'component.globalHeader.search.example1' }),
-            formatMessage({ id: 'component.globalHeader.search.example2' }),
-            formatMessage({ id: 'component.globalHeader.search.example3' }),
+            '二木熊',
+            // formatMessage({ id: 'component.globalHeader.search.example2' }),
+            // formatMessage({ id: 'component.globalHeader.search.example3' }),
           ]}
           onSearch={value => {
             console.log('input', value); // eslint-disable-line
@@ -114,7 +112,7 @@ export default class GlobalHeaderRight extends PureComponent {
         />
         <NoticeIcon
           className={styles.action}
-          count={currentUser.unreadCount}
+          count="4"
           onItemClick={(item, tabProps) => {
             // console.log(item, tabProps); // eslint-disable-line
             this.changeReadState(item, tabProps);

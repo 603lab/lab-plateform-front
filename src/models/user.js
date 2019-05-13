@@ -23,7 +23,6 @@ export default {
     *fetchInfo({ payload }, { call, put }) {
       const response = yield call(queryUserInfo, payload);
       const { statusCode, data, msg } = response || {};
-      console.log('response', response);
       if (statusCode === 200) {
         yield put({
           type: 'saveCurrentUser',
