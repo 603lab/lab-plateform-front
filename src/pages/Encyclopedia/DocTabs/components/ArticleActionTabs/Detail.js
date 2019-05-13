@@ -129,7 +129,7 @@ class Detail extends PureComponent {
                   <Skeleton />
                 ) : (
                   <ArticleComment
-                    id={id}
+                    docId={id}
                     createUserCode={createUserCode}
                     createUserName={createUserName}
                   />

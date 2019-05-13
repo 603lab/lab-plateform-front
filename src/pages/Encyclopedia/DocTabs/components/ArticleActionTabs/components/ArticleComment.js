@@ -58,14 +58,24 @@ class ArtivleComment extends PureComponent {
 
   handleSubmit = () => {
     const { commentContent } = this.state;
+    const { docId, createUserCode, createUserName } = this.props;
     const { dispatch } = this.props;
     if (!commentContent) {
       message.error('请输入内容');
       return false;
     }
+
+    /**
+     * 还未对评论和回复做区别?
+     */
     dispatch({
       type: 'doc/addComment',
-      payload: {},
+      payload: {
+        docId,
+        content: commentContent,
+        createUserCode,
+        createUserName,
+      },
     });
     return true;
   };
@@ -77,19 +87,19 @@ class ArtivleComment extends PureComponent {
       fetchLoading,
       addCommentLoading,
     } = this.props;
-    const Editor = ({ onChange, onSubmitComment, submitting, value }) => (
-      <div>
-        {/* <p>陈晓斌</p> */}
-        <Form.Item style={{ marginBottom: 10 }}>
-          <TextArea placeholder="少发段子，多发知识" rows={4} onChange={onChange} value={value} />
-        </Form.Item>
-        <Form.Item>
-          <Button htmlType="submit" loading={submitting} onClick={onSubmitComment} type="primary">
-            评论
-          </Button>
-        </Form.Item>
-      </div>
-    );
+    // const Editor = ({ onChange, onSubmitComment, submitting, value }) => (
+    //   <div>
+    //     {/* <p>陈晓斌</p> */}
+    //     <Form.Item style={{ marginBottom: 10 }}>
+    //       <TextArea placeholder="少发段子，多发知识" rows={4} onChange={onChange} value={value} />
+    //     </Form.Item>
+    //     <Form.Item>
+    //       <Button loading={submitting} onClick={onSubmitComment} type="primary">
+    //         评论
+    //       </Button>
+    //     </Form.Item>
+    //   </div>
+    // );
     const actions = [
       <span>
         <Tooltip title="Like">
@@ -149,12 +159,27 @@ class ArtivleComment extends PureComponent {
             />
           }
           content={
-            <Editor
-              value={commentContent}
-              onChange={this.handleChange}
-              onSubmit={this.handleSubmit}
-              submitting={addCommentLoading}
-            />
+            // <Editor
+            //   value={commentContent}
+            //   onChange={this.handleChange}
+            //   onSubmit={this.handleSubmit}
+            //   submitting={addCommentLoading}
+            // />
+            <>
+              <Form.Item style={{ marginBottom: 10 }}>
+                <TextArea
+                  placeholder="少发段子，多发知识"
+                  rows={4}
+                  onChange={this.handleChange}
+                  value={commentContent}
+                />
+              </Form.Item>
+              <Form.Item>
+                <Button loading={addCommentLoading} onClick={this.handleSubmit} type="primary">
+                  评论
+                </Button>
+              </Form.Item>
+            </>
           }
         />
       </>

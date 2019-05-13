@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-04-03 16:40:25
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-11 16:14:07
+ * @Last Modified time: 2019-05-13 21:19:11
  * 维护百科模块需要的状态:
  *  - 新增文章状态
  *  - 编辑文章状态
@@ -33,12 +33,12 @@ class Store {
           canDelete: false,
           title: '最新文章',
         },
-        {
-          key: '2',
-          canDelete: true,
-          title: 'React',
-          type: 'detail',
-        },
+        // {
+        //   key: '2',
+        //   canDelete: true,
+        //   title: 'React',
+        //   type: 'detail',
+        // },
       ],
     };
     this.instance = null;

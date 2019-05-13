@@ -64,6 +64,7 @@ export default {
       const { statusCode, msg } = response;
       const { docId, createUserCode, createUserName } = payload;
       if (statusCode === 200) {
+        message.success(`评论成功`);
         yield put({
           type: 'fetchComments',
           payload: {
