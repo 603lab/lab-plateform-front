@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 import { withRouter } from 'dva/router';
-import { Menu, Icon, Tooltip, Popconfirm } from 'antd';
+import { Menu } from 'antd';
 import styles from './index.less';
 
 const SubMenu = Menu.SubMenu;
@@ -57,9 +57,9 @@ class Encyclopedia extends PureComponent {
             title={
               item.id === mouseOverMenuKey ? (
                 <>
-                  <Tooltip title="新增目录">
+                  {/* <Tooltip title="新增目录">
                     <Icon type="plus-circle" />
-                  </Tooltip>
+                  </Tooltip> */}
                   <span>{item.fileName}</span>
                 </>
               ) : (
@@ -76,9 +76,9 @@ class Encyclopedia extends PureComponent {
           <Menu.Item key={item.id} onMouseEnter={() => this.handleSubMenuMouseEnter(item)}>
             {item.id === mouseOverMenuKey ? (
               <>
-                <Tooltip title="新增目录">
+                {/* <Tooltip title="新增目录">
                   <Icon type="plus-circle" />
-                </Tooltip>
+                </Tooltip> */}
                 <span>{item.fileName}</span>
               </>
             ) : (
@@ -155,7 +155,7 @@ class Encyclopedia extends PureComponent {
             title={
               item.id === mouseOverMenuKey ? (
                 <>
-                  <Popconfirm
+                  {/* <Popconfirm
                     title="是否新增目录?"
                     // onConfirm={confirm}
                     // onCancel={cancel}
@@ -165,7 +165,7 @@ class Encyclopedia extends PureComponent {
                     <Tooltip title="新增目录">
                       <Icon type="plus-circle" />
                     </Tooltip>
-                  </Popconfirm>
+                  </Popconfirm> */}
                   <span>{item.fileName}</span>
                 </>
               ) : (

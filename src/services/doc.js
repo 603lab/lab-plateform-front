@@ -29,6 +29,22 @@ export async function getDocDetail(params) {
 }
 
 /**
+ * 收藏文章 POST
+ * @param {numbner} isCollect 收藏标识 required 1 收藏/ 0 取消收藏
+ * @param {number} itemId 文章编号 required
+ * @param {string} createUserCode 创建者ID required
+ * @param {string} createUserName 创建者姓名 required
+ */
+export async function collectArticle(params) {
+  return request(`/api/${basePrefix}/Collect`, {
+    method: 'POST',
+    body: {
+      ...params,
+    },
+  });
+}
+
+/**
  * 获取文章评论 GET
  * @param {numbner} docId 文章ID required
  * @param {string} createUserCode 创建者ID required

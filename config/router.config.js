@@ -74,7 +74,7 @@ export default [
       // 个人设置
       {
         hideInMenu: true,
-        name: 'settings',
+        // name: 'menu.settings',
         path: '/account/settings',
         component: './Account/Settings/Info',
         routes: [

@@ -15,7 +15,9 @@ class Detail extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      isCollect: false,
+    };
   }
 
   componentDidMount() {
@@ -24,41 +26,42 @@ class Detail extends PureComponent {
     dispatch({
       type: 'doc/detail',
       payload: {
-        id: 3,
+        ID: 3,
         createUserCode: '150701206',
+        createUserName: '陆仁杰',
       },
+    }).then(isCollect => {
+      this.setState({
+        isCollect,
+      });
     });
   }
+
+  handleCollect = () => {
+    const { isCollect } = this.state;
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'doc/collect',
+      payload: {
+        itemId: 3,
+        isCollect: isCollect ? 0 : 1,
+        createUserCode: '150701206',
+        createUserName: '陆仁杰',
+      },
+    }).then(() => {
+      this.setState({
+        isCollect: !isCollect,
+      });
+    });
+  };
 
   handleShare = () => {};
 
   render() {
-    // {
-    //   "isLike": true,
-    //   "isCollected": true,
-    //   "id": 3,
-    //   "parentId": 10028,
-    //   "fileAddress": "/Annex/doc/.NET CORE.doc",
-    //   "fileName": "走进.NET Core",
-    //   "fileTag": "[\".NET\",\"数据库\"]",
-    //   "url": null,
-    //   "content": "<#SQL#>",
-    //   "likeNum": 4,
-    //   "collectNum": 1,
-    //   "browseNum": 1,
-    //   "commentNum": 0,
-    //   "type": "doc",
-    //   "remark": "",
-    //   "createUserCode": "150701206",
-    //   "createUserName": "陆仁杰",
-    //   "createTime": "2019-01-14T17:46:28"
-    // }
-    // const { title, content } = this.state;
     const {
       doc: {
         articleDetail: {
           id, // 文章id
-          isLike, // 是否收藏
           fileName, // 文章标题
           content, // 文章内容
           createTime, // 创建时间
@@ -71,6 +74,26 @@ class Detail extends PureComponent {
       },
       loading,
     } = this.props;
+    const { isCollect } = this.state;
+    const ArticleAction = () => (
+      <div className={styles.topAction}>
+        <div className={styles.topActionList} onClick={this.handleCollect}>
+          <Icon type="star" style={{ color: isCollect ? '#722ed1' : '' }} />
+          &nbsp;
+          <span style={{ color: isCollect ? '#722ed1' : '' }}>{isCollect ? '已收藏' : '收藏'}</span>
+        </div>
+        <div className={styles.topActionList}>
+          <Icon type="edit" />
+          &nbsp;
+          <span>编辑</span>
+        </div>
+        <div className={styles.topActionList}>
+          <Icon type="share" />
+          &nbsp;
+          <span onClick={this.handleShare}>分享</span>
+        </div>
+      </div>
+    );
     return (
       <div className={styles.detailWrapper}>
         {loading ? (
@@ -79,12 +102,13 @@ class Detail extends PureComponent {
           <>
             <div className={styles.top}>
               <ArticleTree />
-              <div className={styles.topAction}>
+              <ArticleAction />
+              {/* <div className={styles.topAction}>
                 <div className={styles.topActionList}>
-                  <Icon type="star" style={{ color: isLike ? '#722ed1' : '' }} />
+                  <Icon type="star" style={{ color: isCollect ? '#722ed1' : '' }} />
                   &nbsp;
-                  <span style={{ color: isLike ? '#722ed1' : '' }}>
-                    {isLike ? '已收藏' : '收藏'}
+                  <span style={{ color: isCollect ? '#722ed1' : '' }}>
+                    {isCollect ? '已收藏' : '收藏'}
                   </span>
                 </div>
                 <div className={styles.topActionList}>
@@ -97,7 +121,7 @@ class Detail extends PureComponent {
                   &nbsp;
                   <span onClick={this.handleShare}>分享</span>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className={styles.content}>
               {/* 文章标题 */}
@@ -126,7 +150,7 @@ class Detail extends PureComponent {
               </div>
               <div className={styles.articleComment}>
                 {loading ? (
-                  <Skeleton />
+                  ''
                 ) : (
                   <ArticleComment
                     docId={id}

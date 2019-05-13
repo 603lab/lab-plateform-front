@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-14 16:14:46
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-13 21:26:19
+ * @Last Modified time: 2019-05-14 01:25:26
  * 最新文章无法删除、其他文章可删除Tab
  * 且新增文章一次只能一篇,其状态管理可查看store.js
  */
@@ -136,9 +136,6 @@ export default class DocTabsContent extends PureComponent {
 
   render() {
     const { panes, activeKey } = this.state;
-    panes.forEach(item => {
-      console.log('panes', item);
-    });
     return (
       <div className={styles.docTabs}>
         <Tabs
