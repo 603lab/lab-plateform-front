@@ -2,14 +2,14 @@
  * @Author: chenxiaobin
  * @Date: 2019-04-03 17:08:03
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-04-04 16:31:10
+ * @Last Modified time: 2019-05-11 16:30:16
  * 新增/编辑文章
  */
 import React, { PureComponent } from 'react';
 import { Input } from 'antd';
-import ArticleTree from './ArticleTree';
+import ArticleTree from './components/ArticleTree';
 import styles from './Create.less';
-import Store from '../../../store';
+import Store from '../../../docStore';
 import RichEdit from '@/components/RichEditor/index';
 
 export default class Create extends PureComponent {

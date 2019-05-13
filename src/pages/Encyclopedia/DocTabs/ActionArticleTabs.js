@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-14 21:20:43
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-04-04 16:30:42
+ * @Last Modified time: 2019-05-11 13:47:41
  * 新建文章、文章详情...
  */
 
@@ -19,10 +19,10 @@ export default class ActionArticleTabs extends PureComponent {
   }
 
   render() {
-    const { tabType } = this.props;
+    const { tabsType, tabsData } = this.props;
     return (
       <div className={styles.OtherTabsContent}>
-        {tabType === 'create' ? <Create /> : <Detail />}
+        {tabsType === 'create' ? <Create tabsData={tabsData} /> : <Detail tabsData={tabsData} />}
       </div>
     );
   }

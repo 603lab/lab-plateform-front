@@ -55,7 +55,7 @@ class HeaderView extends PureComponent {
   };
 
   handleMenuClick = ({ key }) => {
-    const { dispatch } = this.props;
+    // const { dispatch } = this.props;
     if (key === 'userCenter') {
       router.push('/account/center');
       return;
@@ -64,14 +64,15 @@ class HeaderView extends PureComponent {
       router.push('/exception/trigger');
       return;
     }
-    if (key === 'userinfo') {
-      router.push('/account/settings/base');
+    if (key === 'settings') {
+      router.push('/account/settings');
       return;
     }
     if (key === 'logout') {
-      dispatch({
-        type: 'login/logout',
-      });
+      // dispatch({
+      //   type: 'login/logout',
+      // });
+      router.push('/user/login');
     }
   };
 
