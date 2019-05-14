@@ -143,7 +143,7 @@ class ArtivleComment extends PureComponent {
         <Comment
           avatar={
             <Avatar
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              src="https://img.52z.com/upload/news/image/20180212/20180212084623_90158.jpg"
               alt="Han Solo"
             />
           }

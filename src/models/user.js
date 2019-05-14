@@ -40,7 +40,7 @@ export default {
         yield put({
           type: 'fetchInfo',
           payload: {
-            createUserCode: '150701206',
+            uCode: '150701206',
           },
         });
         message.success('更新用户信息成功');

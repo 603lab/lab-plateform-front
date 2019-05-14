@@ -2,6 +2,7 @@ import {
   getDocMenu,
   searchArticle,
   getDocDetail,
+  createArticle,
   collectArticle,
   fetchComments,
   addComment,
@@ -13,6 +14,7 @@ export default {
 
   state: {
     menu: [],
+    homeArticleList: [],
   },
 
   effects: {
@@ -40,6 +42,7 @@ export default {
         message.error(`获取百科菜单数据失败 ${msg}`);
       }
     },
+    // 获取文章详情
     *detail({ payload }, { call, put }) {
       const response = yield call(getDocDetail, payload);
       const { statusCode, data, msg } = response;
@@ -51,6 +54,17 @@ export default {
         return data.isCollected;
       }
       message.error(`获取文章详情失败 ${msg}`);
+      return false;
+    },
+    // 新增文章
+    *create({ payload }, { call }) {
+      const response = yield call(createArticle, payload);
+      const { statusCode, msg } = response;
+      if (statusCode === 200) {
+        message.success(msg);
+        return true;
+      }
+      message.error(`新建文章失败 ${msg}`);
       return false;
     },
     *collect({ payload }, { call }) {
@@ -108,7 +122,7 @@ export default {
     setArticleList(state, action) {
       return {
         ...state,
-        articleList: action.payload,
+        homeArticleList: action.payload,
       };
     },
     setDocDetail(state, action) {

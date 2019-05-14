@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Icon, Tag, Skeleton } from 'antd';
+import { Icon, Tag, Skeleton, Spin } from 'antd';
 import { connect } from 'dva';
 import moment from 'moment';
 import ArticleTree from './components/ArticleTree';
@@ -10,6 +10,7 @@ import Color from '@/utils/colors';
 @connect(({ doc, loading }) => ({
   doc,
   loading: loading.effects['doc/detail'],
+  collectLoading: loading.effects['doc/collect'],
 }))
 class Detail extends PureComponent {
   constructor(props) {
@@ -21,12 +22,19 @@ class Detail extends PureComponent {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, tabsData } = this.props;
+    let key = tabsData.key;
     // this.props.tabsData
+    if (key === 10005) {
+      key = 17;
+    }
+    if (key === 10012) {
+      key = 3;
+    }
     dispatch({
       type: 'doc/detail',
       payload: {
-        ID: 3,
+        ID: key,
         createUserCode: '150701206',
         createUserName: '陆仁杰',
       },
@@ -73,6 +81,7 @@ class Detail extends PureComponent {
         } = {},
       },
       loading,
+      collectLoading,
     } = this.props;
     const { isCollect } = this.state;
     const ArticleAction = () => (
@@ -81,6 +90,7 @@ class Detail extends PureComponent {
           <Icon type="star" style={{ color: isCollect ? '#722ed1' : '' }} />
           &nbsp;
           <span style={{ color: isCollect ? '#722ed1' : '' }}>{isCollect ? '已收藏' : '收藏'}</span>
+          {collectLoading ? <Spin /> : ''}
         </div>
         <div className={styles.topActionList}>
           <Icon type="edit" />

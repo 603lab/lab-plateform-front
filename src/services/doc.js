@@ -29,6 +29,27 @@ export async function getDocDetail(params) {
 }
 
 /**
+ * 新建 POST
+ * @param {string} parentId 父级ID required
+ * @param {string} fileAddress 文章路径 required
+ * @param {string} fileName 文章名字 required
+ * @param {string} fileTag 文章标签 required
+ * @param {string} content 文章内容 required
+ * @param {string} type 文章类型 required
+ * @param {string} remark
+ * @param {string} createUserCode 创建者ID required
+ * @param {string} createUserName 创建者姓名 required
+ */
+export async function createArticle(params) {
+  return request(`/api/${basePrefix}/AddDoc`, {
+    method: 'POST',
+    body: {
+      ...params,
+    },
+  });
+}
+
+/**
  * 收藏文章 POST
  * @param {numbner} isCollect 收藏标识 required 1 收藏/ 0 取消收藏
  * @param {number} itemId 文章编号 required

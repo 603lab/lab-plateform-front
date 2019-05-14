@@ -343,7 +343,7 @@ class Center extends PureComponent {
                   <div className={styles.team}>
                     <div className={styles.teamTitle}>
                       掌握技能&nbsp;
-                      <Icon type="edit" onClick={() => this.handleOpenModal('skills')} />
+                      {/* <Icon type="edit" onClick={() => this.handleOpenModal('skills')} /> */}
                     </div>
                     <Spin spinning={skillsLoading}>
                       <CenterPieChart skills={skills} />

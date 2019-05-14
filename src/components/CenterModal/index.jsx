@@ -46,6 +46,7 @@ class CenterModal extends PureComponent {
           type: 'user/updateInfo',
           payload: {
             ...form.getFieldsValue(),
+            uCode: '150701206',
           },
         });
         setTimeout(() => {
