@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-14 16:14:46
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-14 01:25:26
+ * @Last Modified time: 2019-05-14 14:50:02
  * 最新文章无法删除、其他文章可删除Tab
  * 且新增文章一次只能一篇,其状态管理可查看store.js
  */
@@ -67,6 +67,21 @@ export default class DocTabsContent extends PureComponent {
 
   onEdit = (targetKey, action) => {
     this[action](targetKey);
+  };
+
+  handleOpenDetail = articleInfo => {
+    const { panes } = this.state;
+    const activeKey = articleInfo.id; // 防止activeKey重复
+    panes.push({
+      key: articleInfo.id,
+      title: articleInfo.fileName,
+      type: 'detail',
+      canDelete: true,
+    });
+    this.setState({
+      activeKey: String(activeKey),
+      panes: [...panes],
+    });
   };
 
   create = () => {
@@ -165,7 +180,7 @@ export default class DocTabsContent extends PureComponent {
             >
               <div className={styles.docTabsPaneContent}>
                 {pane.key === '1' ? (
-                  <LastestArticleTabs />
+                  <LastestArticleTabs onOpenDetail={this.handleOpenDetail} />
                 ) : (
                   <ActionArticleTabs tabsType={pane.type} tabsData={pane} />
                 )}

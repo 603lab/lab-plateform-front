@@ -44,12 +44,22 @@ class SearchList extends Component {
     };
   }
 
+  componentDidMount() {
+    this.hanleArticleSearch();
+  }
+
   articleSearch = value => {
+    this.hanleArticleSearch(value);
+  };
+
+  hanleArticleSearch = value => {
     const { dispatch } = this.props;
     dispatch({
       type: 'doc/search',
       payload: {
         authorName: value,
+        pageSize: 20,
+        currentPage: 1,
       },
     });
   };
@@ -64,7 +74,9 @@ class SearchList extends Component {
 
   render() {
     const { selectedTags } = this.state;
-    const { form, list, loading = false, searchLoading } = this.props;
+    const { form, doc, loading = false, openDetail, searchLoading } = this.props;
+    const { homeArticleList } = doc;
+    const { fileTag = [] } = homeArticleList;
     const { getFieldDecorator } = form;
     const IconText = ({ type, text }) => (
       <span>
@@ -73,7 +85,7 @@ class SearchList extends Component {
       </span>
     );
     const loadMore =
-      list.length > 0 ? (
+      homeArticleList.length > 0 ? (
         <div style={{ textAlign: 'center', marginTop: 16 }}>
           <Button onClick={this.fetchMore} style={{ paddingLeft: 48, paddingRight: 48 }}>
             {loading ? (
@@ -86,7 +98,6 @@ class SearchList extends Component {
           </Button>
         </div>
       ) : null;
-
     return (
       <Fragment>
         <Card bordered={false} bodyStyle={{ padding: '15px 15px 0' }}>
@@ -137,11 +148,11 @@ class SearchList extends Component {
         <Card bordered={false} bodyStyle={{ padding: '0 15px 15px' }}>
           <List
             size="large"
-            loading={list.length === 0 ? loading : false}
+            loading={homeArticleList.length === 0 ? loading : false}
             rowKey="id"
             itemLayout="vertical"
             loadMore={loadMore}
-            dataSource={list}
+            dataSource={homeArticleList}
             renderItem={item => (
               <List.Item
                 key={item.id}
@@ -154,15 +165,19 @@ class SearchList extends Component {
               >
                 <List.Item.Meta
                   title={
-                    <a className={styles.listItemMetaTitle} href={item.href}>
+                    <span
+                      style={{ cursor: 'pointer' }}
+                      className={styles.listItemMetaTitle}
+                      onClick={() => openDetail({ ...item })}
+                    >
                       {item.fileName}
-                    </a>
+                    </span>
                   }
                   description={
                     <span>
-                      <Tag>Ant Design</Tag>
-                      <Tag>设计语言</Tag>
-                      <Tag>蚂蚁金服</Tag>
+                      {fileTag.map(tagItem => (
+                        <Tag key={tagItem}>{tagItem}</Tag>
+                      ))}
                     </span>
                   }
                 />
