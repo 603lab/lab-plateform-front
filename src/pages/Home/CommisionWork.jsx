@@ -79,12 +79,9 @@ class CommisionWork extends React.Component {
         receivedUserName: '陆仁杰',
         receivedUserCode: '150701206',
       },
-    }).then(result => {
-      if (result) {
-        this.setState({
-          boardVisible: false,
-        });
-      }
+    });
+    this.setState({
+      boardVisible: false,
     });
   };
 
