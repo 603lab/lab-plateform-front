@@ -23,18 +23,10 @@ class Detail extends PureComponent {
 
   componentDidMount() {
     const { dispatch, tabsData } = this.props;
-    let key = tabsData.key;
-    // this.props.tabsData
-    if (key === 10005) {
-      key = 17;
-    }
-    if (key === 10012) {
-      key = 3;
-    }
     dispatch({
       type: 'doc/detail',
       payload: {
-        ID: key,
+        ID: tabsData.key,
         createUserCode: '150701206',
         createUserName: '陆仁杰',
       },

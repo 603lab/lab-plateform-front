@@ -125,7 +125,7 @@ class SearchList extends Component {
                 </Col>
               </Row>
             </StandardFormRow>
-            <StandardFormRow title="高级检索" grid>
+            <StandardFormRow title="作者" grid>
               <Row gutter={16}>
                 <Col xl={8} lg={10} md={12} sm={24} xs={24}>
                   <FormItem>
@@ -157,9 +157,18 @@ class SearchList extends Component {
               <List.Item
                 key={item.id}
                 actions={[
-                  <IconText type="star-o" text={item.star} />,
-                  <IconText type="like-o" text={item.like} />,
-                  <IconText type="message" text={item.message} />,
+                  <span>
+                    <IconText type="eye" text={item.star} />
+                    {item.browseNum}
+                  </span>,
+                  <span>
+                    <IconText type="like-o" text={item.like} />
+                    {item.likeNum}
+                  </span>,
+                  <span>
+                    <IconText type="message" text={item.message} />
+                    {item.collectNum}
+                  </span>,
                 ]}
                 extra={<div className={styles.listItemExtra} />}
               >

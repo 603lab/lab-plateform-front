@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { message } from 'antd';
 
 export default class ProjectPage extends PureComponent {
   constructor(props) {
@@ -7,7 +8,11 @@ export default class ProjectPage extends PureComponent {
     this.state = {};
   }
 
+  componentDidMount() {
+    message.success('后续开放');
+  }
+
   render() {
-    return <div>ProjectPage</div>;
+    return <div>603Platform 二期开放</div>;
   }
 }

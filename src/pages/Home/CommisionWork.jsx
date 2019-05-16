@@ -20,9 +20,10 @@ const cardWidth = 274;
 const moveWidth = 274;
 
 const { TextArea } = Input;
-@connect(({ user, home }) => ({
+@connect(({ user, home, loading }) => ({
   currentUser: user.currentUser,
   commisionWorkList: home.commisionWorkList,
+  addTaskLoading: loading.effects['home/addTask'],
 }))
 class CommisionWork extends React.Component {
   constructor(props) {
@@ -172,7 +173,7 @@ class CommisionWork extends React.Component {
 
   render() {
     const { currentId, isShowTopIcon, visible, boardVisible } = this.state;
-    const { commisionWorkList = [] } = this.props;
+    const { commisionWorkList = [], addTaskLoading } = this.props;
     const cardLength = commisionWorkList.length;
     const utMost = cardWidth * (cardLength - 1);
     const formItemLayout = {
@@ -275,6 +276,7 @@ class CommisionWork extends React.Component {
             visible={boardVisible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
+            confirmLoading={addTaskLoading}
             style={{ padding: 40 }}
           >
             <Form {...formItemLayout} layout="inline">

@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-14 16:14:46
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-14 14:50:02
+ * @Last Modified time: 2019-05-14 15:24:46
  * 最新文章无法删除、其他文章可删除Tab
  * 且新增文章一次只能一篇,其状态管理可查看store.js
  */
@@ -79,7 +79,7 @@ export default class DocTabsContent extends PureComponent {
       canDelete: true,
     });
     this.setState({
-      activeKey: String(activeKey),
+      activeKey: activeKey.toString(),
       panes: [...panes],
     });
   };
