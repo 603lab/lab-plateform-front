@@ -2,14 +2,14 @@
  * @Author: chenxiaobin
  * @Date: 2019-04-03 17:08:03
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-14 14:30:51
+ * @Last Modified time: 2019-05-16 23:07:32
  * 新增/编辑文章
  */
 import React, { PureComponent } from 'react';
 import { Input, Button, message } from 'antd';
 import { connect } from 'dva';
 import ArticleTree from './components/ArticleTree';
-import styles from './Create.less';
+import styles from './Edit.less';
 import Store from '../../../docStore';
 import RichEdit from '@/components/RichEditor/index';
 
@@ -17,7 +17,7 @@ import RichEdit from '@/components/RichEditor/index';
   doc,
   createLoading: loading.effects['doc/create'],
 }))
-class Create extends PureComponent {
+class Edit extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -108,4 +108,4 @@ class Create extends PureComponent {
     );
   }
 }
-export default Create;
+export default Edit;

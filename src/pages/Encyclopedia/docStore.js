@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-04-03 16:40:25
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-13 21:19:11
+ * @Last Modified time: 2019-05-17 14:35:00
  * 维护百科模块需要的状态:
  *  - 新增文章状态
  *  - 编辑文章状态
@@ -29,7 +29,7 @@ class Store {
        */
       tabsData: [
         {
-          key: '1',
+          key: '-1',
           canDelete: false,
           title: '最新文章',
         },

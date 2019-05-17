@@ -103,15 +103,20 @@ class Encyclopedia extends PureComponent {
         props: { children },
       },
     } = selected;
-    const { getCurrentMenu } = this.props;
+    const { getCurrentMenu, history } = this.props;
     /*
      * 由于右侧内容是通过tabs的数组渲染的，因此无法根据路由渲染
      * 通过props相互通信.Menu切换时影响Tabs切换,Tabs切换时影响Menu切换
      */
+    history.push({
+      query: {
+        folder: key,
+      },
+    });
     this.setState({
       selectedKeys: keyPath,
     });
-    const tabs = { key, canDelete: true, title: children, type: 'detail' };
+    const tabs = { key, canDelete: true, title: children, type: 'folder' };
     getCurrentMenu({ ...tabs });
     this.renderTabs({ ...tabs });
   };

@@ -135,7 +135,7 @@ class SearchList extends Component {
                         enterButton="搜索"
                         placeholder=" 请输入关键字"
                         style={{ width: 300 }}
-                        suffix={searchLoading ? <Icon type="loading" /> : ''}
+                        // suffix={searchLoading ? <Icon type="loading" /> : ''}
                         onSearch={value => this.articleSearch(value)}
                       />
                     )}
@@ -148,7 +148,7 @@ class SearchList extends Component {
         <Card bordered={false} bodyStyle={{ padding: '0 15px 15px' }}>
           <List
             size="large"
-            loading={homeArticleList.length === 0 ? loading : false}
+            loading={searchLoading}
             rowKey="id"
             itemLayout="vertical"
             loadMore={loadMore}
