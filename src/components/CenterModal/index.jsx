@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Modal, Form, Input, message, Select, Cascader } from 'antd';
-import modalLabel from './modalData';
+import { Modal, Slider, Form, Input, message, Select, Cascader, Button } from 'antd';
+import modalLabel from '@/utils/userStatisticData';
+import styles from './index.less';
 
 @connect(({ loading }) => ({
   loading: loading.effects['user/updateUserInfo'],
@@ -12,6 +13,7 @@ class CenterModal extends PureComponent {
     super(props);
 
     this.state = {
+      // skillsData: [],
       visible: false,
       confirmLoading: false,
       // modalData: {},
@@ -35,31 +37,44 @@ class CenterModal extends PureComponent {
     });
   };
 
-  handleOk = () => {
+  handleOk = modalType => {
     const { form, onCloseModal, dispatch } = this.props;
     form.validateFields(err => {
       if (!err) {
         this.setState({
           confirmLoading: true,
         });
-        dispatch({
-          type: 'user/updateInfo',
-          payload: {
-            ...form.getFieldsValue(),
-            uCode: '150701206',
-          },
-        });
-        setTimeout(() => {
-          this.setState({
-            visible: false,
-            confirmLoading: false,
-            // modalData: values,
+        if (modalType === 'personInfo') {
+          // 更新个人信息
+          dispatch({
+            type: 'user/updateInfo',
+            payload: {
+              ...form.getFieldsValue(),
+              uCode: '150701206',
+            },
           });
-          onCloseModal();
-        }, 2000);
+        } else {
+          // 更新技能
+          dispatch({
+            type: 'user/updateSkills',
+            payload: {
+              skillList: [...form.getFieldsValue()],
+              createUserCode: '150701206',
+              createUserName: '陆仁杰',
+            },
+          });
+        }
       } else {
         message.error(`提交失败 ${err}`);
       }
+      setTimeout(() => {
+        this.setState({
+          visible: false,
+          confirmLoading: false,
+          // modalData: values,
+        });
+        onCloseModal();
+      }, 1000);
     });
   };
 
@@ -112,7 +127,7 @@ class CenterModal extends PureComponent {
 
   render() {
     const { visible, confirmLoading } = this.state;
-    const { form, modalType, modalInitData } = this.props;
+    const { form, skills = [], modalType, modalInitData } = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol: {
@@ -124,10 +139,20 @@ class CenterModal extends PureComponent {
         sm: { span: 20 },
       },
     };
+    const skillsTab = initialValue => (
+      <Input
+        // changeOnSelect
+        // placeholder="请选择"
+        defaultValue={[initialValue]}
+        className={styles.cascaderWrapper}
+        // options={modalLabel.directionOptions}
+        // displayRender={label => label[label.length - 1]}
+      />
+    );
     return (
       <Modal
         visible={visible}
-        onOk={this.handleOk}
+        onOk={() => this.handleOk(modalType)}
         destroyOnClose="true"
         onCancel={this.handleCancel}
         confirmLoading={confirmLoading}
@@ -149,10 +174,18 @@ class CenterModal extends PureComponent {
           </Form>
         ) : (
           <Form>
-            <Form.Item label="test" {...formItemLayout}>
-              {getFieldDecorator('input', { initialValue: '123' })(<Input />)}
-            </Form.Item>
-            )
+            {skills.map(skill => (
+              <Form.Item key={skill.id} label={skillsTab(skill.item)} {...formItemLayout}>
+                {getFieldDecorator(skill.item, { initialValue: skill.percent })(<Slider />)}
+              </Form.Item>
+            ))}
+            <Button type="primary" onClick={this.handleAddSkill}>
+              添加
+            </Button>
+            {/* <Button shape="circle" icon="plus" /> */}
+            {/* <Form.Item key="newTab" label={skillsTab('')} {...newSkillsFormItemLayout}>
+              {getFieldDecorator('newTab', { initialValue: 0 })(<Slider />)}
+            </Form.Item> */}
           </Form>
         )}
       </Modal>
@@ -161,10 +194,3 @@ class CenterModal extends PureComponent {
 }
 
 export default CenterModal;
-
-/* // modalInitData[modalType].map(skillsItem => (
-            //   <Form.Item key={skillsItem.id} label={skillsItem.item} {...formItemLayout}>
-            //     {getFieldDecorator('progress', {})(
-            //       <Progress percent={skillsItem.percent} />
-            //     )}
-            //   </Form.Item> */

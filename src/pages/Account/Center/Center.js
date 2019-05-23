@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 // import Link from 'umi/link';
 import router from 'umi/router';
+// import findeIndex from 'lodash/findIndex';
 import {
   Card,
   Row,
@@ -20,9 +21,9 @@ import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import CenterPieChart from '@/components/CenterPieChart';
 import CenterModal from '@/components/CenterModal';
 import { basicInfo } from './personinfo';
-// import { directionOptions } from '../../../components/CenterModal/modalData';
+import { directionOptionsTile } from '@/utils/userStatisticData';
 import styles from './Center.less';
-import baseColor from '../../../utils/colors';
+import baseColor from '@/utils/colors';
 
 @connect(({ loading, user }) => ({
   skills: user.skills,
@@ -211,7 +212,7 @@ class Center extends PureComponent {
       Object.keys(currentUser).forEach(item => {
         transformUserInfo[item] = currentUser[item] === null ? '-' : currentUser[item];
       });
-    const { avatar, scores, nickName } = transformUserInfo;
+    const { avatar, scores, nickName, techList = [] } = transformUserInfo;
     const operationTabList = [
       {
         key: 'articles',
@@ -229,14 +230,14 @@ class Center extends PureComponent {
           </span>
         ),
       },
-      // {
-      //   key: 'projects',
-      //   tab: (
-      //     <span>
-      //       项目动态 <span style={{ fontSize: 14 }}>(8)</span>
-      //     </span>
-      //   ),
-      // },
+      {
+        key: 'projects',
+        tab: (
+          <span>
+            项目动态 <span style={{ fontSize: 14 }}>(8)</span>
+          </span>
+        ),
+      },
       {
         key: 'follow',
         tab: (
@@ -246,7 +247,6 @@ class Center extends PureComponent {
         ),
       },
     ];
-    // console.log('directionOptions', directionOptions);
     return (
       <GridContent className={styles.userCenter}>
         <Row gutter={24}>
@@ -278,6 +278,10 @@ class Center extends PureComponent {
                       >
                         {nickName}
                       </span>
+                      <br />
+                      <span className={styles.techDirection}>
+                        {techList.map(item => directionOptionsTile[item])}
+                      </span>
                     </div>
                     <div>
                       {/* 方向 */}
@@ -298,7 +302,7 @@ class Center extends PureComponent {
                         <li key={item.field}>
                           <Icon type={item.icon} />
                           <span className={styles.basic}>{item.label}:</span>
-                          {transformUserInfo[item.field]}
+                          <span>{transformUserInfo[item.field]}</span>
                         </li>
                       ))}
                     </ul>
@@ -343,7 +347,7 @@ class Center extends PureComponent {
                   <div className={styles.team}>
                     <div className={styles.teamTitle}>
                       掌握技能&nbsp;
-                      {/* <Icon type="edit" onClick={() => this.handleOpenModal('skills')} /> */}
+                      <Icon type="edit" onClick={() => this.handleOpenModal('skills')} />
                     </div>
                     <Spin spinning={skillsLoading}>
                       <CenterPieChart skills={skills} />
@@ -358,6 +362,7 @@ class Center extends PureComponent {
 
           {modalState && (
             <CenterModal
+              skills={skills}
               modalType={modalType}
               modalState={modalState}
               modalInitData={currentUser}

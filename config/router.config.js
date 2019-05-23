@@ -69,6 +69,10 @@ export default [
             path: '/account/center/projects',
             component: './Account/Center/Projects',
           },
+          {
+            path: '/account/center/follows',
+            component: './Account/Center/Follows',
+          },
         ],
       },
       // 个人设置

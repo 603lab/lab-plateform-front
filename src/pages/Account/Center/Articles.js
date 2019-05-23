@@ -1,6 +1,7 @@
 import React from 'react';
 import { List, Icon, Tag } from 'antd';
 import { connect } from 'dva';
+import { Link } from 'dva/router';
 import { likeAnimation } from '@/utils/animation';
 import ArticleListContent from '@/components/ArticleListContent';
 // import Store from '@/utils/store';
@@ -102,9 +103,15 @@ class CenterArticle extends React.Component {
           >
             <List.Item.Meta
               title={
-                <a className={styles.listItemMetaTitle} href={item.href || ''}>
+                <Link
+                  className={styles.listItemMetaTitle}
+                  to={{
+                    pathname: '/doc',
+                    search: `?detail=${item.id}`,
+                  }}
+                >
                   {item.fileName || '暂无标题'}
-                </a>
+                </Link>
               }
               description={
                 <span>

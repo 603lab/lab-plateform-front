@@ -1,7 +1,7 @@
 export default {
-  category5: ['#3AA1FF', '#4ECB73', '#FBD437', '#F2637B', '#975FE5'],
+  category5: ['#9a60ea', '#4ECB73', '#FBD437', '#F2637B', '#975FE5'],
   category12: [
-    '#3AA1FF',
+    '#9a60ea',
     '#88D1EA',
     '#36CBCB',
     '#82DFBE',
@@ -15,7 +15,7 @@ export default {
     '#9F8BF0',
   ],
   category20: [
-    '#3AA1FF',
+    '#9a60ea',
     '#3090FF',
     '#88D1EA',
     '#AEE5FF',

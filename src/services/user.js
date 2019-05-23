@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-27 16:32:35
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-04-23 14:36:04
+ * @Last Modified time: 2019-05-18 00:33:09
  * tips: 接口参数需罗列清楚
  */
 
@@ -82,4 +82,21 @@ export async function deleteTag(params) {
  */
 export async function querySkills(params) {
   return request(`/api/${basePrefix}/GetSkills?${stringify(params)}`);
+}
+
+/**
+ * 更新用户技能
+ * @param {string} createUserCode	当前用户编号	required
+ * @param {string} createUserName	 	当前用户名	required
+ * @param {array} skillList 技能列表
+ * @param {string} skillList[item] 技能名称
+ * @param {string} skillList[percent] 技能百分比
+ */
+export async function updateSkills(params) {
+  return request(`/api/${basePrefix}/UpdateSkill`, {
+    method: 'POST',
+    data: {
+      ...params,
+    },
+  });
 }

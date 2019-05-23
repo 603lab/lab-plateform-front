@@ -19,11 +19,11 @@ export const basicInfo = [
     field: 'uMajor',
     icon: 'experiment',
   },
-  {
-    label: '方向',
-    field: 'techDirection',
-    icon: 'desktop',
-  },
+  // {
+  //   label: '方向',
+  //   field: 'techDirection',
+  //   icon: 'desktop',
+  // },
   {
     label: '团队',
     field: 'teamName',

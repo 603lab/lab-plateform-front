@@ -15,6 +15,7 @@ import {
   // Util,
 } from 'bizcharts';
 import DataSet from '@antv/data-set';
+import colors from '@/utils/colors';
 
 export default class CenterPieChart extends React.Component {
   constructor(props) {
@@ -38,8 +39,11 @@ export default class CenterPieChart extends React.Component {
         formatter: val => `${val * 100}%`,
       },
     };
+    const theme = {
+      colors_pie: colors.category5,
+    };
     return (
-      <Chart forceFit height={240} data={dv} scale={cols}>
+      <Chart forceFit height={240} data={dv} scale={cols} theme={theme}>
         <Coord type="theta" scale={[1.3, 1.3]} />
         <Axis name="percent" />
         <Legend position="left" offsetY={-10} offsetX={-20} />
