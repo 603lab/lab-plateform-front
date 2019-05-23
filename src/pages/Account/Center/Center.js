@@ -21,7 +21,7 @@ import GridContent from '@/components/PageHeaderWrapper/GridContent';
 import CenterPieChart from '@/components/CenterPieChart';
 import CenterModal from '@/components/CenterModal';
 import { basicInfo } from './personinfo';
-import { directionOptionsTile } from '@/utils/userStatisticData';
+import statisticData from '@/utils/userStatisticData';
 import styles from './Center.less';
 import baseColor from '@/utils/colors';
 
@@ -280,7 +280,7 @@ class Center extends PureComponent {
                       </span>
                       <br />
                       <span className={styles.techDirection}>
-                        {techList.map(item => directionOptionsTile[item])}
+                        {techList.map(item => statisticData.directionOptionsTile[item])}
                       </span>
                     </div>
                     <div>
