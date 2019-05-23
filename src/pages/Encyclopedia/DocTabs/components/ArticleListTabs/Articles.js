@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Form, Card, List, Tag, Icon, Input, Row, Col, Button } from 'antd';
 import { connect } from 'dva';
+import { likeAnimation } from '@/utils/animation';
 import StandardFormRow from '@/components/StandardFormRow';
 import ArticleListContent from '@/components/ArticleListContent';
 import styles from './Articles.less';
@@ -41,6 +42,7 @@ class SearchList extends Component {
 
     this.state = {
       selectedTags: ['all'],
+      articleList: [],
     };
   }
 
@@ -61,6 +63,51 @@ class SearchList extends Component {
         pageSize: 20,
         currentPage: 1,
       },
+    }).then(articleList =>
+      this.setState({
+        articleList,
+      })
+    );
+  };
+
+  showAnimation = (isLike, index) => {
+    /**
+     * @arguments {0}  父级DOM
+     * @arguments {1}  子级DOM
+     * @arguments {2}  当前操作对象
+     * @arguments {3}  动画类型 false 简约型(取消点赞) true 饱满型(点赞)
+     */
+
+    likeAnimation('like-wrapper', 'like-icon', index, isLike);
+  };
+
+  handleArticleAction = (info, index) => {
+    const { dispatch } = this.props;
+    const { id, isLike } = info;
+    // const userInfo = Store.getBasicInfo();
+    this.showAnimation(isLike, index);
+    dispatch({
+      type: 'list/like',
+      payload: {
+        itemId: id,
+        isLike: isLike ? 0 : 1,
+        type: 'Doc',
+        createUserCode: '150701206',
+        createUserName: '陆仁杰',
+      },
+    }).then(result => {
+      const { doc } = this.props;
+      const { homeArticleList: newArticleList } = doc;
+      console.log('newArticleList', newArticleList);
+      const { isLike: articleIsLike, likeNum } = newArticleList[index];
+      // 如果点赞成功,则改变状态
+      if (result) {
+        newArticleList[index].isLike = !articleIsLike;
+        newArticleList[index].likeNum = articleIsLike ? likeNum - 1 : likeNum + 1;
+        this.setState({
+          articleList: [...newArticleList],
+        });
+      }
     });
   };
 
@@ -73,10 +120,10 @@ class SearchList extends Component {
   }
 
   render() {
-    const { selectedTags } = this.state;
-    const { form, doc, loading = false, openDetail, searchLoading } = this.props;
-    const { homeArticleList } = doc;
-    const { fileTag = [] } = homeArticleList;
+    const { selectedTags, articleList } = this.state;
+    const { form, loading = false, openDetail, searchLoading } = this.props;
+    // const { homeArticleList } = doc;
+    const { fileTag = [] } = articleList;
     const { getFieldDecorator } = form;
     const IconText = ({ type, text }) => (
       <span>
@@ -85,7 +132,7 @@ class SearchList extends Component {
       </span>
     );
     const loadMore =
-      homeArticleList.length > 0 ? (
+      articleList.length > 0 ? (
         <div style={{ textAlign: 'center', marginTop: 16 }}>
           <Button onClick={this.fetchMore} style={{ paddingLeft: 48, paddingRight: 48 }}>
             {loading ? (
@@ -152,8 +199,8 @@ class SearchList extends Component {
             rowKey="id"
             itemLayout="vertical"
             loadMore={loadMore}
-            dataSource={homeArticleList}
-            renderItem={item => (
+            dataSource={articleList}
+            renderItem={(item, index) => (
               <List.Item
                 key={item.id}
                 actions={[
@@ -161,8 +208,13 @@ class SearchList extends Component {
                     <IconText type="eye" text={item.star} />
                     {item.browseNum}
                   </span>,
-                  <span>
-                    <IconText type="like-o" text={item.like} />
+                  <span className="like-wrapper">
+                    <Icon
+                      type="like-o"
+                      className="like-icon"
+                      onClick={() => this.handleArticleAction(item, index)}
+                      style={{ color: item.isLike ? '#722ed1' : '', marginRight: 8 }}
+                    />
                     {item.likeNum}
                   </span>,
                   <span>

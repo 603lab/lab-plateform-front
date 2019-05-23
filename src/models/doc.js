@@ -26,9 +26,10 @@ export default {
           type: 'setArticleList',
           payload: data,
         });
-      } else {
-        message.error(`搜索失败 ${msg}`);
+        return data;
       }
+      message.error(`搜索失败 ${msg}`);
+      return [];
     },
     *fetchMenu({ payload }, { call, put }) {
       const response = yield call(getDocMenu, payload);
