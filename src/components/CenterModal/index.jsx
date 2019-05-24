@@ -67,7 +67,6 @@ class CenterModal extends PureComponent {
             type: 'user/updateSkills',
             payload: {
               skillList,
-              createUserCode: '150701206',
               createUserName: '陆仁杰',
             },
           });

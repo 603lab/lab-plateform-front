@@ -22,8 +22,8 @@ export default {
 
   effects: {
     // 获取用户信息
-    *fetchInfo(_, { call, put }) {
-      const response = yield call(queryUserInfo);
+    *fetchInfo({ payload }, { call, put }) {
+      const response = yield call(queryUserInfo, payload);
       const { statusCode, data, msg } = response || {};
       if (statusCode === 200) {
         yield put({

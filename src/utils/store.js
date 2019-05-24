@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-29 14:46:58
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-25 04:43:42
+ * @Last Modified time: 2019-05-25 04:54:50
  * 用于存储用户全局信息的redux 仓库
  */
 

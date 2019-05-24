@@ -52,9 +52,7 @@ class Center extends PureComponent {
     // 获取用户技能
     dispatch({
       type: 'user/fetchSkills',
-      payload: {
-        createUserCode: '150701206',
-      },
+      payload: {},
     });
     // 获取用户标签
     dispatch({

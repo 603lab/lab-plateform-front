@@ -17,7 +17,12 @@ export async function getDocMenu() {
  * @param {string}
  */
 export async function searchArticle(params) {
-  return request(`/api/${basePrefix}/Search?${stringify(params)}`);
+  const { createUserCode } = Store.getBasicInfo();
+  const p = {
+    ...params,
+    createUserCode,
+  };
+  return request(`/api/${basePrefix}/Search?${stringify(p)}`);
 }
 
 /**

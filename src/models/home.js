@@ -38,9 +38,7 @@ export default {
       if (statusCode === 200) {
         yield put({
           type: 'fetchTask',
-          payload: {
-            createUserCode: '150701206',
-          },
+          payload: {},
         });
         message.success('添加任务成功');
         yield put({
@@ -103,7 +101,6 @@ export default {
         yield put({
           type: 'fetchUsers',
           payload: {
-            uCode: '150701206',
             leaderType: '前端',
             pageSize: 10,
             currentPage: 1,

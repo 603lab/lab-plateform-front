@@ -54,7 +54,6 @@ class CommisionWork extends React.Component {
         currentPage: 1,
         pageSize: 6,
         isDone: 0,
-        createUserCode: '150701206',
       },
     });
   }

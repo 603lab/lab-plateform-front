@@ -62,7 +62,6 @@ class SearchList extends Component {
         authorName: value,
         pageSize: 20,
         currentPage: 1,
-        createUserCode: '150701206',
       },
     }).then(articleList =>
       this.setState({

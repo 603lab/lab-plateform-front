@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-27 16:32:35
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-25 04:22:02
+ * @Last Modified time: 2019-05-25 04:56:18
  * tips: 接口参数需罗列清楚
  */
 
@@ -19,10 +19,11 @@ const basePrefix = 'Base-Module/Users';
  * @param {string} uCode	 	学号	required
  */
 export async function queryUserInfo() {
-  const { uCode } = Store.getBasicInfo();
+  const { uCode = '' } = Store.getBasicInfo();
   const p = {
     uCode,
   };
+  console.log('queryUserInfo p', p);
   return request(`/api/${basePrefix}/GetUsersInfo?${stringify(p)}`);
 }
 

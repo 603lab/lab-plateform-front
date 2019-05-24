@@ -23,7 +23,6 @@ class Folder extends React.Component {
         authorName: '',
         pageSize: 20,
         currentPage: 1,
-        createUserCode: '150701206',
       },
     });
   }
