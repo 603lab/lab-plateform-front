@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'dva';
-import { Modal, Slider, Form, Input, message, Select, Cascader, Button } from 'antd';
+import { Modal, Slider, Form, Input, message, Select, Cascader, Alert } from 'antd';
 import modalLabel from '@/utils/userStatisticData';
 import styles from './index.less';
 
@@ -44,21 +44,30 @@ class CenterModal extends PureComponent {
         this.setState({
           confirmLoading: true,
         });
+        const formData = form.getFieldsValue();
         if (modalType === 'personInfo') {
           // 更新个人信息
           dispatch({
             type: 'user/updateInfo',
             payload: {
-              ...form.getFieldsValue(),
+              ...formData,
               uCode: '150701206',
             },
           });
         } else {
+          // 将{ React: 30 }数据转换成[{item: 'react', percent: 30}]
+          const skillList = [];
+          Object.keys(formData).forEach(item => {
+            skillList.push({
+              item,
+              percent: formData[item],
+            });
+          });
           // 更新技能
           dispatch({
             type: 'user/updateSkills',
             payload: {
-              skillList: [...form.getFieldsValue()],
+              skillList,
               createUserCode: '150701206',
               createUserName: '陆仁杰',
             },
@@ -174,14 +183,22 @@ class CenterModal extends PureComponent {
           </Form>
         ) : (
           <Form>
+            <Alert
+              closable
+              type="warning"
+              message="请自行分配比例,不允许超过100%"
+              style={{ marginBottom: 15 }}
+            />
             {skills.map(skill => (
               <Form.Item key={skill.id} label={skillsTab(skill.item)} {...formItemLayout}>
-                {getFieldDecorator(skill.item, { initialValue: skill.percent })(<Slider />)}
+                {getFieldDecorator(skill.item, { initialValue: skill.percent })(
+                  <Slider tooltipVisible />
+                )}
               </Form.Item>
             ))}
-            <Button type="primary" onClick={this.handleAddSkill}>
+            {/* <Button type="primary" onClick={this.handleAddSkill}>
               添加
-            </Button>
+            </Button> */}
             {/* <Button shape="circle" icon="plus" /> */}
             {/* <Form.Item key="newTab" label={skillsTab('')} {...newSkillsFormItemLayout}>
               {getFieldDecorator('newTab', { initialValue: 0 })(<Slider />)}

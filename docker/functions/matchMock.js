@@ -1,7 +1,8 @@
-const mockFile = require('./mock/index');
+/* eslint-disable */
 const pathToRegexp = require('path-to-regexp');
 const debug = console.log;
 const bodyParser = require('body-parser');
+const mockFile = require('./mock/index');
 
 const BODY_PARSED_METHODS = ['post', 'put', 'patch'];
 

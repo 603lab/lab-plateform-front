@@ -134,6 +134,31 @@ export default [
           },
         ],
       },
+      //  editor
+      {
+        name: 'editor',
+        icon: 'highlight',
+        path: '/editor',
+        component: './Tools/index',
+        // routes: [
+        //   { path: '/editor', redirect: '/editor/flow' },
+        //     {
+        //       path: '/editor/flow',
+        //       name: 'flow',
+        //       component: './Tools/Editor/GGEditor/Flow',
+        //     },
+        //     {
+        //       path: '/editor/mind',
+        //       name: 'mind',
+        //       component: './Tools/Editor/GGEditor/Mind',
+        //     },
+        //     {
+        //       path: '/editor/koni',
+        //       name: 'koni',
+        //       component: './Tools/Editor/GGEditor/Koni',
+        //     },
+        // ],
+      },
       {
         component: '404',
       },
