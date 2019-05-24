@@ -1,5 +1,6 @@
 import { stringify } from 'qs';
 import request from '@/utils/request';
+import getFakeList from './mock-project';
 
 export async function queryProjectNotice() {
   return request('/api/project/notice');
@@ -65,9 +66,22 @@ export async function queryBasicProfile() {
 export async function queryAdvancedProfile() {
   return request('/api/profile/advanced');
 }
-
-export async function queryFakeList(params) {
-  return request(`/api/fake_list?${stringify(params)}`);
+// 项目列表
+export async function queryProjectList(params) {
+  const result = getFakeList({ ...params });
+  const req = {};
+  if (result.length) {
+    req.statusCode = 200;
+    req.msg = '';
+    req.data = result;
+  } else {
+    req.statusCode = 0;
+    req.msg = '网络超时';
+    req.data = [];
+  }
+  return {
+    ...req,
+  };
 }
 
 export async function removeFakeList(params) {
