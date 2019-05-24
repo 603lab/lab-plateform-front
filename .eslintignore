@@ -1,2 +1,4 @@
 /functions/mock
 node_modules
+docker/*
+src/pages/Tools/Editor/GGEditor/*

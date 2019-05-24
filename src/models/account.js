@@ -26,10 +26,13 @@ export default {
       // Login successfully
       if (statusCode === 200) {
         message.success(`登陆成功`);
-        // 存储信息
+        const { createUserCode, createUserName, uCode } = data;
+        // 存储全局信息
         Store.setStore({
           basicInfo: {
-            uCode: data.uCode,
+            uCode,
+            createUserCode,
+            createUserName,
           },
         });
         reloadAuthorized();
