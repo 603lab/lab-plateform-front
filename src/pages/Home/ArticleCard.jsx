@@ -64,6 +64,7 @@ class ArticleCard extends React.Component {
         uCode: '150701206',
       },
     });
+    this.setState({ currentPage: 1 });
   };
 
   articleOnChange = activeKey => {
@@ -81,6 +82,7 @@ class ArticleCard extends React.Component {
         articleType: tech.value,
       },
     });
+    this.setState({ currentPage: 1 });
   };
 
   isMap = index => {
