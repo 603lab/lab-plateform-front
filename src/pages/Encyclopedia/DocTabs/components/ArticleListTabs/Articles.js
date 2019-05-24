@@ -218,7 +218,7 @@ class SearchList extends Component {
                   </span>,
                   <span>
                     <IconText type="message" text={item.message} />
-                    {item.collectNum}
+                    {item.commentNum}
                   </span>,
                 ]}
                 extra={<div className={styles.listItemExtra} />}

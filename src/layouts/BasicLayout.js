@@ -1,5 +1,5 @@
 import React from 'react'; // { Suspense }
-import { Layout } from 'antd';
+import { Layout, message } from 'antd';
 import DocumentTitle from 'react-document-title';
 import isEqual from 'lodash/isEqual';
 import memoizeOne from 'memoize-one';
@@ -9,7 +9,9 @@ import classNames from 'classnames';
 import pathToRegexp from 'path-to-regexp';
 import Media from 'react-media';
 import { formatMessage } from 'umi/locale';
+import router from 'umi/router';
 import Authorized from '@/utils/Authorized';
+import Store from '@/utils/store';
 import logo from '../assets/logo.png';
 import Footer from './Footer';
 import Header from './Header';
@@ -61,6 +63,13 @@ class BasicLayout extends React.PureComponent {
       dispatch,
       route: { routes, authority },
     } = this.props;
+    const isLogin = Store.getBasicInfo() !== undefined;
+    if (!isLogin) {
+      message.error('用户信息不存在,请重新登录');
+      setTimeout(() => {
+        router.push('/user/login');
+      }, 1000);
+    }
     dispatch({
       type: 'user/fetchInfo',
       payload: {
