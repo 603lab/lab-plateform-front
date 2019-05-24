@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Icon, Alert, Form, Input, Modal, DatePicker } from 'antd';
+import { Card, Icon, Alert, Form, Input, Modal, DatePicker, Popconfirm } from 'antd';
 import moment from 'moment';
 import { connect } from 'dva';
 import styles from './CommisionWork.less';
@@ -34,9 +34,13 @@ class CommisionWork extends React.Component {
       position: 0,
       visible: false,
       boardVisible: false,
+      taskVisible: false,
       titleInputValue: '',
       endTimeInputValue: '',
       descripInputValue: '',
+      currentVisibleTask: '',
+      isShowTask: true,
+      isBubbleExist: false,
     };
   }
 
@@ -63,6 +67,66 @@ class CommisionWork extends React.Component {
     this.setState({
       boardVisible: true,
     });
+  };
+
+  doneJob = task => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'home/deleteTask',
+      payload: {
+        ID: task.id,
+        taskTitle: task.taskTitle,
+        endTime: task.endTime,
+        taskDescription: task.taskDescription,
+        receivedUserName: task.receivedUserName,
+        receivedUserCode: task.receivedUserCode,
+        isDone: 1,
+      },
+    });
+  };
+
+  showTask = (task, isShowTask, isBubbleExist) => {
+    if (isShowTask && !isBubbleExist) {
+      this.setState({
+        taskVisible: true,
+        currentVisibleTask: task,
+        titleInputValue: task.taskTitle,
+        endTimeInputValue: task.endTime,
+        descripInputValue: task.taskDescription,
+      });
+    }
+  };
+
+  handleTaskCancel = () => {
+    const {
+      form: { resetFields },
+    } = this.props;
+    this.setState({ taskVisible: false });
+    resetFields();
+  };
+
+  editTask = () => {
+    const { dispatch } = this.props;
+    const { currentVisibleTask } = this.state;
+    const { titleInputValue, endTimeInputValue, descripInputValue } = this.state;
+    // 编辑任务
+    dispatch({
+      type: 'home/editTask',
+      payload: {
+        ID: currentVisibleTask.id,
+        taskTitle: titleInputValue,
+        endTime: endTimeInputValue,
+        taskDescription: descripInputValue,
+        receivedUserName: currentVisibleTask.receivedUserName,
+        receivedUserCode: currentVisibleTask.receivedUserCode,
+        isDone: 0,
+      },
+    });
+    const {
+      form: { resetFields },
+    } = this.props;
+    this.setState({ taskVisible: false });
+    resetFields();
   };
 
   handleOk = () => {
@@ -127,9 +191,14 @@ class CommisionWork extends React.Component {
     return dValue;
   };
 
-  handleMouseOverCard = id => {
+  handleMouseOverCard = (id, task) => {
     this.setState({
       currentId: id,
+      isShowTask: true,
+      currentVisibleTask: task,
+      titleInputValue: task.taskTitle,
+      endTimeInputValue: task.endTime,
+      descripInputValue: task.taskDescription,
     });
   };
 
@@ -171,8 +240,56 @@ class CommisionWork extends React.Component {
     return resStyle;
   };
 
+  confirm = () => {
+    const { currentVisibleTask } = this.state;
+    this.doneJob(currentVisibleTask);
+    this.setState({
+      isBubbleExist: false,
+    });
+  };
+
+  cancel = () => {
+    this.setState({
+      isBubbleExist: false,
+    });
+  };
+
+  falseShowTask = () => {
+    this.setState({
+      isShowTask: false,
+    });
+  };
+
+  trueShowTask = () => {
+    this.setState({
+      isShowTask: true,
+    });
+  };
+
+  trueBubble = () => {
+    this.setState({
+      isBubbleExist: true,
+    });
+  };
+
+  falseBubble = () => {
+    this.setState({
+      isBubbleExist: false,
+      isShowTask: false,
+    });
+  };
+
   render() {
-    const { currentId, isShowTopIcon, visible, boardVisible } = this.state;
+    const {
+      currentId,
+      // isShowTopIcon,
+      visible,
+      boardVisible,
+      taskVisible,
+      currentVisibleTask,
+      isShowTask,
+      isBubbleExist,
+    } = this.state;
     const { commisionWorkList = [], addTaskLoading } = this.props;
     const cardLength = commisionWorkList.length;
     const utMost = cardWidth * (cardLength - 1);
@@ -186,6 +303,11 @@ class CommisionWork extends React.Component {
         sm: { span: 12 },
       },
     };
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
+    // eslint-disable-next-line no-unused-vars
+    const confirm = Modal.confirm;
     return (
       <>
         <Card
@@ -230,13 +352,28 @@ class CommisionWork extends React.Component {
               <Card
                 key={`Card${item.id}`}
                 className={i === currentId ? styles.taskCard : null}
+                onClick={() => this.showTask(item, isShowTask, isBubbleExist)}
                 hoverable="false"
-                onMouseOver={() => this.handleMouseOverCard(i)}
+                onMouseOver={() => this.handleMouseOverCard(i, item)}
                 onFocus={() => 0}
                 onMouseOut={this.handleMouseOutCard}
-                onBlur={() => 0}
+                onBlur={this.falseBubble}
                 style={this.dealCardStyle(i)}
-                extra={isShowTopIcon ? <Icon type="to-top" style={{ fontSize: '20px' }} /> : null}
+                // extra={isShowTopIcon ? <Icon type="to-top" style={{ fontSize: '20px' }} /> : null}
+                extra={
+                  <Popconfirm
+                    title="你确定要删除这个任务吗"
+                    onConfirm={this.confirm}
+                    onCancel={this.cancel}
+                    okText="确定"
+                    cancelText="取消"
+                    onFocus={this.falseShowTask}
+                    onBlur={this.trueShowTask}
+                    onClick={this.trueBubble}
+                  >
+                    <a href="#">删除</a>
+                  </Popconfirm>
+                }
                 title={
                   <span>
                     <Icon style={{ marginRight: '4px' }} type="radar-chart" />
@@ -314,8 +451,65 @@ class CommisionWork extends React.Component {
             </Form>
           </Modal>
         </div>
+        <div>
+          <Modal
+            title="编辑任务"
+            visible={taskVisible}
+            onOk={this.editTask}
+            onCancel={this.handleTaskCancel}
+            confirmLoading={addTaskLoading}
+            style={{ padding: 40 }}
+          >
+            <Form {...formItemLayout} layout="inline">
+              <Form.Item
+                label="标题"
+                hasFeedback
+                validateStatus="success"
+                style={{ marginLeft: 28, marginBottom: 20 }}
+              >
+                {getFieldDecorator('taskTitle', {
+                  initialValue: currentVisibleTask.taskTitle,
+                  rules: [],
+                })(
+                  <Input
+                    placeholder="任务标题"
+                    id="success"
+                    style={{ width: 300 }}
+                    onChange={this.handleTitleInputChange}
+                  />
+                )}
+              </Form.Item>
+
+              <Form.Item
+                label="截止时间"
+                hasFeedback
+                validateStatus="success"
+                style={{ marginBottom: 20 }}
+              >
+                {getFieldDecorator('date', {
+                  initialValue: moment(currentVisibleTask.endTime, 'YYYY-MM-DD'),
+                  rules: [],
+                })(<DatePicker style={{ width: 300 }} onChange={this.handleEndTimeInputChange} />)}
+              </Form.Item>
+
+              <Form.Item label="工作描述">
+                {getFieldDecorator('description', {
+                  initialValue: currentVisibleTask.taskDescription,
+                  rules: [],
+                })(
+                  <TextArea
+                    placeholder="工作描述"
+                    autosize={{ minRows: 2, maxRows: 6 }}
+                    style={{ width: 300 }}
+                    onChange={this.handleDescripInputChange}
+                  />
+                )}
+              </Form.Item>
+            </Form>
+          </Modal>
+        </div>
       </>
     );
   }
 }
-export default CommisionWork;
+export default Form.create()(CommisionWork);
