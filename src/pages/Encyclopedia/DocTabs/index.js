@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-14 16:14:46
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-17 14:49:51
+ * @Last Modified time: 2019-05-25 05:12:15
  * 最新文章无法删除、其他文章可删除Tab
  * 且新增文章一次只能一篇,其状态管理可查看store.js
  */
@@ -132,6 +132,7 @@ class DocTabsContent extends PureComponent {
     }
     const tempPanes = [...panes];
     const { history } = this.props;
+    // const { query } = location;
     // 仅允许新建一篇文章 edit/0
     tempPanes.push({
       key: '0',
@@ -139,9 +140,11 @@ class DocTabsContent extends PureComponent {
       canDelete: true,
       type: 'edit',
     });
+    // console.log('query', query);
     history.push({
       query: {
         edit: '0',
+        // parentId: query.folder
       },
     });
     this.setState({ panes: tempPanes, activeKey: '0' });

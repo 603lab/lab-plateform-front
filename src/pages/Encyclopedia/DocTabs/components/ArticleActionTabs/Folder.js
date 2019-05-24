@@ -1,9 +1,11 @@
 import React from 'react';
 import { Card, List, Icon } from 'antd';
 import { connect } from 'dva';
+import { withRouter } from 'dva/router';
 import ArticleListContent from '@/components/ArticleListContent';
 import styles from './Folder.less';
 
+@withRouter
 @connect(({ loading, doc }) => ({
   doc,
   searchLoading: loading.effects['doc/search'],
@@ -16,11 +18,13 @@ class Folder extends React.Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { location, dispatch } = this.props;
+    const { query } = location;
     dispatch({
       type: 'doc/search',
       payload: {
         authorName: '',
+        docId: query.folder,
         pageSize: 20,
         currentPage: 1,
       },

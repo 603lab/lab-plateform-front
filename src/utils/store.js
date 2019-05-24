@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-29 14:46:58
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-25 04:54:50
+ * @Last Modified time: 2019-05-25 05:01:18
  * 用于存储用户全局信息的redux 仓库
  */
 
@@ -29,14 +29,14 @@ export class Store {
   };
 
   getBasicInfo = () => {
-    const { basicInfo = undefined } = this.store || {};
-    // const {
-    //   basicInfo = {
-    //     uCode: '150701206',
-    //     createUserCode: '150701206',
-    //     createUserName: '陆仁杰',
-    //   },
-    // } = this.store || {};
+    // const { basicInfo = undefined } = this.store || {};
+    const {
+      basicInfo = {
+        uCode: '150701206',
+        createUserCode: '150701206',
+        createUserName: '陆仁杰',
+      },
+    } = this.store || {};
 
     return basicInfo;
   };
