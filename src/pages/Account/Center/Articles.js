@@ -48,8 +48,6 @@ class CenterArticle extends React.Component {
         itemId: id,
         isLike: isLike ? 0 : 1,
         type: 'Doc',
-        createUserCode: '150701206',
-        createUserName: '陆仁杰',
       },
     }).then(result => {
       const { articleList: newArticleList } = this.state;

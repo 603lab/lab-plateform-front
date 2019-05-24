@@ -27,8 +27,6 @@ class Detail extends PureComponent {
       type: 'doc/detail',
       payload: {
         ID: tabsData.key,
-        createUserCode: '150701206',
-        createUserName: '陆仁杰',
       },
     }).then(isCollect => {
       this.setState({
@@ -45,8 +43,6 @@ class Detail extends PureComponent {
       payload: {
         itemId: 3,
         isCollect: isCollect ? 0 : 1,
-        createUserCode: '150701206',
-        createUserName: '陆仁杰',
       },
     }).then(() => {
       this.setState({

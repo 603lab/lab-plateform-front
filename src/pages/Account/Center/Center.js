@@ -47,9 +47,7 @@ class Center extends PureComponent {
     // 获取用户信息
     dispatch({
       type: 'user/fetchInfo',
-      payload: {
-        uCode: '150701206',
-      },
+      payload: {},
     });
     // 获取用户技能
     dispatch({
@@ -61,16 +59,13 @@ class Center extends PureComponent {
     // 获取用户标签
     dispatch({
       type: 'user/fetchTags',
-      payload: {
-        createUserCode: '150701206',
-      },
+      payload: {},
     });
 
     // 获取用户文章
     dispatch({
       type: 'list/fetch',
       payload: {
-        uCode: '150701206',
         currentPage: 1,
         pageSize: 3,
       },
@@ -155,8 +150,6 @@ class Center extends PureComponent {
     dispatch({
       type: 'user/addTag',
       payload: {
-        createUserCode: '150701206',
-        createUserName: '陆仁杰',
         label: inputValue,
       },
     }).then(result => {
@@ -172,13 +165,12 @@ class Center extends PureComponent {
   // 点击标签 -> 删除标签
   handleDeleteTag = item => {
     const { dispatch } = this.props;
-    const { id, createUserCode } = item;
+    const { id } = item;
     // 删除个人标签接口
     dispatch({
       type: 'user/deleteTag',
       payload: {
         id,
-        createUserCode,
       },
     });
   };

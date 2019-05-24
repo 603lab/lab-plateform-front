@@ -8,6 +8,7 @@ import {
   updateSkills,
 } from '@/services/user';
 import { message } from 'antd';
+import Store from '@/utils/store';
 
 export default {
   namespace: 'user',
@@ -21,8 +22,8 @@ export default {
 
   effects: {
     // 获取用户信息
-    *fetchInfo({ payload }, { call, put }) {
-      const response = yield call(queryUserInfo, payload);
+    *fetchInfo(_, { call, put }) {
+      const response = yield call(queryUserInfo);
       const { statusCode, data, msg } = response || {};
       if (statusCode === 200) {
         yield put({
@@ -41,7 +42,7 @@ export default {
         yield put({
           type: 'fetchInfo',
           payload: {
-            uCode: '150701206',
+            uCode: Store.getBasicInfo().uCode,
           },
         });
         message.success('更新用户信息成功');
@@ -50,8 +51,8 @@ export default {
       }
     },
     // 获取个人标签
-    *fetchTags({ payload }, { call, put }) {
-      const response = yield call(queryTags, payload);
+    *fetchTags(_, { call, put }) {
+      const response = yield call(queryTags);
       const { statusCode, data, msg } = response || {};
       if (statusCode === 200) {
         yield put({
@@ -71,7 +72,7 @@ export default {
         yield put({
           type: 'fetchTags',
           payload: {
-            createUserCode: '150701206',
+            createUserCode: Store.getBasicInfo().createUserCode,
           },
         });
         return true;
@@ -88,7 +89,7 @@ export default {
         yield put({
           type: 'fetchTags',
           payload: {
-            createUserCode: '150701206',
+            createUserCode: Store.getBasicInfo().createUserCode,
           },
         });
         return true;
@@ -117,7 +118,7 @@ export default {
         yield put({
           type: 'fetchSkills',
           payload: {
-            createUserCode: '150701206',
+            createUserCode: Store.getBasicInfo().createUserCode,
           },
         });
         message.success('更新技能成功');

@@ -73,8 +73,6 @@ class Edit extends PureComponent {
         fileName: title,
         content: contentHtmlStr,
         type: 'doc',
-        createUserCode: '150701206',
-        createUserName: '陆仁杰',
         fileTagList: ['React', '生命周期'],
       },
     }).then(result => {

@@ -1,5 +1,6 @@
 import request from '@/utils/request';
 import { stringify } from 'qs';
+import Store from '@/utils/store';
 
 const basePrefix = 'Base-Module/Encyclopedia';
 
@@ -25,7 +26,12 @@ export async function searchArticle(params) {
  * @param {string} createUserCode 文章创建者 required
  */
 export async function getDocDetail(params) {
-  return request(`/api/${basePrefix}/GetDocConetnt?${stringify(params)}`);
+  const { createUserCode } = Store.getBasicInfo();
+  const p = {
+    ...params,
+    createUserCode,
+  };
+  return request(`/api/${basePrefix}/GetDocConetnt?${stringify(p)}`);
 }
 
 /**
@@ -41,10 +47,16 @@ export async function getDocDetail(params) {
  * @param {string} createUserName 创建者姓名 required
  */
 export async function createArticle(params) {
+  const { createUserName, createUserCode } = Store.getBasicInfo();
+  const p = {
+    ...params,
+    createUserCode,
+    createUserName,
+  };
   return request(`/api/${basePrefix}/AddDoc`, {
     method: 'POST',
     body: {
-      ...params,
+      ...p,
     },
   });
 }
@@ -57,10 +69,16 @@ export async function createArticle(params) {
  * @param {string} createUserName 创建者姓名 required
  */
 export async function collectArticle(params) {
+  const { createUserName, createUserCode } = Store.getBasicInfo();
+  const p = {
+    ...params,
+    createUserCode,
+    createUserName,
+  };
   return request(`/api/${basePrefix}/Collect`, {
     method: 'POST',
     body: {
-      ...params,
+      ...p,
     },
   });
 }
@@ -72,7 +90,13 @@ export async function collectArticle(params) {
  * @param {string} createUserName 创建者姓名 required
  */
 export async function fetchComments(params) {
-  return request(`/api/${basePrefix}/GetComments?${stringify(params)}`);
+  const { createUserName, createUserCode } = Store.getBasicInfo();
+  const p = {
+    ...params,
+    createUserCode,
+    createUserName,
+  };
+  return request(`/api/${basePrefix}/GetComments?${stringify(p)}`);
 }
 
 /**
@@ -87,10 +111,16 @@ export async function fetchComments(params) {
  *
  */
 export async function addComment(params) {
+  const { createUserName, createUserCode } = Store.getBasicInfo();
+  const p = {
+    ...params,
+    createUserCode,
+    createUserName,
+  };
   return request(`/api/${basePrefix}/AddComments`, {
     method: 'POST',
     body: {
-      ...params,
+      ...p,
     },
   });
 }

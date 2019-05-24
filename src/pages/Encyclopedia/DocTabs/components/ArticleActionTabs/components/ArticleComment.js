@@ -23,14 +23,12 @@ class ArtivleComment extends PureComponent {
   }
 
   componentDidMount() {
-    const { dispatch, docId, createUserCode, createUserName } = this.props;
+    const { dispatch, docId } = this.props;
     if (!docId) return;
     dispatch({
       type: 'doc/fetchComments',
       payload: {
         ID: docId,
-        createUserCode,
-        createUserName,
       },
     });
   }
@@ -59,7 +57,7 @@ class ArtivleComment extends PureComponent {
 
   handleSubmit = () => {
     const { commentContent } = this.state;
-    const { docId, createUserCode, createUserName } = this.props;
+    const { docId } = this.props;
     const { dispatch } = this.props;
     if (!commentContent) {
       message.error('请输入内容');
@@ -74,8 +72,6 @@ class ArtivleComment extends PureComponent {
       payload: {
         docId,
         content: commentContent,
-        createUserCode,
-        createUserName,
       },
     }).then(res => {
       if (res) {

@@ -117,8 +117,8 @@ class CommisionWork extends React.Component {
         taskTitle: titleInputValue,
         endTime: endTimeInputValue,
         taskDescription: descripInputValue,
-        receivedUserName: currentVisibleTask.receivedUserName,
-        receivedUserCode: currentVisibleTask.receivedUserCode,
+        // receivedUserName: currentVisibleTask.receivedUserName,
+        // receivedUserCode: currentVisibleTask.receivedUserCode,
         isDone: 0,
       },
     });
@@ -136,13 +136,9 @@ class CommisionWork extends React.Component {
     dispatch({
       type: 'home/addTask',
       payload: {
-        createUserCode: '150701206',
-        createUserName: '陆仁杰',
         taskTitle: titleInputValue,
         endTime: endTimeInputValue,
         taskDescription: descripInputValue,
-        receivedUserName: '陆仁杰',
-        receivedUserCode: '150701206',
       },
     });
     this.setState({

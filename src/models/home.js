@@ -46,7 +46,6 @@ export default {
         yield put({
           type: 'fetchCommisionWork',
           payload: {
-            createUserCode: '150701206',
             isDone: 0,
             pageSize: 20,
             currentPage: 1,
@@ -66,7 +65,6 @@ export default {
         yield put({
           type: 'fetchCommisionWork',
           payload: {
-            createUserCode: '150701206',
             isDone: 0,
             pageSize: 20,
             currentPage: 1,
@@ -86,7 +84,6 @@ export default {
         yield put({
           type: 'fetchCommisionWork',
           payload: {
-            createUserCode: '150701206',
             isDone: 0,
             pageSize: 20,
             currentPage: 1,

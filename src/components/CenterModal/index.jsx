@@ -51,7 +51,6 @@ class CenterModal extends PureComponent {
             type: 'user/updateInfo',
             payload: {
               ...formData,
-              uCode: '150701206',
             },
           });
         } else {

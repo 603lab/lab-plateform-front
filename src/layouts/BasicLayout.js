@@ -72,9 +72,7 @@ class BasicLayout extends React.PureComponent {
     }
     dispatch({
       type: 'user/fetchInfo',
-      payload: {
-        uCode: '150701206',
-      },
+      payload: {},
     });
     dispatch({
       type: 'setting/getSetting',

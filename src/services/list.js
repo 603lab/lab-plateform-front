@@ -2,10 +2,11 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-21 15:53:08
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-07 17:41:04
+ * @Last Modified time: 2019-05-25 04:31:54
  */
 import request from '@/utils/request';
 import { stringify } from 'qs';
+import Store from '@/utils/store';
 
 /**
  * 获取我的文章
@@ -16,7 +17,12 @@ import { stringify } from 'qs';
  */
 
 export async function queryList(params) {
-  return request(`/api/Base-Module/Users/GetMyDocs?${stringify(params)}`);
+  const { uCode } = Store.getBasicInfo();
+  const p = {
+    ...params,
+    uCode,
+  };
+  return request(`/api/Base-Module/Users/GetMyDocs?${stringify(p)}`);
 }
 
 /**
@@ -28,10 +34,16 @@ export async function queryList(params) {
  * @param {string} createUserName	用户姓名  required
  */
 export async function likeArticle(params) {
+  const { createUserCode, createUserName } = Store.getBasicInfo();
+  const p = {
+    ...params,
+    createUserCode,
+    createUserName,
+  };
   return request(`/api/Base-Module/Encyclopedia/Like`, {
     method: 'POST',
     body: {
-      ...params,
+      ...p,
     },
   });
 }

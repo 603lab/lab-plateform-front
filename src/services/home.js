@@ -1,5 +1,6 @@
 import request from '@/utils/request';
 import { stringify } from 'qs';
+import Store from '@/utils/store';
 
 /**
  * 获取待办工作
@@ -9,7 +10,12 @@ import { stringify } from 'qs';
  * @param {string} createUserCode	用户编号	required
  */
 export async function getCommisionWork(params) {
-  return request(`/api/Base-Module/Home/GetTasks?${stringify(params)}`);
+  const { createUserCode } = Store.getBasicInfo();
+  const p = {
+    ...params,
+    createUserCode,
+  };
+  return request(`/api/Base-Module/Home/GetTasks?${stringify(p)}`);
 }
 
 /**
@@ -23,7 +29,7 @@ export async function getNotices(params) {
 }
 
 /**
- * 获取最新公告
+ * 推荐大佬
  * @param {number} currentPage	当前页数	required
  * @param {number} pageSize	每页数量	required
  * @param {String} leaderType	推荐大佬类型	required
@@ -31,11 +37,16 @@ export async function getNotices(params) {
  */
 
 export async function getUsers(params) {
-  return request(`/api/Base-Module/Home/GetLeaders?${stringify(params)}`);
+  const { uCode } = Store.getBasicInfo();
+  const p = {
+    ...params,
+    uCode,
+  };
+  return request(`/api/Base-Module/Home/GetLeaders?${stringify(p)}`);
 }
 
 /**
- * 获取最新公告
+ * 推荐文章
  * @param {number} currentPage	当前页数	required
  * @param {number} pageSize	每页数量	required
  * @param {String} articleType	推荐文章类型	required
@@ -58,10 +69,18 @@ export async function getArticles(params) {
  */
 
 export async function addTask(params) {
+  const { createUserName, createUserCode } = Store.getBasicInfo();
+  const p = {
+    ...params,
+    createUserCode,
+    createUserName,
+    receivedUserName: createUserName,
+    receivedUserCode: createUserCode,
+  };
   return request(`/api/Base-Module/Home/AddTask`, {
     method: 'POST',
     body: {
-      ...params,
+      ...p,
     },
   });
 }
@@ -80,10 +99,18 @@ export async function addTask(params) {
  */
 
 export async function editTask(params) {
+  const { createUserName, createUserCode } = Store.getBasicInfo();
+  const p = {
+    ...params,
+    createUserCode,
+    createUserName,
+    receivedUserName: createUserName,
+    receivedUserCode: createUserCode,
+  };
   return request(`/api/Base-Module/Home/UpdateTask`, {
     method: 'POST',
     body: {
-      ...params,
+      ...p,
     },
   });
 }
@@ -98,10 +125,16 @@ export async function editTask(params) {
  */
 
 export async function followUser(params) {
+  const { createUserName, createUserCode } = Store.getBasicInfo();
+  const p = {
+    ...params,
+    createUserCode,
+    createUserName,
+  };
   return request(`/api/Base-Module/Encyclopedia/Follow`, {
     method: 'POST',
     body: {
-      ...params,
+      ...p,
     },
   });
 }

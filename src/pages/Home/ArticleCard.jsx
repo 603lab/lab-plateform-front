@@ -34,7 +34,6 @@ class ArticleCard extends React.Component {
         currentPage: 1,
         pageSize: 10,
         leaderType: type,
-        uCode: '150701206',
       },
     });
     // 获取推荐文章
@@ -61,7 +60,6 @@ class ArticleCard extends React.Component {
         currentPage: 1,
         pageSize: 10,
         leaderType: tech.value,
-        uCode: '150701206',
       },
     });
     this.setState({ currentPage: 1 });
@@ -128,8 +126,6 @@ class ArticleCard extends React.Component {
       type: 'home/follow',
       payload: {
         isFollow: followBool,
-        createUserCode: 150701206,
-        createUserName: '陆仁杰',
         followUserCode: uCode,
         followUserName: realName,
       },
