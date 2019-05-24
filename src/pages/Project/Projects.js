@@ -15,9 +15,9 @@ const FormItem = Form.Item;
 
 /* eslint react/no-array-index-key: 0 */
 
-@connect(({ list, loading }) => ({
-  list,
-  loading: loading.models.list,
+@connect(({ project, loading }) => ({
+  project,
+  loading: loading.models.project,
 }))
 @Form.create({
   onValuesChange({ dispatch }, changedValues, allValues) {
@@ -26,7 +26,7 @@ const FormItem = Form.Item;
     console.log(changedValues, allValues);
     // 模拟查询表单生效
     dispatch({
-      type: 'list/fetch',
+      type: 'project/fetch',
       payload: {
         count: 8,
       },
@@ -37,7 +37,7 @@ class CoverCardList extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'list/fetch',
+      type: 'project/fetch',
       payload: {
         count: 8,
       },
@@ -46,7 +46,7 @@ class CoverCardList extends PureComponent {
 
   render() {
     const {
-      list: { list = [] },
+      project: { list = [] },
       loading,
       form,
     } = this.props;
