@@ -101,6 +101,9 @@ class Center extends PureComponent {
       case 'projects':
         router.push(`${match.url}/projects`);
         break;
+      case 'follows':
+        router.push(`${match.url}/follows`);
+        break;
       default:
         break;
     }
@@ -218,33 +221,22 @@ class Center extends PureComponent {
         key: 'articles',
         tab: (
           <span>
-            我的文章 <span style={{ fontSize: 14 }}>(8)</span>
+            我的文章
+            {/* <span style={{ fontSize: 14 }}>(8)</span> */}
           </span>
         ),
       },
       {
         key: 'doc',
-        tab: (
-          <span>
-            文档动态 <span style={{ fontSize: 14 }}>(8)</span>
-          </span>
-        ),
+        tab: <span>文档动态</span>,
       },
       {
         key: 'projects',
-        tab: (
-          <span>
-            项目动态 <span style={{ fontSize: 14 }}>(8)</span>
-          </span>
-        ),
+        tab: <span>项目动态</span>,
       },
       {
-        key: 'follow',
-        tab: (
-          <span>
-            关注动态 <span style={{ fontSize: 14 }}>(8)</span>
-          </span>
-        ),
+        key: 'follows',
+        tab: <span>关注动态</span>,
       },
     ];
     return (
@@ -280,7 +272,12 @@ class Center extends PureComponent {
                       </span>
                       <br />
                       <span className={styles.techDirection}>
-                        {techList.map(item => statisticData.directionOptionsTile[item])}
+                        {techList.map(item => (
+                          <span key={item}>
+                            {statisticData.directionOptionsTile[item]}
+                            &nbsp;&nbsp;
+                          </span>
+                        ))}
                       </span>
                     </div>
                     <div>
