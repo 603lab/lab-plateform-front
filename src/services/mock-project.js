@@ -1,9 +1,9 @@
 const titles = [
-  'Alipay',
-  'Angular',
-  'Ant Design',
-  'Ant Design Pro',
-  'Bootstrap',
+  '学生汇',
+  '基于VR的虚拟会展平台',
+  '基于情侣关系的移动电子商务推广平台',
+  '新生活',
+  '基于社会化关系的餐饮社交服务平台策划书',
   'React',
   'Vue',
   'Webpack',
@@ -21,16 +21,16 @@ const avatars = [
 
 const covers = [
   'http://129.204.109.115:8022/603-3.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/iZBVOIhGJiAnhplqjvZW.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/iXjVmWVHbCJAyqvDxdtx.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/gLaIAoVWTtLbBWZNYEMg.png',
+  'http://129.204.109.115:8022/603-4.png',
+  'http://129.204.109.115:8022/603-5.png',
+  'http://129.204.109.115:8022/603-6.png',
 ];
 const desc = [
-  '那是一种内在的东西， 他们到达不了，也无法触及的',
-  '希望是一个好东西，也许是最好的，好东西是不会消亡的',
-  '生命就像一盒巧克力，结果往往出人意料',
-  '城镇中有那么多的酒馆，她却偏偏走进了我的酒馆',
-  '那时候我只会想自己想要什么，从不想自己拥有什么',
+  '高校学生团队管理服务平台',
+  '基于VR的虚拟会展平台',
+  '基于情侣关系的移动电子商务推广平台',
+  '大学生服务APP',
+  '基于社会化关系的餐饮社交服务平台策划书',
 ];
 
 const user = [
