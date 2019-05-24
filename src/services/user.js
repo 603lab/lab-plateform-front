@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-27 16:32:35
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-25 04:56:18
+ * @Last Modified time: 2019-05-25 05:02:01
  * tips: 接口参数需罗列清楚
  */
 
@@ -23,7 +23,6 @@ export async function queryUserInfo() {
   const p = {
     uCode,
   };
-  console.log('queryUserInfo p', p);
   return request(`/api/${basePrefix}/GetUsersInfo?${stringify(p)}`);
 }
 

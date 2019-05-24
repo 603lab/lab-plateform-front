@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-04-03 17:08:03
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-16 23:07:32
+ * @Last Modified time: 2019-05-25 05:12:36
  * 新增/编辑文章
  */
 import React, { PureComponent } from 'react';
@@ -57,6 +57,7 @@ class Edit extends PureComponent {
   handleCreate = () => {
     const { title, contentHtmlStr } = this.state;
     const { dispatch } = this.props;
+    // console.log('this.props', this.props);
     if (title === '') {
       message.error('请输入文章标题');
       return;
@@ -68,7 +69,7 @@ class Edit extends PureComponent {
     dispatch({
       type: 'doc/create',
       payload: {
-        parentId: '10000',
+        parentId: '10026',
         fileAddress: '/前端',
         fileName: title,
         content: contentHtmlStr,
