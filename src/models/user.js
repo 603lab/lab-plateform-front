@@ -115,9 +115,9 @@ export default {
       const { statusCode, msg } = response || {};
       if (statusCode === 200) {
         yield put({
-          type: 'fetchInfo',
+          type: 'fetchSkills',
           payload: {
-            uCode: '150701206',
+            createUserCode: '150701206',
           },
         });
         message.success('更新技能成功');

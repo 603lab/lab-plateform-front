@@ -1,3 +1,5 @@
+/* eslint-disable */
+/* eslint-disable */
 // [START functionsimport]
 const functions = require('firebase-functions');
 const express = require('express');
