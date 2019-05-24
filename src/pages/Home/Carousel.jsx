@@ -1,6 +1,10 @@
 import React from 'react';
 import { Carousel } from 'antd';
 import styles from './Carousel.less';
+import CarouselFrist from '../../../public/01.png';
+import CarouselSec from '../../../public/02.png';
+import CarouselThr from '../../../public/03.png';
+import CarouselFour from '../../../public/04.png';
 
 class HomeCarousel extends React.Component {
   constructor(props) {
@@ -12,16 +16,16 @@ class HomeCarousel extends React.Component {
     return (
       <Carousel autoplay effect="fade" style={{ height: 250 }}>
         <div className={styles.carousel_bg}>
-          <h3>1</h3>
+          <img src={CarouselFrist} alt="01" />
         </div>
         <div className={styles.carousel_bg}>
-          <h3>2</h3>
+          <img src={CarouselSec} alt="02" />
         </div>
         <div className={styles.carousel_bg}>
-          <h3>3</h3>
+          <img src={CarouselThr} alt="03" />
         </div>
         <div className={styles.carousel_bg}>
-          <h3>4</h3>
+          <img src={CarouselFour} alt="04" />
         </div>
       </Carousel>
     );
