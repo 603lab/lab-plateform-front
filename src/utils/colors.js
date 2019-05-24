@@ -1,5 +1,5 @@
 export default {
-  category5: ['#9a60ea', '#4ECB73', '#FBD437', '#F2637B', '#975FE5'],
+  category5: ['#9a60ea', '#4ECB73', '#FBD437', '#F2637B', '#3498db'],
   category12: [
     '#9a60ea',
     '#88D1EA',

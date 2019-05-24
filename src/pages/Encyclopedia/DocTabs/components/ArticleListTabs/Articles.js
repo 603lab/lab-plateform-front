@@ -98,7 +98,6 @@ class SearchList extends Component {
     }).then(result => {
       const { doc } = this.props;
       const { homeArticleList: newArticleList } = doc;
-      console.log('newArticleList', newArticleList);
       const { isLike: articleIsLike, likeNum } = newArticleList[index];
       // 如果点赞成功,则改变状态
       if (result) {

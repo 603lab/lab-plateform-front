@@ -122,7 +122,7 @@ export default {
         });
         message.success('更新技能成功');
       } else {
-        message.success(`更新技能失败 ${msg}`);
+        message.error(`更新技能失败 ${msg}`);
       }
     },
   },
