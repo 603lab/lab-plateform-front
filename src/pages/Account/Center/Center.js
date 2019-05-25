@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import { connect } from 'dva';
 // import Link from 'umi/link';
 import router from 'umi/router';
+import { withRouter } from 'dva/router';
+
 // import findeIndex from 'lodash/findIndex';
 import {
   Card,
@@ -34,6 +36,7 @@ import baseColor from '@/utils/colors';
   currentUserLoading: loading.effects['user/fetchCurrent'],
   listLoading: loading.effects['list/fetch'],
 }))
+@withRouter
 class Center extends PureComponent {
   state = {
     modalType: '',
@@ -43,21 +46,26 @@ class Center extends PureComponent {
   };
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, location } = this.props;
+    const { query } = location;
+    let p = {};
+    if (Object.keys(query).length) {
+      p = { ...query };
+    }
     // 获取用户信息
     dispatch({
       type: 'user/fetchInfo',
-      payload: {},
+      payload: { ...p },
     });
     // 获取用户技能
     dispatch({
       type: 'user/fetchSkills',
-      payload: {},
+      payload: { ...p },
     });
     // 获取用户标签
     dispatch({
       type: 'user/fetchTags',
-      payload: {},
+      payload: { ...p },
     });
 
     // 获取用户文章
@@ -66,6 +74,7 @@ class Center extends PureComponent {
       payload: {
         currentPage: 1,
         pageSize: 3,
+        ...p,
       },
     });
   }

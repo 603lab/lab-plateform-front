@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-21 15:53:08
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-25 04:31:54
+ * @Last Modified time: 2019-05-25 09:54:06
  */
 import request from '@/utils/request';
 import { stringify } from 'qs';
@@ -19,8 +19,8 @@ import Store from '@/utils/store';
 export async function queryList(params) {
   const { uCode } = Store.getBasicInfo();
   const p = {
-    ...params,
     uCode,
+    ...params,
   };
   return request(`/api/Base-Module/Users/GetMyDocs?${stringify(p)}`);
 }

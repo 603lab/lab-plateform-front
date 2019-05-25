@@ -2,7 +2,7 @@
  * @Author: chenxiaobin
  * @Date: 2019-03-27 16:32:35
  * @Last Modified by: chenxiaobin
- * @Last Modified time: 2019-05-25 05:02:01
+ * @Last Modified time: 2019-05-25 10:01:57
  * tips: 接口参数需罗列清楚
  */
 
@@ -18,10 +18,11 @@ const basePrefix = 'Base-Module/Users';
  * @param {number} itemId	    文章编号	required
  * @param {string} uCode	 	学号	required
  */
-export async function queryUserInfo() {
+export async function queryUserInfo(params) {
   const { uCode = '' } = Store.getBasicInfo();
   const p = {
     uCode,
+    ...params,
   };
   return request(`/api/${basePrefix}/GetUsersInfo?${stringify(p)}`);
 }
@@ -36,10 +37,10 @@ export async function queryUserInfo() {
 export async function updateUserInfo(params) {
   const { createUserName, createUserCode, uCode } = Store.getBasicInfo();
   const p = {
-    ...params,
     uCode,
     createUserCode,
     createUserName,
+    ...params,
   };
   return request(`/api/${basePrefix}/Update`, {
     method: 'POST',
@@ -56,8 +57,8 @@ export async function updateUserInfo(params) {
 export async function queryTags(params) {
   const { createUserCode } = Store.getBasicInfo();
   const p = {
-    ...params,
     createUserCode,
+    ...params,
   };
   return request(`/api/${basePrefix}/GetTags?${stringify(p)}`);
 }
@@ -71,9 +72,9 @@ export async function queryTags(params) {
 export async function addTag(params) {
   const { createUserName, createUserCode } = Store.getBasicInfo();
   const p = {
-    ...params,
     createUserCode,
     createUserName,
+    ...params,
   };
   return request(`/api/${basePrefix}/AddTag`, {
     method: 'POST',
@@ -91,8 +92,8 @@ export async function addTag(params) {
 export async function deleteTag(params) {
   const { createUserCode } = Store.getBasicInfo();
   const p = {
-    ...params,
     createUserCode,
+    ...params,
   };
   return request(`/api/${basePrefix}/DeleteTag`, {
     method: 'POST',
@@ -109,8 +110,8 @@ export async function deleteTag(params) {
 export async function querySkills(params) {
   const { createUserCode } = Store.getBasicInfo();
   const p = {
-    ...params,
     createUserCode,
+    ...params,
   };
   return request(`/api/${basePrefix}/GetSkills?${stringify(p)}`);
 }
@@ -126,9 +127,9 @@ export async function querySkills(params) {
 export async function updateSkills(params) {
   const { createUserName, createUserCode } = Store.getBasicInfo();
   const p = {
-    ...params,
     createUserCode,
     createUserName,
+    ...params,
   };
   return request(`/api/${basePrefix}/UpdateSkill`, {
     method: 'POST',

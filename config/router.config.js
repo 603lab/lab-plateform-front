@@ -55,7 +55,7 @@ export default [
         routes: [
           {
             path: '/account/center',
-            redirect: '/account/center/articles',
+            redirect: `/account/center/articles`,
           },
           {
             path: '/account/center/articles',

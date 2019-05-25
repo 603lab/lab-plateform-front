@@ -1,13 +1,25 @@
 import React, { PureComponent } from 'react';
 import { FormattedMessage, formatMessage } from 'umi/locale';
-import { Spin, Tag, Menu, Icon, Dropdown, Avatar } from 'antd';
+import { Spin, Tag, Menu, Icon, Dropdown, Avatar, message } from 'antd';
+import Store from '@/utils/store';
 import moment from 'moment';
+import router from 'umi/router';
 import groupBy from 'lodash/groupBy';
 import NoticeIcon from '../NoticeIcon';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
 
 export default class GlobalHeaderRight extends PureComponent {
+  componentDidMount() {
+    const isLogin = Store.getBasicInfo() !== undefined;
+    if (!isLogin) {
+      message.error('用户信息不存在,请重新登录');
+      setTimeout(() => {
+        router.push('/user/login');
+      }, 1000);
+    }
+  }
+
   getNoticeData() {
     const { notices = [] } = this.props;
     if (notices.length === 0) {
@@ -93,6 +105,7 @@ export default class GlobalHeaderRight extends PureComponent {
     if (theme === 'dark') {
       className = `${styles.right}  ${styles.dark}`;
     }
+    const loginUser = Store.getBasicInfo();
     return (
       <div className={className}>
         <HeaderSearch
@@ -158,10 +171,16 @@ export default class GlobalHeaderRight extends PureComponent {
               <Avatar
                 size="small"
                 className={styles.avatar}
-                src={currentUser.avatar}
+                src={
+                  Object.keys(loginUser).includes('avatar') ? loginUser.avatar : currentUser.avatar
+                }
                 alt="avatar"
               />
-              <span className={styles.name}>{currentUser.nickName}</span>
+              <span className={styles.name}>
+                {Object.keys(loginUser).includes('nickName')
+                  ? loginUser.nickName
+                  : currentUser.nickName}
+              </span>
             </span>
           </Dropdown>
         ) : (

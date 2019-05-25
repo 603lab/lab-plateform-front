@@ -19,8 +19,8 @@ export async function getDocMenu() {
 export async function searchArticle(params) {
   const { createUserCode } = Store.getBasicInfo();
   const p = {
-    ...params,
     createUserCode,
+    ...params,
   };
   return request(`/api/${basePrefix}/Search?${stringify(p)}`);
 }
@@ -54,9 +54,9 @@ export async function getDocDetail(params) {
 export async function createArticle(params) {
   const { createUserName, createUserCode } = Store.getBasicInfo();
   const p = {
-    ...params,
     createUserCode,
     createUserName,
+    ...params,
   };
   return request(`/api/${basePrefix}/AddDoc`, {
     method: 'POST',

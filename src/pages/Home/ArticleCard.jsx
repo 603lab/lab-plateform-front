@@ -2,6 +2,8 @@
 import React from 'react';
 import { Card, Tabs, Avatar, Button, Pagination, List } from 'antd';
 import { connect } from 'dva';
+import { stringify } from 'qs';
+import { withRouter } from 'dva/router';
 import styles from './ArticleCard.less';
 import { techDirectionsType } from './ArticleCardJson';
 
@@ -15,6 +17,7 @@ const pageSize = 6;
   articleList: home.articleList,
   swichTabLoading: loading.effects['home/fetchUsers'],
 }))
+@withRouter
 class ArticleCard extends React.Component {
   constructor(props) {
     super(props);
@@ -83,6 +86,16 @@ class ArticleCard extends React.Component {
     this.setState({ currentPage: 1 });
   };
 
+  handleCardClick = item => {
+    const { history } = this.props;
+    const p = {
+      uCode: item.uCode,
+      createUserName: item.realName,
+      createUserCode: item.uCode,
+    };
+    history.push(`/account/center/articles?${stringify(p)}`);
+  };
+
   isMap = index => {
     //  当前的页码长度
     const { currentPage } = this.state;
@@ -146,7 +159,7 @@ class ArticleCard extends React.Component {
               <TabPane tab={tech.value} key={tech.key}>
                 <Card className={styles.cardStyleWrapper}>
                   {userList.map((item, i) => (
-                    <div key={item.id}>
+                    <div key={item.id} onClick={() => this.handleCardClick(item)}>
                       {this.isMap(i) ? (
                         <Card.Grid className={styles.gridStyle}>
                           <div className={styles.avatarInfo}>

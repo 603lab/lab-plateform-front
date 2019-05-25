@@ -51,8 +51,8 @@ export default {
       }
     },
     // 获取个人标签
-    *fetchTags(_, { call, put }) {
-      const response = yield call(queryTags);
+    *fetchTags({ payload }, { call, put }) {
+      const response = yield call(queryTags, payload);
       const { statusCode, data, msg } = response || {};
       if (statusCode === 200) {
         yield put({
